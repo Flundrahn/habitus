@@ -7,4 +7,5 @@
         "strings": true
     },
     "tailwindCSS.emmetCompletions": true,
+    "files.eol": "\n",
 }

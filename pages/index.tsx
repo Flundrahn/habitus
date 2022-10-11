@@ -1,6 +1,3 @@
-// Import Link from 'next/link';
-import React from 'react';
-import Layout from '../components/Layout';
 import { format } from 'date-fns';
 import { IHabit, IEntry } from '../utilities/interfaces';
 import { habitsToday } from '../utilities/sample-data'    ;
@@ -94,7 +91,6 @@ const HabitsTable = ( {
             </td>
             <td className={`pl-2 pr-2 text-center ${(habit.entries && habit.entries.length > 0) ? "bg-green-400" : "bg-red-300 text-transparent"}`}>
               <button className="h-full w-full" onClick={() => handleClick(habit)}>x</button>
-              {/* {habit.entries ? "x" : "."} */}
             </td>
             <td className="pl-2 pr-2 text-center">{habit.goal}</td>
           </tr>
@@ -106,13 +102,25 @@ const HabitsTable = ( {
 
 const IndexPage = () => {
   const [todaysHabits, setTodaysHabits] = useState(habitsToday);
-  
+
+  // NOTE Leave this part if want to use to store state later
+  // useLayoutEffect(() => {
+  //   const storedItems = localStorage.getItem('todaysHabits');
+  //   if (storedItems) {
+  //     setTodaysHabits(JSON.parse(storedItems));
+  //   } else {
+  //     sessionStorage.setItem('todaysHabits', todaysHabits.toString());
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   sessionStorage.setItem('todaysHabits', todaysHabits.toString());
+  // }, [todaysHabits]);
+
   const date = new Date();
 
   return (
-    <Layout title="Today | Habitus">
-      <HabitsTable habits={todaysHabits} setHabits={setTodaysHabits} date={date} />
-    </Layout>
+    <HabitsTable habits={todaysHabits} setHabits={setTodaysHabits} date={date} />
   );
 };
 

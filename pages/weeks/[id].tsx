@@ -1,7 +1,6 @@
 import React from 'react';
 import type { IWeek } from '../../utilities/interfaces';
 import { weekData } from '../../utilities/sample-data';
-import Layout from '../../components/Layout';
 import ListDetail from '../../components/ListDetail';
 
 export const getStaticPaths = () => {
@@ -30,18 +29,16 @@ export const getStaticProps = ({ params }: {params: {id: number}}) => {
 function Week({ week, errors }: {week: IWeek; errors?: string}): JSX.Element {
   if (errors) {
     return (
-      <Layout title="Error | Habitus">
-        <p className="text-red-800">
+      <p className="text-red-800">
           Error: {errors}
-        </p>
-      </Layout>
+      </p>
     );
   }
 
   return (
-    <Layout title="Week | Habitus">
+    <>
       {week && <ListDetail item={week} />}
-    </Layout>
+    </>
   );
 }
 

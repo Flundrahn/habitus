@@ -1,15 +1,39 @@
 # TODO
-- Take at least one typescript tutorial
-- make a sketch of front end with functionality
-- design backend with this functionality in mind.
+- Week Component v1
+- Edit Component v1
+
+# MVP
+1. Design backend with this functionality in mind.
+2. Create new Habit POST
+3. Delete Habit
+4. Update Habit
+5. Week, each day with done and unfinished habits
+    - View of weekly result
+6.  Mobile first, managing habits need be mobile
+7.  Stoic quotes GET random
+8.  Db, sqlite should be fine
+
+NOTE Should I start backend before continuing with Week and Edit component
+Edit will be a form to edit existing habits.
+First do add habit, then edit habit, then delete habit, then week component.
+
 
 # Done
+- Todays Component v1
+  1. List habits --> each one has list of entries ids
+  2. View result in column graph
+  3. Create entry by crossing over day
+- Take at least one typescript tutorial
+- make a sketch of front end with functionality
 - Take at least one tailwind css tutorial
 - Finish 'Web API 6 Best Practices' course
 - Take at least one next.js tutorial
 
 # Web API Design Planning
-Model
+Model --> DTO focused on views
+
+For Todays Component need list of habits with entries filtered by date == today.
+
 
 Habit (possible use struct or record?)
 - int Id
@@ -31,21 +55,6 @@ get entries for week
 
 Want to return a list of habits with entries filtered by date
 
-# MVP
-0. Create Today page (Home)
-1. Create new Habit POST
-2. List habits --> each one has list of entries ids
-3. View result in column graph
-4. Delete Habit
-5. Update Habit
-6. Create entry by crossing over day
-7. View week, each day with done and unfinished habits
-8. View today / week
-9. View of weekly result
-10. Mobile first, managing habits need be mobile
-11. Stoic quotes GET random
-12. Db, sqlite should be fine
-    
 # Want to do
  - all time view
  - habits with clock, such as time to get in bed

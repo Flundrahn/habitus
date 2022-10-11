@@ -1,3 +1,5 @@
+namespace habitus.api.Models;
+
 public class Entry
 {
     public int Id { get; init; }

@@ -27,6 +27,7 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

@@ -1,3 +1,4 @@
+using AutoMapper;
 using habitus.api.Data;
 using habitus.api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,109 +10,119 @@ namespace habitus.api.Controllers
     [ApiController]
     public class HabitsController : ControllerBase
     {
-        private readonly HabitusDbContext _context;
+        private readonly IRepositoryManager _repository;
+        private readonly IMapper _mapper;
 
-        public HabitsController(HabitusDbContext context)
+        public HabitsController(IRepositoryManager repository, IMapper mapper)
         {
-            _context = context;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         // GET: api/Habits
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Habit>>> GetHabit()
+        public async Task<ActionResult<IEnumerable<Habit>>> Get()
         {
-            if (_context.Habits == null)
-            {
-                return NotFound();
-            }
-            return await _context.Habits.Include(h => h.Entries).ToListAsync();
-        }
-
-        // GET: api/Habits/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Habit>> GetHabit(int id)
-        {
-            if (_context.Habits == null)
-            {
-                return NotFound();
-            }
-            var habit = await _context.Habits.FindAsync(id);
-
-            if (habit == null)
-            {
-                return NotFound();
-            }
-
-            return habit;
-        }
-
-        // PUT: api/Habits/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutHabit(int id, Habit habit)
-        {
-            if (id != habit.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(habit).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HabitExists(id))
+                var habits = await _repository.Habit.FindAll(false);
+
+                if (habits == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                return Ok(habits);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<Habit>>> Get(int id)
+        {
+            try
+            {
+                var habit = await _repository.Habit.FindById(id, false);
+
+                if (habit == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(habit);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         // POST: api/Habits
         [HttpPost]
-        public async Task<ActionResult<Habit>> PostHabit(Habit habit)
+        public ActionResult<Habit> Post(CreateHabitRequest request)
         {
-            if (_context.Habits == null)
-            {
-                return Problem("Entity set 'AppContext.Habit' is null.");
-            }
-            _context.Habits.Add(habit);
-            await _context.SaveChangesAsync();
+            int id = _repository.Habit.Create(_mapper.Map<Habit>(request));
 
-            return CreatedAtAction("GetHabit", new { id = habit.Id }, habit);
+            if (id == -1)
+            {
+                return Problem($"Table {nameof(HabitusDbContext.Habits)} is null.");
+            }
+
+            return CreatedAtAction(nameof(Get), new { id = id });
         }
 
-        // DELETE: api/Habits/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHabit(int id)
+        public async Task<ActionResult<IEnumerable<Habit>>> Delete(int id)
         {
-            if (_context.Habits == null)
+            try
             {
-                return NotFound();
-            }
-            var habit = await _context.Habits.FindAsync(id);
-            if (habit == null)
-            {
-                return NotFound();
-            }
+                bool response = await _repository.Habit.Delete(id);
 
-            _context.Habits.Remove(habit);
-            await _context.SaveChangesAsync();
+                if (!response)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
+        // PUT: api/Habits/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, UpdateHabitRequest request)
+        {
+            if (id != request.Id) return BadRequest("Id in request body does not match id in route.");
+
+            try
+            {
+                bool response = await _repository.Habit.Update(_mapper.Map<Habit>(request));
+
+                if (!response)
+                {
+                    return NotFound();
+                }
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (_repository.Habit.FindById(id, false) == null)
+                {
+                    return NotFound();
+                }
+            }
+            // NOTE I have not investigated if this ais a proper way to chain exception catching
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
 
             return NoContent();
-        }
-
-        private bool HabitExists(int id)
-        {
-            return (_context.Habits?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

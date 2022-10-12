@@ -1,8 +1,11 @@
+using Microsoft.Build.Framework;
+
 namespace habitus.api.Models;
 
-public class Entry: IHasId
+public class CreateEntryRequest
 {
-    public int Id { get; init; }
+    [Required]
     public int HabitId { get; init; }
+    [Required]
     public DateTime Date { get; init; }
 }

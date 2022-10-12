@@ -3,7 +3,10 @@
 - Edit Component v1
 
 # MVP
-1. Design backend with this functionality in mind.
+1. Create endpoints
+   1. [x] Habit: GetAll / GetOne / Delete / Create / Update
+   2. Entry: Delete / Create
+   3. Habit: Get all include filtered entries, by date
 2. Create new Habit POST
 3. Delete Habit
 4. Update Habit
@@ -17,8 +20,8 @@ NOTE Should I start backend before continuing with Week and Edit component
 Edit will be a form to edit existing habits.
 First do add habit, then edit habit, then delete habit, then week component.
 
-
 # Done
+1. Design backend with this functionality in mind.
 - Todays Component v1
   1. List habits --> each one has list of entries ids
   2. View result in column graph
@@ -33,7 +36,6 @@ First do add habit, then edit habit, then delete habit, then week component.
 Model --> DTO focused on views
 
 For Todays Component need list of habits with entries filtered by date == today.
-
 
 Habit (possible use struct or record?)
 - int Id
@@ -61,6 +63,8 @@ Want to return a list of habits with entries filtered by date
  - graph for clock habits
  - authentication
  - endpoint to post & delete quotes
+ - make API async, leave sync for now and follow guide
+ - go through access modifiers and set to lowest possible
 
 # Front end
 1. Daily component

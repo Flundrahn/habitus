@@ -1,5 +1,7 @@
 using habitus.api.Models;
 
+namespace habitus.api.Data;
+
 internal static class SeedData
 {
     internal static Habit[] Habits()
@@ -37,7 +39,7 @@ internal static class SeedData
 
     internal static Entry[] Entries()
     {
-        var id = 1;
+        var id = 10;
 
         return new Entry[] {
             new Entry { Id = id++, HabitId = 1, Date = new DateTime(2022, 10, 11) },

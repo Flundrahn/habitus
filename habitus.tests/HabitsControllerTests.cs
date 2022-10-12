@@ -1,6 +1,6 @@
 namespace habitus.tests;
 
-public class UnitTest1
+public class HabitsControllerTests
 {
     [Fact]
     public void Test1()

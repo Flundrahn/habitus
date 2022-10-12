@@ -1,3 +1,4 @@
+using habitus.api.Data;
 using habitus.api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,9 @@ namespace habitus.api.Controllers
     [ApiController]
     public class HabitsController : ControllerBase
     {
-        private readonly AppContext _context;
+        private readonly HabitusDbContext _context;
 
-        public HabitsController(AppContext context)
+        public HabitsController(HabitusDbContext context)
         {
             _context = context;
         }
@@ -23,7 +24,7 @@ namespace habitus.api.Controllers
             {
                 return NotFound();
             }
-            return await _context.Habits.ToListAsync();
+            return await _context.Habits.Include(h => h.Entries).ToListAsync();
         }
 
         // GET: api/Habits/5
@@ -80,7 +81,7 @@ namespace habitus.api.Controllers
         {
             if (_context.Habits == null)
             {
-                return Problem("Entity set 'AppContext.Habit'  is null.");
+                return Problem("Entity set 'AppContext.Habit' is null.");
             }
             _context.Habits.Add(habit);
             await _context.SaveChangesAsync();

@@ -1,9 +1,11 @@
 using habitus.api.Models;
 using Microsoft.EntityFrameworkCore;
 
-public class AppContext : DbContext
+namespace habitus.api.Data;
+
+public class HabitusDbContext : DbContext
 {
-    public AppContext(DbContextOptions<AppContext> options)
+    public HabitusDbContext(DbContextOptions<HabitusDbContext> options)
         : base(options)
     {
     }

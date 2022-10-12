@@ -64,14 +64,21 @@ namespace habitus.api.Controllers
         [HttpPost]
         public ActionResult<Habit> Post(CreateHabitRequest request)
         {
-            int id = _repository.Habit.Create(_mapper.Map<Habit>(request));
-
-            if (id == -1)
+            try
             {
-                return Problem($"Table {nameof(HabitusDbContext.Habits)} is null.");
-            }
+                int id = _repository.Habit.Create(_mapper.Map<Habit>(request));
 
-            return CreatedAtAction(nameof(Get), new { id = id });
+                if (id == -1)
+                {
+                    return Problem($"Table {nameof(HabitusDbContext.Habits)} is null.");
+                }
+
+                return CreatedAtAction(nameof(Get), new { id = id });
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]

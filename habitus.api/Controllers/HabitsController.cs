@@ -25,7 +25,7 @@ namespace habitus.api.Controllers
         {
             try
             {
-                var habits = await _repository.Habit.FindAll(false);
+                var habits = await _repository.Habit.FindAllHabits(false);
 
                 if (habits == null)
                 {
@@ -53,6 +53,29 @@ namespace habitus.api.Controllers
                 }
 
                 return Ok(habit);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
+        [HttpGet("filter")]
+        public async Task<ActionResult<IEnumerable<Habit>>> Get([FromQuery] HabitFilter filter)
+        {
+            if (filter.EndDate is null) filter.EndDate = filter.StartDate;
+            if (filter.StartDate > filter.EndDate) return BadRequest("Start date must be before end date");
+            
+            try
+            {
+                var habits = await _repository.Habit.FindAllAndFilterEntriesByDate(filter.StartDate, filter.EndDate.Value);
+
+                if (habits == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(habits);
             }
             catch (Exception ex)
             {

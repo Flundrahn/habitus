@@ -7,7 +7,7 @@ namespace habitus.api.Data;
 
 public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IHasId
 {
-    private HabitusDbContext _context;
+    protected HabitusDbContext _context;
     public RepositoryBase(HabitusDbContext context)
     {
         _context = context;
@@ -20,13 +20,11 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
     // attach the AsNoTracking method to our query to inform EF Core that it
     // doesn’t need to track changes for the required entities. This greatly
     // improves the speed of a query. "
-    public async Task<T[]> FindAll(bool trackChanges)
+    public IQueryable<T> FindAll(bool trackChanges)
     {
-        var query = !trackChanges ?
+        return !trackChanges ?
             _context.Set<T>().AsNoTracking()
             : _context.Set<T>();
-
-        return await query.ToArrayAsync();
     }
 
     public async Task<T?> FindById(int id, bool trackChanges)

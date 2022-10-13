@@ -3,24 +3,24 @@
 - Edit Component v1
 
 # MVP
-1. Create endpoints
-   1. [x] Habit: GetAll / GetOne / Delete / Create / Update
-   2. Entry: Delete / Create
-   3. Habit: Get all include filtered entries, by date
-2. Create new Habit POST
+1. Create new Habit POST
 3. Delete Habit
 4. Update Habit
 5. Week, each day with done and unfinished habits
     - View of weekly result
 6.  Mobile first, managing habits need be mobile
 7.  Stoic quotes GET random
-8.  Db, sqlite should be fine
+9.  Db, sqlite should be fine
 
 NOTE Should I start backend before continuing with Week and Edit component
 Edit will be a form to edit existing habits.
 First do add habit, then edit habit, then delete habit, then week component.
 
 # Done
+1.  Create endpoints
+   1. [x] Habit: GetAll / GetOne / Delete / Create / Update
+   2. [x] Entry: Delete / Create
+   3. [x] Habit: Get all include filtered entries, by date
 1. Design backend with this functionality in mind.
 - Todays Component v1
   1. List habits --> each one has list of entries ids

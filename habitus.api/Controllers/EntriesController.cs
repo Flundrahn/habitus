@@ -24,7 +24,7 @@ namespace habitus.api.Controllers
         {
             try
             {
-                Entry[] entries = await _repository.Entry.FindAll(false);
+                var entries = await _repository.Entry.FindAllEntries(false);
 
                 if (entries == null)
                 {

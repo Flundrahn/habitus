@@ -1,55 +1,10 @@
 import { format } from 'date-fns';
 import { IHabit, IEntry } from '../utilities/interfaces';
-import { habitsToday } from '../utilities/sample-data'    ;
+// import { habitsToday } from '../utilities/sample-data';
 import { useState } from 'react';
-
-function addHabitEntry (
-  habitId: number,
-  date: Date,
-  setHabits: React.Dispatch<React.SetStateAction<IHabit[]>>
-) {
-  const newEntry: IEntry = {
-    // TODO Make sure the id works when calling api, should set in db not here.
-    // probably will make temporary object to send to api and then get back with id
-    id: 0,
-    habitId,
-    date: date,
-  };
-
-  setHabits(currentHabits => currentHabits.map(habit => {
-    // NOTE This is a collection of todays habits, each has a collection of entries or null, since it is only for today there should only be one entry, but can make method generalizable to handle existing collection of entries 
-
-    let newEntries: IEntry[];
-
-    if (habit.id === habitId) {
-      if (habit.entries === undefined) {
-        newEntries = [newEntry];
-      } else {
-        newEntries = [...habit.entries, newEntry];
-      }
-      return {
-        ...habit,
-        entries: newEntries,
-      };
-    } else {
-      return habit;
-    }
-  }
-  ));
-}
-
-function removeHabitEntry(
-  habitId: number,
-  entryId: number,
-  setHabits: React.Dispatch<React.SetStateAction<IHabit[]>>
-) {
-  setHabits(currentHabits => currentHabits.map(habit => {
-    if (habit.id === habitId) {
-      habit.entries = habit.entries?.filter(entry => entry.id !== entryId);
-    }
-    return habit;
-  }));
-}
+import removeHabitEntry from '../utilities/removeHabitEntry';
+import addHabitEntry from '../utilities/addHabitEntry';
+import getHabits from '../utilities/getHabits';
 
 const HabitsTable = ( {
   habits, 
@@ -100,8 +55,21 @@ const HabitsTable = ( {
   );
 };
 
+// TODO Evaluate if getStaticProps is appropriate, api call with initial data
+// NOTE If there were multiple users it would not be possible to do serverside, might want
+// to build app to work with auth and multiple users later
+export async function getStaticProps() {
+  const todaysHabitsData = await getHabits(new Date());
+
+  return {
+    props: {
+      todaysHabitsData
+    }
+  };
+}
+
 const IndexPage = () => {
-  const [todaysHabits, setTodaysHabits] = useState(habitsToday);
+  const [todaysHabits, setTodaysHabits] = useState<IHabit[]>([]);
 
   // NOTE Leave this part if want to use to store state later
   // useLayoutEffect(() => {

@@ -60,6 +60,7 @@ namespace habitus.api.Controllers
             }
         }
 
+        // TODO look up what is the REST way of naming filtered endpoints
         [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<Habit>>> Get([FromQuery] HabitFilter filter)
         {

@@ -8,8 +8,10 @@ namespace habitus.api.Data;
 public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IHasId
 {
     protected HabitusDbContext _context;
-    public RepositoryBase(HabitusDbContext context)
+    protected IMapper _mapper;
+    public RepositoryBase(HabitusDbContext context, IMapper mapper)
     {
+        _mapper = mapper;
         _context = context;
     }
 
@@ -22,9 +24,9 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
     // improves the speed of a query. "
     public IQueryable<T> FindAll(bool trackChanges)
     {
-        return !trackChanges ?
-            _context.Set<T>().AsNoTracking()
-            : _context.Set<T>();
+        return trackChanges ?
+            _context.Set<T>()
+            : _context.Set<T>().AsNoTracking();
     }
 
     public async Task<T?> FindById(int id, bool trackChanges)
@@ -33,25 +35,26 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
             .SingleOrDefaultAsync();
     }
 
-    public IQueryable<T> FindByCondition(
-        Expression<Func<T, bool>> expression,
-        bool trackChanges) =>
-            !trackChanges ?
-                _context.Set<T>().Where(expression).AsNoTracking()
-                : _context.Set<T>().Where(expression);
+    public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges)
+    {
+        return trackChanges ?
+            _context.Set<T>().Where(expression)
+            : _context.Set<T>().Where(expression).AsNoTracking();
+    }
+
 
     // NOTE "The Create and Delete method signatures are left synchronous. That’s
     // because, in these methods, we are not making any changes in the
     // database. All we're doing is changing the state of the entity to Added and
     // Deleted"
-    public int Create(T entity)
+    public async Task<int> Create(T entity)
     {
         if (!TableExists()) return -1;
 
-        var result = _context.Set<T>().Add(entity);
-        _context.SaveChanges();
+        await _context.Set<T>().AddAsync(entity);
+        await _context.SaveChangesAsync();
 
-        return result.Entity.Id;
+        return entity.Id;
     }
 
     public async Task<bool> Update(T entity)
@@ -63,12 +66,11 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
         if (currentEntity == null) return false;
 
         _context.Set<T>().Update(entity);
-
         await _context.SaveChangesAsync();
 
         return true;
     }
-    public async Task<bool> Delete(int id)
+    public async Task<bool> Delete(int id, bool trackChanges)
     {
         if (!TableExists()) return false;
 

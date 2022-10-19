@@ -7,10 +7,12 @@ public class RepositoryManager : IRepositoryManager
     private HabitusDbContext _context;
     private IHabitRepository? _habitRepository;
     private IEntryRepository? _entryRepository;
+    private IMapper _mapper;
 
-    public RepositoryManager(HabitusDbContext context)
+    public RepositoryManager(HabitusDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public IHabitRepository Habit
@@ -19,7 +21,7 @@ public class RepositoryManager : IRepositoryManager
         {
             if (_habitRepository == null)
             {
-                _habitRepository = new HabitRepository(_context);
+                _habitRepository = new HabitRepository(_context, _mapper);
             }
 
             return _habitRepository;
@@ -32,12 +34,10 @@ public class RepositoryManager : IRepositoryManager
         {
             if (_entryRepository == null)
             {
-                _entryRepository = new EntryRepository(_context);
+                _entryRepository = new EntryRepository(_context, _mapper);
             }
 
             return _entryRepository;
         }
     }
-
-    public void Save() => _context.SaveChanges();
 }

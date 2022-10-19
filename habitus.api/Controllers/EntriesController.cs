@@ -12,10 +12,9 @@ namespace habitus.api.Controllers
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
 
-        public EntriesController(IRepositoryManager repository, IMapper mapper)
+        public EntriesController(IRepositoryManager repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         // GET: api/Entries
@@ -24,14 +23,14 @@ namespace habitus.api.Controllers
         {
             try
             {
-                var entries = await _repository.Entry.FindAllEntries(false);
+                IEnumerable<EntryResponse> entries = await _repository.Entry.FindAllEntries();
 
                 if (entries == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(_mapper.Map<IEnumerable<EntryResponse>>(entries));
+                return Ok(entries);
             }
             catch (Exception ex)
             {
@@ -45,7 +44,7 @@ namespace habitus.api.Controllers
         {
             try
             {
-                var entry = await _repository.Entry.FindById(id, false);
+                var entry = await _repository.Entry.Find(id);
 
                 if (entry == null)
                 {
@@ -62,18 +61,25 @@ namespace habitus.api.Controllers
 
         // POST: api/Entries
         [HttpPost]
-        public IActionResult Post(CreateEntryRequest request)
+        public async Task<IActionResult> Post(CreateEntryRequest request)
         {
             try
             {
-                int id = _repository.Entry.Create(_mapper.Map<Entry>(request));
+                int id = await _repository.Entry.CreateEntry(request);
 
-                if (id == -1)
+                switch (id)
                 {
-                    return Problem($"Table {nameof(HabitusDbContext.Entries)} is null.");
+                    case 0:
+                        return Problem("Failed to create entry");
+                    case -1:
+                        return Problem($"Table {nameof(HabitusDbContext.Entries)} is null.");
+                    case -2:
+                        return BadRequest($"Entry already exists for habit {request.HabitId} on {request.Date.Date}.");
+                    case -3:
+                        return BadRequest($"Habit {request.HabitId} does not exist.");
+                    default:
+                        return CreatedAtAction(nameof(Get), new { id = id });
                 }
-
-                return CreatedAtAction(nameof(Get), new { id = id });
             }
             catch (Exception ex)
             {
@@ -87,7 +93,7 @@ namespace habitus.api.Controllers
         {
             try
             {
-                bool response = await _repository.Entry.Delete(id);
+                bool response = await _repository.Entry.DeleteEntry(id);
 
                 if (!response)
                 {

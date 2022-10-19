@@ -11,12 +11,10 @@ namespace habitus.api.Controllers
     public class HabitsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
-        private readonly IMapper _mapper;
 
-        public HabitsController(IRepositoryManager repository, IMapper mapper)
+        public HabitsController(IRepositoryManager repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         // GET: api/Habits
@@ -25,14 +23,14 @@ namespace habitus.api.Controllers
         {
             try
             {
-                var habits = await _repository.Habit.FindAllHabits(false);
+                IEnumerable<HabitResponse> habits = await _repository.Habit.FindAllHabits(false);
 
                 if (habits == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(_mapper.Map<IEnumerable<HabitResponse>>(habits));
+                return Ok(habits);
             }
             catch (Exception ex)
             {
@@ -45,14 +43,14 @@ namespace habitus.api.Controllers
         {
             try
             {
-                var habit = await _repository.Habit.FindById(id, false);
+                var habit = await _repository.Habit.Find(id);
 
                 if (habit == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(_mapper.Map<HabitResponse>(habit));
+                return Ok(habit);
             }
             catch (Exception ex)
             {
@@ -62,11 +60,11 @@ namespace habitus.api.Controllers
 
         // TODO look up what is the REST way of naming filtered endpoints
         [HttpGet("filter")]
-        public async Task<ActionResult<IEnumerable<HabitResponse>>> Get([FromQuery] HabitEntriesFilter filter)
+        public async Task<ActionResult<IEnumerable<HabitResponse>>> GetFiltered([FromQuery] HabitEntriesFilter filter)
         {
             if (filter.EndDate is null) filter.EndDate = filter.StartDate;
             if (filter.StartDate > filter.EndDate) return BadRequest("Start date must be before end date");
-            
+
             try
             {
                 var habits = await _repository.Habit.FindAllAndFilterEntriesByDate(filter.StartDate, filter.EndDate.Value);
@@ -76,7 +74,7 @@ namespace habitus.api.Controllers
                     return NotFound();
                 }
 
-                return Ok(_mapper.Map<IEnumerable<HabitResponse>>(habits));
+                return Ok(habits);
             }
             catch (Exception ex)
             {
@@ -86,18 +84,21 @@ namespace habitus.api.Controllers
 
         // POST: api/Habits
         [HttpPost]
-        public IActionResult Post(CreateHabitRequest request)
+        public async Task<IActionResult> Post(CreateHabitRequest request)
         {
             try
             {
-                int id = _repository.Habit.Create(_mapper.Map<Habit>(request));
+                int id = await _repository.Habit.CreateHabit(request);
 
-                if (id == -1)
+                switch (id)
                 {
-                    return Problem($"Table {nameof(HabitusDbContext.Habits)} is null.");
+                    case 0:
+                        return Problem("Failed to create habit");
+                    case -1:
+                        return Problem($"Table {nameof(HabitusDbContext.Habits)} is null.");
+                    default:
+                        return CreatedAtAction(nameof(Get), new { id = id });
                 }
-
-                return CreatedAtAction(nameof(Get), new { id = id });
             }
             catch (Exception ex)
             {
@@ -110,7 +111,7 @@ namespace habitus.api.Controllers
         {
             try
             {
-                bool response = await _repository.Habit.Delete(id);
+                bool response = await _repository.Habit.DeleteHabit(id);
 
                 if (!response)
                 {
@@ -133,7 +134,7 @@ namespace habitus.api.Controllers
 
             try
             {
-                bool response = await _repository.Habit.Update(_mapper.Map<Habit>(request));
+                bool response = await _repository.Habit.UpdateHabit(request);
 
                 if (!response)
                 {
@@ -142,7 +143,7 @@ namespace habitus.api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (_repository.Habit.FindById(id, false) == null)
+                if (_repository.Habit.Find(id) == null)
                 {
                     return NotFound();
                 }

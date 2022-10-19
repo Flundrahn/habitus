@@ -4,14 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using habitus.api.Data;
 
 #nullable disable
 
 namespace habitus.api.Migrations
 {
-    [DbContext(typeof(AppContext))]
-    [Migration("20221011220309_ChangeTableNames")]
-    partial class ChangeTableNames
+    [DbContext(typeof(HabitusDbContext))]
+    [Migration("20221019200718_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,50 @@ namespace habitus.api.Migrations
                     b.HasIndex("HabitId");
 
                     b.ToTable("Entries");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 10,
+                            Date = new DateTime(2022, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HabitId = 1
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Date = new DateTime(2022, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HabitId = 1
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Date = new DateTime(2022, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HabitId = 1
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Date = new DateTime(2022, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HabitId = 2
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Date = new DateTime(2022, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HabitId = 2
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Date = new DateTime(2022, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HabitId = 2
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Date = new DateTime(2022, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HabitId = 2
+                        });
                 });
 
             modelBuilder.Entity("habitus.api.Models.Habit", b =>
@@ -48,7 +93,6 @@ namespace habitus.api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Goal")

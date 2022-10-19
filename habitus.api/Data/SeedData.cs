@@ -39,7 +39,7 @@ internal static class SeedData
 
     internal static Entry[] Entries()
     {
-        var id = 10;
+        var id = 1;
 
         return new Entry[] {
             new Entry { Id = id++, HabitId = 1, Date = new DateTime(2022, 10, 11) },

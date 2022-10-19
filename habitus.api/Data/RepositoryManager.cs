@@ -5,17 +5,14 @@ namespace habitus.api.Data;
 public class RepositoryManager : IRepositoryManager
 {
     private HabitusDbContext _context;
-    private IMapper _mapper;
     private IHabitRepository? _habitRepository;
     private IEntryRepository? _entryRepository;
 
-    public RepositoryManager(HabitusDbContext context, IMapper mapper)
+    public RepositoryManager(HabitusDbContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
-    // NOTE we create properties for each repository to expose the concrete repos, and we a repository if it doesn't exist
     public IHabitRepository Habit
     {
         get

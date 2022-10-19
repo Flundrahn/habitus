@@ -21,7 +21,7 @@ namespace habitus.api.Controllers
 
         // GET: api/Habits
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Habit>>> Get()
+        public async Task<ActionResult<IEnumerable<HabitResponse>>> Get()
         {
             try
             {
@@ -32,7 +32,7 @@ namespace habitus.api.Controllers
                     return NotFound();
                 }
 
-                return Ok(habits);
+                return Ok(_mapper.Map<IEnumerable<HabitResponse>>(habits));
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace habitus.api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Habit>>> Get(int id)
+        public async Task<ActionResult<IEnumerable<HabitResponse>>> Get(int id)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace habitus.api.Controllers
                     return NotFound();
                 }
 
-                return Ok(habit);
+                return Ok(_mapper.Map<HabitResponse>(habit));
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace habitus.api.Controllers
 
         // TODO look up what is the REST way of naming filtered endpoints
         [HttpGet("filter")]
-        public async Task<ActionResult<IEnumerable<Habit>>> Get([FromQuery] HabitFilter filter)
+        public async Task<ActionResult<IEnumerable<HabitResponse>>> Get([FromQuery] HabitEntriesFilter filter)
         {
             if (filter.EndDate is null) filter.EndDate = filter.StartDate;
             if (filter.StartDate > filter.EndDate) return BadRequest("Start date must be before end date");
@@ -76,7 +76,7 @@ namespace habitus.api.Controllers
                     return NotFound();
                 }
 
-                return Ok(habits);
+                return Ok(_mapper.Map<IEnumerable<HabitResponse>>(habits));
             }
             catch (Exception ex)
             {
@@ -86,7 +86,7 @@ namespace habitus.api.Controllers
 
         // POST: api/Habits
         [HttpPost]
-        public ActionResult<Habit> Post(CreateHabitRequest request)
+        public IActionResult Post(CreateHabitRequest request)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace habitus.api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<IEnumerable<Habit>>> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {

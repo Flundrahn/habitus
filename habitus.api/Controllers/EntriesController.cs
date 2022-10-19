@@ -20,7 +20,7 @@ namespace habitus.api.Controllers
 
         // GET: api/Entries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Entry>>> Get()
+        public async Task<ActionResult<IEnumerable<EntryResponse>>> Get()
         {
             try
             {
@@ -31,7 +31,7 @@ namespace habitus.api.Controllers
                     return NotFound();
                 }
 
-                return Ok(entries);
+                return Ok(_mapper.Map<IEnumerable<EntryResponse>>(entries));
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace habitus.api.Controllers
 
         // GET: api/Entries/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Entry>>> Get(int id)
+        public async Task<ActionResult<IEnumerable<EntryResponse>>> Get(int id)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace habitus.api.Controllers
                     return NotFound();
                 }
 
-                return Ok(entry);
+                return Ok(_mapper.Map<EntryResponse>(entry));
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace habitus.api.Controllers
 
         // POST: api/Entries
         [HttpPost]
-        public ActionResult<Entry> Post(CreateEntryRequest request)
+        public IActionResult Post(CreateEntryRequest request)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace habitus.api.Controllers
 
         // DELETE: api/Entries/1
         [HttpDelete("{id}")]
-        public async Task<ActionResult<IEnumerable<Entry>>> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {

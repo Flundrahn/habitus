@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-public class HabitFilter
+public class HabitEntriesFilter
 {
     [Required]
     public DateTime StartDate { get; set; }

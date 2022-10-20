@@ -5,9 +5,10 @@ export interface IWeek {
 }
 
 export interface IEntry {
-	id: number;
+	id?: number;
 	habitId: number; // NOTE May remove this later if not needed
 	date: Date;
+	isCompleted: boolean;
 }
 
 export interface IHabit {
@@ -15,5 +16,10 @@ export interface IHabit {
 	title: string;
 	goal: number;
 	color: string;
-	entries?: IEntry[]; // NOTE Confirm the nullable property work as expected
+	description?: string;
+	entries: IEntry[]; // NOTE If there are no entries the api returns an empty array
+}
+
+export interface IPostResponse {
+	id: number;
 }

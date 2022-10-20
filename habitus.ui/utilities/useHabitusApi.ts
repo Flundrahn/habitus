@@ -7,53 +7,91 @@ import produce from 'immer';
 const fetcher = (url: string) => axios.get(url).then(response => response.data);
 
 const poster = async (uri: string, newEntity: IEntry | IHabit) => {
-  const { data } = await axios.post<IPostResponse>(`${API_BASE_URL}/${uri}`, newEntity);
+  const response = await axios.post<IPostResponse>(`${API_BASE_URL}/${uri}`, newEntity);
+
+  if (response.status > 299) {
+    throw new Error("Something went wrong while posting entity to API");
+  }
   
-  return data.id;
+  return response.data.id;
 }; 
 
-// const deleter = async (url: string) => await axios.delete(url).then(response => response.data);
+const deleter = async (uri: string, id: number) => {
+  const response = await axios.delete(`${API_BASE_URL}/${uri}/${id}`);
+
+  if (response.status > 299) {
+    throw new Error('Something went wrong while deleting entity from API');
+  }
+};
 
 // TODO Validate that default endDate value is working
-export default function useHabitusApi(startDate: string, endDate: string = startDate) {
-  const fetchUri = `habits/filter?startDate=${startDate}&endDate=${endDate}`;
+export default function useHabitusApi(startDate: Date, endDate: Date = startDate) {
+  const fetchUri = `habits/filter?startDate=${startDate.toDateString()}&endDate=${endDate.toDateString()}`;
   
   const { data, mutate, error } = useSWR(`${API_BASE_URL}/${fetchUri}`, fetcher);
 
-  // TODO may have to handle errors here
   const postEntry = async (entry: IEntry) => {
-    mutate(async () => {
-
-      const id = await poster("entries", entry);
-      const newEntry: IEntry = { ...entry, id };
-      
-      const updatedHabits = produce(data, (draft: IHabit[]) => {
-        const habitIndex = draft.findIndex(h => h.id === entry.habitId);
-        const entryIndex = draft[habitIndex].entries.findIndex(e => e.id === entry.id);
-
-        if (entryIndex !== -1 && habitIndex !== -1) {
-          draft[habitIndex].entries[entryIndex] = newEntry;
-        }
-        else {
-          throw new Error("Entry not found among local habits");
-        }
-      });
+    try {
+      mutate(async () => {
+        const id = await poster("entries", entry);
+        const newEntry: IEntry = { ...entry, id };
         
-      return updatedHabits;
-    });
+        const updatedHabits = produce(data, (draft: IHabit[]) => {
+          const habitIndex = draft.findIndex(h => h.id === entry.habitId);
+          const entryIndex = draft[habitIndex].entries.findIndex(e => e.id === entry.id);
+  
+          if (entryIndex !== -1 && habitIndex !== -1) {
+            draft[habitIndex].entries[entryIndex] = newEntry;
+          } else {
+            throw new Error("Entry not found among local habits");
+          }
+        });
+        
+        return updatedHabits;
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  const deleteEntry = async (entry: IEntry) => {
+    if (!entry.id) {
+      console.error("Entry does not have an id");
+    } else {
+      try {
+        mutate(async () => {
+          await deleter("entries", entry.id!);
+  
+          const updatedHabits = produce(data, (draft: IHabit[]) => {
+            const habitIndex = draft.findIndex(h => h.id === entry.habitId);
+            const entryIndex = draft[habitIndex].entries.findIndex(e => e.id === entry.id);
     
+            if (entryIndex !== -1 && habitIndex !== -1) {
+              draft[habitIndex].entries[entryIndex].id = 0;
+              draft[habitIndex].entries[entryIndex].isCompleted = false;
+            }
+            else {
+              console.error("Entry not found among local habits");
+            }
+          });
+  
+          return updatedHabits;
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
-  // updates the local data immediately
-  // send a request to update the data
-  // triggers a revalidation (refetch) to make sure our local data is correct
-  // mutate('/api/user', updateFn(user), options);
-
-  // mutate(key, user => ({ ...user, name: "Sergio" }))
-
-  return { data, error, postEntry };
+  return { data, error, postEntry, deleteEntry };
 }
+
+// updates the local data immediately
+// send a request to update the data
+// triggers a revalidation (refetch) to make sure our local data is correct
+// mutate('/api/user', updateFn(user), options);
+
+// mutate(key, user => ({ ...user, name: "Sergio" }))
 
 // Produce recipe function does not have to return, the call to produce will return draft item anyway!
 // const nextState = produce(baseState, draftState => {

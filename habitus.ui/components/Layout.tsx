@@ -22,7 +22,7 @@ interface IProps {
 
 const links: ILink[] = [
   { href: '/', label: 'Today' },
-  { href: '/weeks/1', label: 'Week' },
+  { href: '/week', label: 'Week' },
   { href: '/edit', label: 'Edit' },
 ];
 
@@ -38,7 +38,7 @@ const Layout = ({ children, title = 'Habitus' }: IProps) => (
         {links.map(({ href, label }) => (<LinkButton href={href} label={label} key={label} />))}
       </nav>
     </header>
-    <main className="p-4">
+    <main className="p-4 flex flex-col items-center">
       {children}
     </main>
     <footer>

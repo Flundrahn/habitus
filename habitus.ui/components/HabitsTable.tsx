@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { IEntry, IHabit } from '../utilities/interfaces';
 import useHabitusApi from '../utilities/useHabitusApi';
@@ -30,8 +30,6 @@ function EntryCell ({
   postEntry: (entry: IEntry) => Promise<void>, 
   deleteEntry: (entry: IEntry) => Promise<void>
 }) {
-  // const [entryState, setEntryState] = useState(entry);
-  
   // console.log("Rendering EntryCell");
 
   function handleClick() {
@@ -45,7 +43,7 @@ function EntryCell ({
   }
   
   return (
-    <td className={`pl-2 pr-2 text-center ${entry.isCompleted ? "bg-green-400" : "bg-red-300 text-transparent"}`}>
+    <td className={`pl-2 pr-2 text-center ${entry.isCompleted ? "bg-green-400" : "bg-red-300 text-transparent"} `}>
       <button className="h-full w-full" onClick={handleClick}>x</button>
     </td>
   );
@@ -63,7 +61,7 @@ function Row({
   // console.log("Rendering Row");
   
   return ( 
-    <tr className="table-row">
+    <tr className="table-row ">
       <DataCell data={habit.title} />
       {React.Children.toArray(habit.entries.map(entry => (
         <EntryCell entry={entry} postEntry={postEntry} deleteEntry={deleteEntry} />
@@ -74,49 +72,44 @@ function Row({
   );
 }
 
-export default function HabitsTable ( { startDate, endDate = startDate }: { startDate: Date, endDate?: Date } ) {
-  // console.log("HabitsTable re-rendered");
+function CreateButton() {
+  const [showButton, setShowButton] = useState(true);
+  
+  const handleClick = () => {
+    console.log("hello from create button");
+  };
 
+  return ( 
+    <button className="h-8 w-full bg-gray-400 border-solid border-2 border-gray-600" onClick={handleClick}>
+      <i className="fa-solid fa-plus"></i>    
+    </button>
+  );
+}
+
+export default function HabitsTable ( { startDate, endDate = startDate }: { startDate: Date, endDate?: Date } ) {
   const { data, error, postEntry, deleteEntry } = useHabitusApi(startDate, endDate);
+
+  // console.log("HabitsTable re-rendered");
   
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
+  
+  const dateLabels: string[] = data[0].entries.map(e => (format(new Date(e.date), 'EEE do')));
 
   return (
-    <table className="table-auto">
-      <Header labels={["Habit", format(startDate, 'EEE do'), "Goal", "Description"]} />
+    <table className="table-auto ">
+      <Header labels={["Habit", ...dateLabels , "Goal", "Description"]} />
       <tbody>
         {data.map((habit: IHabit) => (
           <Row habit={habit} key={habit.id} postEntry={postEntry} deleteEntry={deleteEntry} />
         ))}
       </tbody>
+      <tfoot>
+        <tr>
+          <td className="" colSpan={100}>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   );
-}
-
-{/* <thead>
-        <tr className="table-row">
-          <th className="pl-2 pr-2 text-left">Habit</th>
-          <th className="pl-2 pr-2 text-left">
-            <time dateTime={date}>
-              {format(new Date(date), 'LLLL d')}
-            </time>
-          </th>
-          <th className="pl-2 pr-2 text-left">Weekly Goal</th>
-          <th className="pl-2 pr-2 text-left">Note</th>
-        </tr>
-      </thead>
-      <tbody>
-        {habits.map(habit => (
-          <tr key={habit.id}>
-            <td className="pl-2 pr-2">
-              {habit.title}
-            </td>
-            <td className={`pl-2 pr-2 text-center ${(habit.entries && habit.entries.length > 0) ? "bg-green-400" : "bg-red-300 text-transparent"}`}>
-              <button className="h-full w-full" onClick={() => handleClick(habit)}>x</button>
-            </td>
-            <td className="pl-2 pr-2 text-center">{habit.goal}</td>
-          </tr>
-        ))}
-      </tbody> */
 }

@@ -3,9 +3,7 @@ import HabitsTable from '../components/HabitsTable';
 
 export default function IndexPage () {
   const todaysDate = new Date();
-  todaysDate.setHours(0, 0, 0, 0);
 
-  // NOTE what if refactor, allow HabitsTable to manage its own state, would only pass desired dates
   return (
     <HabitsTable startDate={todaysDate} />
   );

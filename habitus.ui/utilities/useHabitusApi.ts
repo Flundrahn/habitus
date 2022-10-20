@@ -28,7 +28,7 @@ const deleter = async (uri: string, id: number) => {
 export default function useHabitusApi(startDate: Date, endDate: Date = startDate) {
   const fetchUri = `habits/filter?startDate=${startDate.toDateString()}&endDate=${endDate.toDateString()}`;
   
-  const { data, mutate, error } = useSWR(`${API_BASE_URL}/${fetchUri}`, fetcher);
+  const { data, mutate, error } = useSWR<IHabit[]>(`${API_BASE_URL}/${fetchUri}`, fetcher);
 
   const postEntry = async (entry: IEntry) => {
     try {

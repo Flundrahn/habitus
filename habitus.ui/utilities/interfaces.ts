@@ -1,5 +1,5 @@
 export interface IEntry {
-	id?: number;
+	id: number;
 	habitId: number;
 	date: Date;
 	isCompleted: boolean;

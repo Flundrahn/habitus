@@ -15,13 +15,6 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
         _context = context;
     }
 
-    // NOTE Do not know how trackChanges works.
-    // This is a comment from Ultimate ASP.NET:
-    // " Moreover, we can see the trackChanges parameter. We are going to use
-    // it to improve our read-only query performance. When it’s set to false, we
-    // attach the AsNoTracking method to our query to inform EF Core that it
-    // doesn’t need to track changes for the required entities. This greatly
-    // improves the speed of a query. "
     public IQueryable<T> FindAll(bool trackChanges)
     {
         return trackChanges ?
@@ -42,11 +35,6 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
             : _context.Set<T>().Where(expression).AsNoTracking();
     }
 
-
-    // NOTE "The Create and Delete method signatures are left synchronous. That’s
-    // because, in these methods, we are not making any changes in the
-    // database. All we're doing is changing the state of the entity to Added and
-    // Deleted"
     public async Task<int> Create(T entity)
     {
         if (!TableExists()) return -1;
@@ -84,10 +72,6 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
         return true;
     }
 
-    // TODO Use these to help error handling later
     public bool TableExists() => (_context.Set<T>() != null);
     public bool EntityExists(int id) => (_context.Set<T>().Find(id) != null);
 }
-
-// NOTE We don't save the changes in the database here, but will instead do it in a
-// repository manager, it will also handle combining the multiple repos for mixed entity type responses

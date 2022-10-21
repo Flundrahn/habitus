@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useMemo } from 'react';
 import HabitsTable from '../components/HabitsTable';
 
 export default function IndexPage () {
-  const todaysDate = new Date();
+  const todaysDate = useMemo(() => new Date(), []);
+  // console.log("IndexPage re-rendered");
 
   return (
     <HabitsTable startDate={todaysDate} />

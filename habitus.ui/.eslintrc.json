@@ -25,6 +25,12 @@
     "jsx-quotes": [
       "error",
       "prefer-double"
+    ],
+    "react-hooks/exhaustive-deps": "off",
+    "no-trailing-spaces": "error",
+    "comma-dangle": [
+      "error",
+      "always-multiline"
     ]
   }
 }

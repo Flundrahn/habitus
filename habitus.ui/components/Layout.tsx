@@ -38,7 +38,7 @@ const Layout = ({ children, title = 'Habitus' }: IProps) => (
         {links.map(({ href, label }) => (<LinkButton href={href} label={label} key={label} />))}
       </nav>
     </header>
-    <main className="p-4 flex flex-col items-center">
+    <main className="p-4 flex flex-col items-center gap-1">
       {children}
     </main>
     <footer>

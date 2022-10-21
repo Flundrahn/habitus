@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { format } from 'date-fns';
 import { IEntry, IHabit } from '../utilities/interfaces';
 import useHabitusApi from '../utilities/useHabitusApi';
+import CreateHabit from './CreateHabit';
 
 function Header({ labels } : {labels: string[]}) {
-  return ( 
+  return (
     <thead>
       <tr>
         {React.Children.toArray(labels.map(label => (
@@ -15,19 +16,20 @@ function Header({ labels } : {labels: string[]}) {
   );
 }
 
-function DataCell ({ data }: {data: string | number}) {
+function DataCell({ data }:{data: string | number}) {
+  // console.log("Rendering DataCell");
   return (
     <td className="table-cell pl-2 pr-2">{data}</td>
   );
 }
 
-function EntryCell ({ 
+function EntryCell ({
   entry,
   postEntry,
-  deleteEntry 
-}: { 
+  deleteEntry,
+}: {
   entry: IEntry,
-  postEntry: (entry: IEntry) => Promise<void>, 
+  postEntry: (entry: IEntry) => Promise<void>,
   deleteEntry: (entry: IEntry) => Promise<void>
 }) {
   // console.log("Rendering EntryCell");
@@ -41,7 +43,7 @@ function EntryCell ({
       postEntry(updatedEntry);
     }
   }
-  
+
   return (
     <td className={`pl-2 pr-2 text-center ${entry.isCompleted ? "bg-green-400" : "bg-red-300 text-transparent"} `}>
       <button className="h-full w-full" onClick={handleClick}>x</button>
@@ -52,15 +54,15 @@ function EntryCell ({
 function Row({
   habit,
   postEntry,
-  deleteEntry
+  deleteEntry,
 } : {
-  habit: IHabit, 
+  habit: IHabit,
   postEntry: (entry: IEntry) => Promise<void>
   deleteEntry: (entry: IEntry) => Promise<void>
 }) {
   // console.log("Rendering Row");
-  
-  return ( 
+
+  return (
     <tr className="table-row ">
       <DataCell data={habit.title} />
       {React.Children.toArray(habit.entries.map(entry => (
@@ -72,44 +74,27 @@ function Row({
   );
 }
 
-function CreateButton() {
-  const [showButton, setShowButton] = useState(true);
-  
-  const handleClick = () => {
-    console.log("hello from create button");
-  };
-
-  return ( 
-    <button className="h-8 w-full bg-gray-400 border-solid border-2 border-gray-600" onClick={handleClick}>
-      <i className="fa-solid fa-plus"></i>    
-    </button>
-  );
-}
-
 export default function HabitsTable ( { startDate, endDate = startDate }: { startDate: Date, endDate?: Date } ) {
-  const { data, error, postEntry, deleteEntry } = useHabitusApi(startDate, endDate);
+  const { data, error, postEntry, deleteEntry, postHabit } = useHabitusApi(startDate, endDate);
 
   // console.log("HabitsTable re-rendered");
-  
+
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
-  
+
   const dateLabels: string[] = data[0].entries.map(e => (format(new Date(e.date), 'EEE do')));
 
   return (
-    <table className="table-auto ">
-      <Header labels={["Habit", ...dateLabels , "Goal", "Description"]} />
-      <tbody>
-        {data.map((habit: IHabit) => (
-          <Row habit={habit} key={habit.id} postEntry={postEntry} deleteEntry={deleteEntry} />
-        ))}
-      </tbody>
-      <tfoot>
-        <tr>
-          <td className="" colSpan={100}>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
+    <>
+      <table className="table-auto ">
+        <Header labels={["Habit", ...dateLabels, "Goal", "Description"]} />
+        <tbody>
+          {data.map((habit: IHabit) => (
+            <Row habit={habit} key={habit.id} postEntry={postEntry} deleteEntry={deleteEntry} />
+          ))}
+        </tbody>
+      </table>
+      <CreateHabit postHabit={postHabit}/>
+    </>
   );
 }

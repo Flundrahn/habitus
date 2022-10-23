@@ -31,6 +31,13 @@
     "comma-dangle": [
       "error",
       "always-multiline"
+    ],
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": true,
+        "html": true
+      }
     ]
   }
 }

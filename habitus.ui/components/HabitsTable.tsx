@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { IEntry, IHabit } from '../utilities/interfaces';
 import useHabitusApi from '../utilities/useHabitusApi';
-import CreateHabit from './CreateHabit';
+import HabitForm from './HabitForm';
 
 function Header({ labels } : {labels: string[]}) {
   return (
@@ -63,7 +63,7 @@ function Row({
   // console.log("Rendering Row");
 
   return (
-    <tr className="table-row ">
+    <tr className="table-row hover:bg-blue-200">
       <DataCell data={habit.title} />
       {React.Children.toArray(habit.entries.map(entry => (
         <EntryCell entry={entry} postEntry={postEntry} deleteEntry={deleteEntry} />
@@ -74,8 +74,10 @@ function Row({
   );
 }
 
+
 export default function HabitsTable ( { startDate, endDate = startDate }: { startDate: Date, endDate?: Date } ) {
   const { data, error, postEntry, deleteEntry, postHabit } = useHabitusApi(startDate, endDate);
+  const [showForm, setShowForm] = useState(false);
 
   // console.log("HabitsTable re-rendered");
 
@@ -83,10 +85,14 @@ export default function HabitsTable ( { startDate, endDate = startDate }: { star
   if (!data) return <div>Loading...</div>;
 
   const dateLabels: string[] = data[0].entries.map(e => (format(new Date(e.date), 'EEE do')));
+  const addButton = <div className="h-6 w-6 ml-2 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full">
+    <i className="fa-solid fa-plus" />
+  </div>;
 
   return (
+    // <div className="flex flex-col items-center">
     <>
-      <table className="table-auto ">
+      <table className="table-auto m-4">
         <Header labels={["Habit", ...dateLabels, "Goal", "Description"]} />
         <tbody>
           {data.map((habit: IHabit) => (
@@ -94,7 +100,11 @@ export default function HabitsTable ( { startDate, endDate = startDate }: { star
           ))}
         </tbody>
       </table>
-      <CreateHabit postHabit={postHabit}/>
+      {showForm
+        ? <HabitForm title="Add a new habit" apiAction={postHabit} button={addButton} setShowForm={setShowForm}/>
+        : <button onClick={() => setShowForm(true)}>{addButton}</button>
+      }
     </>
+    // </div>
   );
 }

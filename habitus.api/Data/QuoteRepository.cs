@@ -1,0 +1,26 @@
+using AutoMapper;
+using habitus.api.Models;
+
+namespace habitus.api.Data;
+
+public class QuoteRepository : IQuoteRepository
+{
+private readonly IMapper _mapper;
+
+    public QuoteRepository(IMapper mapper)
+    {
+        _mapper = mapper;
+    }
+    
+    // public async Task<QuoteResponse?> GetRandomQuote()
+    public QuoteResponse? GetRandomQuote()
+    {
+        var quotes = SeedData.Quotes();
+        // var quotes = await SeedData.Quotes();
+
+        if (quotes == null) return null;
+
+        return _mapper.Map<QuoteResponse>(quotes[new Random().Next(0, quotes.Length)]);
+    }   
+
+}

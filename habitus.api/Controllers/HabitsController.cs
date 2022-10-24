@@ -1,4 +1,3 @@
-using AutoMapper;
 using habitus.api.Data;
 using habitus.api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,7 @@ namespace habitus.api.Controllers
         {
             try
             {
-                IEnumerable<HabitResponse> habits = await _repository.Habit.FindAllHabits(false);
+                IEnumerable<HabitResponse> habits = await _repository.Habit.FindAllHabits();
 
                 if (habits == null)
                 {

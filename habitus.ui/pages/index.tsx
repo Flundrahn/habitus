@@ -1,13 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import axios from 'axios';
 import { useMemo } from 'react';
+import useSWR from 'swr';
 import HabitsTable from '../components/HabitsTable';
+import { IQuote } from '../utilities/interfaces';
+import API__BASE_URL from '../utilities/constants';
 
-export default function IndexPage () {
+export default function IndexPage() {
   const todaysDate = useMemo(() => new Date(), []);
+
+  const fetcher = (url: string) =>
+    axios.get(url).then(response => response.data);
+  const { data, error } = useSWR<IQuote>(`${API__BASE_URL}/quotes`, fetcher);
+
   // console.log("IndexPage re-rendered");
 
+  let quoteDiv: JSX.Element;
+  if (error) {
+    quoteDiv = <div>Failed to load</div>;
+  } else if (!data) {
+    quoteDiv = <div>Loading...</div>;
+  } else {
+    quoteDiv = (
+      <>
+        <div className="text-sm max-w-md">&ldquo;{`${data.quoteText}`}&#8221;</div>
+        <div className="text-sm">{` - ${data.philosopher}`}</div>
+      </>
+    );
+  }
+
   return (
-    <HabitsTable startDate={todaysDate} />
+    <>
+      {quoteDiv}
+      <HabitsTable startDate={todaysDate} />
+    </>
   );
 }
 

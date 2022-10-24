@@ -14,6 +14,8 @@ public class Mapper : Profile
             .ForMember(d => d.Score, entry => entry.MapFrom(s => s.Entries.Count));
         CreateMap<Entry, EntryResponse>()
             .ForMember(d => d.IsCompleted, o => o.MapFrom(s => true));
+        CreateMap<Quote, QuoteResponse>();
+
 
         // .ForMember(dto => dto.Grades, x => x.MapFrom(p => p.Outcomes.SelectMany(o => o.Grades)));
     }

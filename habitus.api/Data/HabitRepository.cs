@@ -19,9 +19,9 @@ public class HabitRepository : RepositoryBase<Habit>, IHabitRepository
         return _mapper.Map<HabitResponse>(habit);
     }
 
-    public async Task<IEnumerable<HabitResponse>> FindAllHabits(bool trackChanges)
+    public async Task<IEnumerable<HabitResponse>> FindAllHabits()
     {
-        var habits = await FindAll(trackChanges).ToArrayAsync();
+        var habits = await FindAll(false).ToArrayAsync();
 
         return _mapper.Map<IEnumerable<HabitResponse>>(habits);
     }

@@ -7,6 +7,7 @@ public class RepositoryManager : IRepositoryManager
     private HabitusDbContext _context;
     private IHabitRepository? _habitRepository;
     private IEntryRepository? _entryRepository;
+    private IQuoteRepository? _quoteRepository;
     private IMapper _mapper;
 
     public RepositoryManager(HabitusDbContext context, IMapper mapper)
@@ -38,6 +39,19 @@ public class RepositoryManager : IRepositoryManager
             }
 
             return _entryRepository;
+        }
+    }
+
+    public IQuoteRepository Quote
+    {
+        get
+        {
+            if (_quoteRepository == null)
+            {
+                _quoteRepository = new QuoteRepository(_mapper);
+            }
+
+            return _quoteRepository;
         }
     }
 }

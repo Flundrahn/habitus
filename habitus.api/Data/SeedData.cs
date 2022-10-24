@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using habitus.api.Models;
 
 namespace habitus.api.Data;
@@ -50,5 +51,17 @@ internal static class SeedData
             new Entry { Id = id++, HabitId = 2, Date = new DateTime(2022, 10, 14) },
             new Entry { Id = id++, HabitId = 2, Date = new DateTime(2022, 10, 15) },
         };
+    }
+
+    internal static Quote[]? Quotes()
+    {
+        var fileName = "Database/stoic-quotes.json";
+        string filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+        using FileStream openStream = File.OpenRead(filePath);
+        using var streamReader = new StreamReader(openStream);
+        using var jsonReader = new JsonTextReader(streamReader);
+        var serializer = new JsonSerializer();
+
+        return serializer.Deserialize<Quote[]>(jsonReader);
     }
 }

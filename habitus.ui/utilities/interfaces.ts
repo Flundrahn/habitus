@@ -18,3 +18,9 @@ export interface IHabit {
 export interface IPostResponse {
   id: number;
 }
+
+export interface IQuote {
+  id: number;
+  quoteText: string;
+  philosopher: string;
+}

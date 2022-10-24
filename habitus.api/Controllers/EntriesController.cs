@@ -10,7 +10,6 @@ namespace habitus.api.Controllers
     public class EntriesController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
-        private readonly IMapper _mapper;
 
         public EntriesController(IRepositoryManager repository)
         {
@@ -51,7 +50,7 @@ namespace habitus.api.Controllers
                     return NotFound();
                 }
 
-                return Ok(_mapper.Map<EntryResponse>(entry));
+                return Ok(entry);
             }
             catch (Exception ex)
             {

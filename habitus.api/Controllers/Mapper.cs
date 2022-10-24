@@ -10,8 +10,8 @@ public class Mapper : Profile
         CreateMap<CreateHabitRequest, Habit>();
         CreateMap<UpdateHabitRequest, Habit>();
         CreateMap<CreateEntryRequest, Entry>();
-        CreateMap<Habit, HabitResponse>();
-            // .ForMember(dto => dto.Entries, entry => entry.MapFrom(habit => habit.Entries));
+        CreateMap<Habit, HabitResponse>()
+            .ForMember(d => d.Score, entry => entry.MapFrom(s => s.Entries.Count));
         CreateMap<Entry, EntryResponse>()
             .ForMember(d => d.IsCompleted, o => o.MapFrom(s => true));
 

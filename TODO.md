@@ -3,11 +3,11 @@
 ## MVP
 
 1. Stoic quotes GET random
-2. Show current score for each habit
-3. Show graph
-4. Mobile first UX, managing habits need be mobile
+2. Show graph
+3. Mobile first UX, managing habits need be mobile
 
 ## Done
+4. Show current score for each habit
 5. Update Habit
 6. Delete Habit button
 7. Edit Component v1

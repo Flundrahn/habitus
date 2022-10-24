@@ -1,37 +1,11 @@
 {
   "extends": [
-    // "eslint:recommended",
     "next/core-web-vitals",
-    // "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier" // Add "prettier" last. This will turn off eslint rules conflicting with prettier. This is not what will format our code.
   ],
   "rules": {
-    "semi": [
-      "error",
-      "always"
-    ],
-    "indent": [
-      "error",
-      2
-    ],
-    "object-curly-spacing": [
-      "error",
-      "always"
-    ],
-    "arrow-parens": [
-      "error",
-      "as-needed"
-    ],
-    "jsx-quotes": [
-      "error",
-      "prefer-double"
-    ],
-    "react-hooks/exhaustive-deps": "off",
-    "no-trailing-spaces": "error",
-    "comma-dangle": [
-      "error",
-      "always-multiline"
-    ],
+    "prefer-template": "error",
     "react/self-closing-comp": [
       "error",
       {

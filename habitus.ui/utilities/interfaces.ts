@@ -9,7 +9,7 @@ export interface IHabit {
   id: number;
   title: string;
   goal: number;
-  score: number;
+  score?: number;
   color: string;
   description?: string;
   entries: IEntry[];

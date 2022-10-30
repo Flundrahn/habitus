@@ -81,7 +81,7 @@ function Row({
           />
         ))
       )}
-      <DataCell data={habit.score} />
+      <DataCell data={habit.score || 0} />
       <DataCell data={habit.goal} />
       <DataCell data={habit.description || ''} />
     </tr>

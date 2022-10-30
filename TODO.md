@@ -7,22 +7,23 @@
 
 ## Done
 
-1.  Show graph
-2.  Stoic quotes GET random
-3.  Show current score for each habit
-4.  Update Habit
-5.  Delete Habit button
-6.  Edit Component v1
-7.  Convert to formik and yup.
-8.  Week, each day with done and unfinished habits
-    - View of weekly result
-9.  Create new Habit button
-10. Week Component v1
-11. Finish the table component
-12. Convert repos to all implement their own methods, which also converts to and from DTO
-13. Create entries that contains adds empty entries for non-existing days and boolean
-14. Convert responses to use DTO
-15. Create endpoints
+1. Add toast message on update habit
+1. Show graph
+1. Stoic quotes GET random
+1. Show current score for each habit
+1. Update Habit
+1. Delete Habit button
+1. Edit Component v1
+1. Convert to formik and yup.
+1. Week, each day with done and unfinished habits
+   - View of weekly result
+1. Create new Habit button
+1. Week Component v1
+1. Finish the table component
+1. Convert repos to all implement their own methods, which also converts to and from DTO
+1. Create entries that contains adds empty entries for non-existing days and boolean
+1. Convert responses to use DTO
+1. Create endpoints
 
 - [x] Habit: GetAll / GetOne / Delete / Create / Update
 - [x] Entry: Delete / Create

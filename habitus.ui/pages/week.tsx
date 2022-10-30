@@ -1,7 +1,7 @@
 import React from 'react';
-import { lazy } from 'react';
-import { Suspense } from 'react';
-import ReactLoading from 'react-loading';
+// import { lazy } from 'react';
+// import { Suspense } from 'react';
+// import ReactLoading from 'react-loading';
 import HabitsTable from '../components/HabitsTable';
 import WeekChart from '../components/WeekChart';
 

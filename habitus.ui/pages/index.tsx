@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios';
 import { useMemo } from 'react';
 import useSWR from 'swr';
@@ -13,8 +12,6 @@ export default function IndexPage() {
     axios.get(url).then(response => response.data);
   const { data, error } = useSWR<IQuote>(`${API__BASE_URL}/quotes`, fetcher);
 
-  // console.log("IndexPage re-rendered");
-
   let quoteDiv: JSX.Element;
   if (error) {
     quoteDiv = <div>Failed to load</div>;
@@ -23,12 +20,13 @@ export default function IndexPage() {
   } else {
     quoteDiv = (
       <>
-        <div className="text-sm max-w-md">&ldquo;{`${data.quoteText}`}&#8221;</div>
+        <div className="text-sm max-w-md">&ldquo;{data.quoteText}&#8221;</div>
         <div className="text-sm">{` - ${data.philosopher}`}</div>
       </>
     );
   }
 
+  // console.log("IndexPage re-rendered");
   return (
     <>
       {quoteDiv}

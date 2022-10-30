@@ -48,7 +48,7 @@ function EntryCell({
   return (
     <td
       className={`pl-2 pr-2 text-center ${
-        entry.isCompleted ? 'bg-green-400' : 'bg-red-300 text-transparent'
+        entry.isCompleted ? 'bg-green-300' : 'bg-red-300 text-transparent'
       } `}
     >
       <button className="h-full w-full" onClick={handleClick}>
@@ -116,7 +116,6 @@ export default function HabitsTable({
   );
 
   return (
-    // <div className="flex flex-col items-center">
     <>
       <table className="table-auto m-4">
         <Header
@@ -144,6 +143,5 @@ export default function HabitsTable({
         <button onClick={() => setShowForm(true)}>{addButton}</button>
       )}
     </>
-    // </div>
   );
 }

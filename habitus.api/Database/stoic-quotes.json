@@ -198,5 +198,10 @@
     "id": 40,
     "quoteText": "A bad feeling is a commotion of the mind repugnant to reason, and against nature.",
     "philosopher": "Zeno"
+  },
+  {
+    "id": 41,
+    "quoteText": "For life is quite absurd,\nAnd death's the final word\nYou must always face the curtain with a bow",
+    "philosopher": "Eric Idle"
   }
 ]

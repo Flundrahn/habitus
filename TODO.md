@@ -1,9 +1,28 @@
 # TODO
 
+## NOTE before tomorrow tuesday: continue taking advice from these guides:
+
+- Example of setting up ui https://javascript.plainenglish.io/setting-up-firebase-ui-with-your-react-application-49ffa20f8168
+- Official ui docs https://firebase.google.com/docs/auth/web/firebaseui#initialize_firebaseui
+- demo examples from firebase web https://github.com/firebase/firebaseui-web/blob/master/demo/public/app.js
+
+Might be helpful:
+
+- https://blog.openreplay.com/authentication-in-react-18-using-firebase-v9/
+- https://www.freecodecamp.org/news/react-firebase-authentication-and-crud-operations/
+- https://blog.logrocket.com/user-authentication-firebase-react-apps/
+
 ## MVP
 
 1. Mobile first UX, managing habits need be mobile
-2. Style depending on achieved goal or not
+2. Style depending on achieved goal or not,
+3. Add authentication front end
+   - Add auth context
+   - Add firebase ui & login page
+4. Add authentication back end
+5. Add authorization, user & admin
+6. Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible
+7. Fix optimistic update of entries
 
 ## Done
 
@@ -43,7 +62,7 @@
 
 # Want to do
 
-- Type of habit that can take number input, like alcoholic drinks
+- Type of habit that can take number input, like number of alcoholic drinks per day, meaning would also need to set if goal is above or below.
 - Type of habits with clock, such as time to get in bed, is it possible unifying this with the number input? No, should be distinct
 - Graph for clock habits
 - Add button to close form / close on submit, what about the edit page?

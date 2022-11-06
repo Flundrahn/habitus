@@ -11,7 +11,6 @@ builder.Services.AddDbContext<HabitusDbContext>(options =>
     )
 );
 
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -24,7 +23,6 @@ builder.Services.AddSwaggerGen();
 // SINGLETON: The service is created once and shared across all requests.
 // Note memory leaks in such a service will build up over time. Is memory efficient since only one instance which
 // is reused everywhere.
-
 
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddAutoMapper(typeof(Program));

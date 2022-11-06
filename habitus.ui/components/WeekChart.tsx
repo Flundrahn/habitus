@@ -41,7 +41,7 @@ export default function WeekChart({
           type="number"
           allowDecimals={false}
           tickCount={8}
-          // interval="preserveStartEnd"
+          interval="preserveStart"
           // scale="point"
         />
         <YAxis dataKey="name" type="category" />

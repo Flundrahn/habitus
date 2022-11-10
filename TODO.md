@@ -1,48 +1,41 @@
 # TODO
 
-## NOTE before tomorrow tuesday: continue taking advice from these guides:
-
-- Example of setting up ui https://javascript.plainenglish.io/setting-up-firebase-ui-with-your-react-application-49ffa20f8168
-- Official ui docs https://firebase.google.com/docs/auth/web/firebaseui#initialize_firebaseui
-- demo examples from firebase web https://github.com/firebase/firebaseui-web/blob/master/demo/public/app.js
-
-Might be helpful:
-
-- https://blog.openreplay.com/authentication-in-react-18-using-firebase-v9/
-- https://www.freecodecamp.org/news/react-firebase-authentication-and-crud-operations/
-- https://blog.logrocket.com/user-authentication-firebase-react-apps/
-
 ## MVP
 
+1. Add logout button and turn off auto-login
+1. Add authentication back end, unique data per user
+1. Update frontend api requests to use user data,
+   - If I don't pass user from RequireAuth I will have to call hook and make sure user exists in each page, more duplication. if I do pass it from RequireAuth code might be less readable.
 1. Mobile first UX, managing habits need be mobile
-2. Style depending on achieved goal or not,
-3. Add authentication front end
-   - Add auth context
-   - Add firebase ui & login page
-4. Add authentication back end
-5. Add authorization, user & admin
-6. Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible
-7. Fix optimistic update of entries
+1. Style depending on achieved goal or not,
+1. Add authorization, user & admin
+1. Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible
+1. Fix optimistic update of entries
 
 ## Done
 
-1. Add toast message on update habit
-1. Show graph
-1. Stoic quotes GET random
-1. Show current score for each habit
-1. Update Habit
-1. Delete Habit button
-1. Edit Component v1
-1. Convert to formik and yup.
-1. Week, each day with done and unfinished habits
-   - View of weekly result
-1. Create new Habit button
-1. Week Component v1
-1. Finish the table component
-1. Convert repos to all implement their own methods, which also converts to and from DTO
-1. Create entries that contains adds empty entries for non-existing days and boolean
-1. Convert responses to use DTO
-1. Create endpoints
+1. Add authentication front end
+   - Add auth context
+   - Add firebase ui & login page
+2. Add toast message on update habit
+3. Show graph
+4. Stoic quotes GET random
+5. Show current score for each habit
+6. Update Habit
+7. Delete Habit button
+8. Edit Component v1
+9. Convert to formik and yup.
+10. Week, each day with done and unfinished habits
+
+- View of weekly result
+
+11. Create new Habit button
+12. Week Component v1
+13. Finish the table component
+14. Convert repos to all implement their own methods, which also converts to and from DTO
+15. Create entries that contains adds empty entries for non-existing days and boolean
+16. Convert responses to use DTO
+17. Create endpoints
 
 - [x] Habit: GetAll / GetOne / Delete / Create / Update
 - [x] Entry: Delete / Create

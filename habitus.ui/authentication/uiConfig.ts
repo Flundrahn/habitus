@@ -1,11 +1,15 @@
-import firebase from 'firebase/compat/app';
+import { EmailAuthProvider } from 'firebase/auth';
 
-// export const uiConfig = (app: FirebaseApp) => {
 export const uiConfig = {
   signInSuccessUrl: '/',
   tosUrl: '/terms-of-service',
   privacyPolicyUrl: '/privacy-policy',
-  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
+  signInOptions: [
+    {
+      provider: EmailAuthProvider.PROVIDER_ID,
+      signInMethod: EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
+    },
+  ],
   // TODO Lookup further options
   // set requireDisplayName to false
   // set signInFlow to popup¨

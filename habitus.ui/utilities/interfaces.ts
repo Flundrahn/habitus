@@ -1,5 +1,7 @@
-import { FirebaseApp } from 'firebase/app';
-import { Auth, User } from 'firebase/auth';
+export interface ILink {
+  href: string;
+  label: string;
+}
 
 export interface IEntry {
   id: number;

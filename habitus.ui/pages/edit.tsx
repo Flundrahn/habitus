@@ -1,13 +1,8 @@
 import React from 'react';
-import useHabitusApi from '../utilities/useHabitusApi';
-import HabitForm from '../components/HabitForm';
-import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-// NOTE Get idea to make createHabit general enough to be used for both create and edit
-// difference is either populate inputs with currentHabit or not, and pass different action
-// post and puthabit
-// Problem that button is in? No just move it to right and fix visuals
-// difference also don't want to show title
+import HabitForm from '../components/HabitForm';
+import useHabitusApi from '../utilities/useHabitusApi';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Labels({ labels }: { labels: string[] }) {
   return (
@@ -35,9 +30,6 @@ export default function EditPage() {
     </div>
   );
 
-  // what I want to do here
-  // get all habits, show in list,
-  // allow to click each and change and submit, map over habit create forms for eeach, have global submit button looks best
   const labels = ['Title', 'Weekly goal', 'Color', 'Description'];
 
   return (

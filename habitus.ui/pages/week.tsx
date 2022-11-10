@@ -1,7 +1,4 @@
 import React from 'react';
-// import { lazy } from 'react';
-// import { Suspense } from 'react';
-// import ReactLoading from 'react-loading';
 import HabitsTable from '../components/HabitsTable';
 import WeekChart from '../components/WeekChart';
 
@@ -19,17 +16,10 @@ export default function WeekPage() {
   const endDate = new Date();
   endDate.setDate(startDate.getDate() + 6);
 
-  // const weekChartPromise = import(
-  //   /* webpackChunkName: 'week-chart' */ '../components/WeekChart'
-  // );
-  // const LazyWeekChart = lazy(() => weekChartPromise);
-
   return (
     <>
       <HabitsTable startDate={startDate} endDate={endDate} />
-      {/* <Suspense fallback={<ReactLoading type="spin" />}> */}
       <WeekChart startDate={startDate} endDate={endDate} />
-      {/* </Suspense> */}
     </>
   );
 }

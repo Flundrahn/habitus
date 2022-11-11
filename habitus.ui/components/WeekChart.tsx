@@ -8,17 +8,19 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import ReactLoading from 'react-loading';
 import useHabitusApi from '../utilities/useHabitusApi';
+import { IUser } from '../utilities/interfaces';
 
 export default function WeekChart({
+  user,
   startDate,
   endDate = startDate,
 }: {
+  user: IUser;
   startDate: Date;
   endDate?: Date;
 }) {
-  const { data } = useHabitusApi(startDate, endDate);
+  const { data } = useHabitusApi(user.idToken, startDate, endDate);
   const chartData = data?.map(habit => ({
     name: habit.title,
     Score: habit.score,
@@ -26,7 +28,8 @@ export default function WeekChart({
   }));
 
   if (!data) {
-    return <ReactLoading type="spin" />;
+    // return <ReactLoading type="spin" />;
+    return <div>Loading...</div>;
   }
 
   return (

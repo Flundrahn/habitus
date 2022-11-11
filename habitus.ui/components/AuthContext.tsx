@@ -6,15 +6,16 @@ import React, {
   useContext,
 } from 'react';
 import { initializeApp } from 'firebase/app';
-import { onAuthStateChanged, User, Auth, getAuth } from 'firebase/auth';
-import { firebaseConfig } from '../authentication/firebaseConfig';
+import { onAuthStateChanged, Auth, getAuth } from 'firebase/auth';
+import { firebaseConfig } from '../auth/firebaseConfig';
+import { IUser } from '../utilities/interfaces';
 
 interface IAuthContext {
   isInitialized:
     | false
     | {
         auth: Auth;
-        user: User | null;
+        user: IUser | null;
       };
 }
 
@@ -26,15 +27,26 @@ const useAuthContext = () => useContext(AuthContext);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [auth, setAuth] = useState<Auth>();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
 
   useEffect(() => {
     const firebaseInstance = initializeApp(firebaseConfig);
     const authInstance = getAuth(firebaseInstance);
-    const unsubscribe = onAuthStateChanged(authInstance, userInfo => {
+    const unsubscribe = onAuthStateChanged(authInstance, async userInfo => {
       // NOTE here in tutorial they set user to null if user is null,
       // but I don't think I need to do that, it would be set null anyway
-      setUser(userInfo);
+      // let user: IUser | null;
+
+      if (userInfo !== null) {
+        setUser({
+          displayName: userInfo.displayName || '',
+          email: userInfo.email || '',
+          uid: userInfo.uid,
+          idToken: await userInfo.getIdToken(),
+        });
+      } else {
+        setUser(null);
+      }
     });
     setAuth(authInstance);
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { IEntry, IHabit } from '../utilities/interfaces';
+import { IEntry, IHabit, IUser } from '../utilities/interfaces';
 import useHabitusApi from '../utilities/useHabitusApi';
 import HabitForm from './HabitForm';
 
@@ -89,13 +89,16 @@ function Row({
 }
 
 export default function HabitsTable({
+  user,
   startDate,
   endDate = startDate,
 }: {
+  user: IUser;
   startDate: Date;
   endDate?: Date;
 }) {
   const { data, error, postEntry, deleteEntry, postHabit } = useHabitusApi(
+    user.idToken,
     startDate,
     endDate
   );

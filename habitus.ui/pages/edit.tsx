@@ -3,6 +3,8 @@ import { ToastContainer } from 'react-toastify';
 import HabitForm from '../components/HabitForm';
 import useHabitusApi from '../utilities/useHabitusApi';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuthContext } from '../components/AuthContext';
+import { useRouter } from 'next/router';
 
 function Labels({ labels }: { labels: string[] }) {
   return (
@@ -19,7 +21,16 @@ function Labels({ labels }: { labels: string[] }) {
 }
 
 export default function EditPage() {
-  const { data, putHabit, deleteHabit, error } = useHabitusApi();
+  const { isInitialized } = useAuthContext();
+  const router = useRouter();
+
+  if (!isInitialized || !isInitialized.user) {
+    router.push('/');
+  }
+
+  const idToken = (isInitialized && isInitialized.user) ? isInitialized.user.idToken : '';
+
+  const { data, putHabit, deleteHabit, error } = useHabitusApi(idToken);
 
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;

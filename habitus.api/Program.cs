@@ -1,6 +1,9 @@
 using habitus.api.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
+using FirebaseAdmin;
+using habitus.api.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionStringName = "DbContextLocal";
@@ -10,8 +13,8 @@ builder.Services.AddDbContext<HabitusDbContext>(options =>
         ?? throw new InvalidOperationException($"Connection string {connectionStringName} not found.")
     )
 );
-
 builder.Services.AddControllers();
+builder.Services.AddSingleton(FirebaseApp.Create());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // QUESTION Could I use a singleton here? When should I use scoped / singleton / 
@@ -26,10 +29,34 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddScheme<AuthenticationSchemeOptions, FirebaseAuthHandler>(
+        JwtBearerDefaults.AuthenticationScheme, options => { }
+    );
+// TODO Remove jwtbearer if unnecessary. NOTE It would be a lot nicer if this worked as intended.
+// .AddJwtBearer(options =>
+// {
+//     string firebaseProjectId = builder.Configuration.GetValue<string>("FirebaseAppId")
+//         ?? throw new InvalidOperationException("Environment variable FirebaseAppId not found.");
+
+//     options.SaveToken = true;
+//     options.IncludeErrorDetails = true;
+
+//     options.Authority = $"https://securetoken.google.com/{firebaseProjectId}/";
+//     options.TokenValidationParameters = new TokenValidationParameters
+//     {
+//         ValidateIssuer = true,
+//         ValidIssuer = $"https://securetoken.google.com/{firebaseProjectId}/",
+//         ValidateAudience = true,
+//         ValidAudience = firebaseProjectId,
+//         ValidateLifetime = true,
+
+//     };
+// });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -54,14 +81,14 @@ if (app.Environment.IsDevelopment())
 
 // TODO Configure this for security
 app.UseCors(options => options
-    .AllowAnyOrigin()
+    // .WithOrigins("http://localhost:3000/")
+    .SetIsOriginAllowed(origin => true)
+    // .AllowCredentials()
     .AllowAnyHeader()
     .AllowAnyMethod());
-
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

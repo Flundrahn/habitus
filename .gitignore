@@ -3,6 +3,9 @@
 bin/
 obj/
 
+### Visual Studio ###
+.vs/
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json

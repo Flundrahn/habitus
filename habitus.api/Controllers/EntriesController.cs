@@ -1,12 +1,13 @@
-using AutoMapper;
 using habitus.api.Data;
 using habitus.api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace habitus.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EntriesController : ControllerBase
     {
         private readonly IRepositoryManager _repository;

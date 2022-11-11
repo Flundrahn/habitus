@@ -4,12 +4,24 @@ import { IEntry, IHabit, IPostResponse } from './interfaces';
 import API_BASE_URL from './constants';
 import produce from 'immer';
 
-const fetcher = (url: string) => axios.get(url).then(response => response.data);
+const fetcher = (url: string, idToken: string) =>
+  axios
+    .get(url, {
+      headers: { Authorization: `Bearer ${idToken}` },
+    })
+    .then(response => response.data);
 
-const poster = async (uri: string, entity: IEntry | IHabit) => {
+const poster = async (
+  uri: string,
+  entity: IEntry | IHabit,
+  idToken: string
+) => {
   const response = await axios.post<IPostResponse>(
     `${API_BASE_URL}/${uri}`,
-    entity
+    entity,
+    {
+      headers: { Authorization: `Bearer ${idToken}` },
+    }
   );
 
   if (response.status > 299) {
@@ -19,10 +31,17 @@ const poster = async (uri: string, entity: IEntry | IHabit) => {
   return response.data.id;
 };
 
-const putter = async (uri: string, entity: IEntry | IHabit) => {
+const putter = async (
+  uri: string,
+  entity: IEntry | IHabit,
+  idToken: string
+) => {
   const response = await axios.put<IPostResponse>(
     `${API_BASE_URL}/${uri}/${entity.id}`,
-    entity
+    entity,
+    {
+      headers: { Authorization: `Bearer ${idToken}` },
+    }
   );
 
   if (response.status > 299) {
@@ -30,8 +49,10 @@ const putter = async (uri: string, entity: IEntry | IHabit) => {
   }
 };
 
-const deleter = async (uri: string, id: number) => {
-  const response = await axios.delete(`${API_BASE_URL}/${uri}/${id}`);
+const deleter = async (uri: string, id: number, idToken: string) => {
+  const response = await axios.delete(`${API_BASE_URL}/${uri}/${id}`, {
+    headers: { Authorization: `Bearer ${idToken}` },
+  });
 
   if (response.status > 299) {
     throw new Error(
@@ -40,7 +61,11 @@ const deleter = async (uri: string, id: number) => {
   }
 };
 
-export default function useHabitusApi(startDate?: Date, endDate?: Date) {
+export default function useHabitusApi(
+  idToken: string,
+  startDate?: Date,
+  endDate?: Date
+) {
   let fetchUri: string;
 
   if (endDate && !startDate) {
@@ -54,14 +79,14 @@ export default function useHabitusApi(startDate?: Date, endDate?: Date) {
   }
 
   const { data, mutate, error } = useSWR<IHabit[]>(
-    `${API_BASE_URL}/${fetchUri}`,
+    [`${API_BASE_URL}/${fetchUri}`, idToken],
     fetcher
   );
 
   const postEntry = async (entry: IEntry) => {
     try {
       mutate(async () => {
-        const id = await poster('entries', entry);
+        const id = await poster('entries', entry, idToken);
         const newEntry: IEntry = { ...entry, id };
 
         const updatedData = produce(data, (draft: IHabit[]) => {
@@ -90,7 +115,7 @@ export default function useHabitusApi(startDate?: Date, endDate?: Date) {
     } else {
       try {
         mutate(async () => {
-          await deleter('entries', entry.id);
+          await deleter('entries', entry.id, idToken);
 
           const updatedData = produce(data, (draft: IHabit[]) => {
             const habitIndex = draft.findIndex(h => h.id === entry.habitId);
@@ -117,7 +142,7 @@ export default function useHabitusApi(startDate?: Date, endDate?: Date) {
   const postHabit = async (habit: IHabit) => {
     try {
       mutate(async () => {
-        const id = await poster('habits', habit);
+        const id = await poster('habits', habit, idToken);
         const newHabit: IHabit = { ...habit, id, entries: [] as IEntry[] };
 
         const updatedData = produce(data, (draft: IHabit[]) => {
@@ -134,7 +159,7 @@ export default function useHabitusApi(startDate?: Date, endDate?: Date) {
   const putHabit = async (habit: IHabit) => {
     try {
       mutate(async () => {
-        await putter('habits', habit);
+        await putter('habits', habit, idToken);
 
         const updatedData = produce(data, (draft: IHabit[]) => {
           const habitIndex = draft.findIndex(h => h.id === habit.id);
@@ -156,7 +181,7 @@ export default function useHabitusApi(startDate?: Date, endDate?: Date) {
   const deleteHabit = async (habit: IHabit) => {
     try {
       mutate(async () => {
-        await deleter('habits', habit.id);
+        await deleter('habits', habit.id, idToken);
 
         return data?.filter(h => h.id !== habit.id);
       });

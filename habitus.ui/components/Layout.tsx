@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useAuthContext } from './AuthContext';
 import ReactLoading from 'react-loading';
 import { ILink } from '../utilities/interfaces';
+import Quote from './Quote';
 
 function LinkButton({ href, label }: ILink) {
   return (
@@ -31,7 +32,8 @@ export default function Layout({
   let headerContent: JSX.Element;
 
   if (!isInitialized) {
-    headerContent = <ReactLoading type="spin" />;
+    // headerContent = <ReactLoading type="spin" />;
+    return <div>Loading...</div>;
   } else if (!isInitialized.user) {
     headerContent = (
       <h1 className="text-cyan-600 text-center text-3xl font-bold [text-shadow:_1px_1px_0_rgb(3_194_252_/_40%),_2px_2px_0_rgb(73_255_17_/_40%),_3px_3px_0_rgb(255_71_163_/_40%)]">
@@ -56,7 +58,10 @@ export default function Layout({
         {/* NOTE: Figure out how the content prop here works */}
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <header>{headerContent}</header>
+      <header className="flex flex-col items-center">
+        {headerContent}
+        <Quote />
+      </header>
       <main className="p-4 flex flex-col items-center">{children}</main>
       <footer>
         <hr className="m-8" />

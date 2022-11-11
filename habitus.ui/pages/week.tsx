@@ -1,5 +1,7 @@
 import React from 'react';
+import { useAuthContext } from '../components/AuthContext';
 import HabitsTable from '../components/HabitsTable';
+import Login from '../components/Login';
 import WeekChart from '../components/WeekChart';
 
 function getStartOfWeek(date = new Date()): Date {
@@ -12,14 +14,30 @@ function getStartOfWeek(date = new Date()): Date {
 }
 
 export default function WeekPage() {
+  const { isInitialized } = useAuthContext();
   const startDate = getStartOfWeek();
   const endDate = new Date();
   endDate.setDate(startDate.getDate() + 6);
 
+  if (!isInitialized) {
+    return <div>Loading...</div>;
+    // return <ReactLoading type="spin" />;
+  } else if (!isInitialized.user) {
+    return <Login auth={isInitialized.auth} />;
+  }
+
   return (
     <>
-      <HabitsTable startDate={startDate} endDate={endDate} />
-      <WeekChart startDate={startDate} endDate={endDate} />
+      <HabitsTable
+        user={isInitialized.user}
+        startDate={startDate}
+        endDate={endDate}
+      />
+      <WeekChart
+        user={isInitialized.user}
+        startDate={startDate}
+        endDate={endDate}
+      />
     </>
   );
 }

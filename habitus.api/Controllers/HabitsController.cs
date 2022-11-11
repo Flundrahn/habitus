@@ -1,5 +1,6 @@
 using habitus.api.Data;
 using habitus.api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace habitus.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HabitsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;

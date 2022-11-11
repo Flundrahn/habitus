@@ -29,3 +29,10 @@ export interface IQuote {
   quoteText: string;
   philosopher: string;
 }
+
+export interface IUser {
+  displayName: string;
+  email: string;
+  uid: string;
+  idToken: string;
+}

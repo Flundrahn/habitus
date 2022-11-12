@@ -109,13 +109,31 @@ export default function HabitsTable({
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
 
-  const dateLabels: string[] = data[0].entries.map(e =>
-    format(new Date(e.date), 'EEE do')
-  );
   const addButton = (
     <div className="h-6 w-6 ml-2 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full">
       <i className="fa-solid fa-plus" />
     </div>
+  );
+
+  if (data.length == 0) {
+    return (
+      <>
+        <p className="m-2">Looks empty here, try creating a new habit!</p>
+        {showForm ? (
+          <HabitForm
+            title="Add a new habit"
+            apiAction={postHabit}
+            button={addButton}
+            setShowForm={setShowForm}
+          />
+        ) : (
+          <button onClick={() => setShowForm(true)}>{addButton}</button>
+        )}
+      </>
+    );
+  }
+  const dateLabels: string[] = data[0].entries.map(e =>
+    format(new Date(e.date), 'EEE do')
   );
 
   return (

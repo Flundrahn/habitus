@@ -50,7 +50,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     });
     setAuth(authInstance);
 
-    return unsubscribe();
+    return () => unsubscribe();
   }, []);
 
   const value: IAuthContext = useMemo(() => {

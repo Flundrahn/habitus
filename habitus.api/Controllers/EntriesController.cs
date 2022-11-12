@@ -7,7 +7,7 @@ namespace habitus.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Policy = "SameUser")]
     public class EntriesController : ControllerBase
     {
         private readonly IRepositoryManager _repository;

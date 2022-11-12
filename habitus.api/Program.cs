@@ -34,6 +34,15 @@ builder.Services
     .AddScheme<AuthenticationSchemeOptions, FirebaseAuthHandler>(
         JwtBearerDefaults.AuthenticationScheme, options => { }
     );
+
+// TODO Test this, spend one day one testing an auth API
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SameUser", policy =>
+    {
+        policy.AddRequirements(new SameUserAuthorizationRequirement());
+    });
+});
 // TODO Remove jwtbearer if unnecessary. NOTE It would be a lot nicer if this worked as intended.
 // .AddJwtBearer(options =>
 // {

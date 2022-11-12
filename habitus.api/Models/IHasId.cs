@@ -1,6 +1,7 @@
 namespace habitus.api.Models;
 
-public interface IHasId
+public interface IHabitusResource
 {
     int Id { get; init; }
+    string UserId { get; set; }
 }

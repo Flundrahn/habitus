@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace habitus.api.Data;
 
-public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IHasId
+public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IHabitusResource
 {
     protected HabitusDbContext _context;
     protected IMapper _mapper;
@@ -35,10 +35,11 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
             : _context.Set<T>().Where(expression).AsNoTracking();
     }
 
-    public async Task<int> Create(T entity)
+    public async Task<int> Create(T entity, string userId)
     {
         if (!TableExists()) return -1;
 
+        entity.UserId = userId;
         await _context.Set<T>().AddAsync(entity);
         await _context.SaveChangesAsync();
 

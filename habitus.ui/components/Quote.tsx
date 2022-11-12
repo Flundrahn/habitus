@@ -17,7 +17,7 @@ export default function Quote() {
     return <div>Loading...</div>;
   } else {
     return (
-      <div className="m-2">
+      <div className="flex flex-col items-center m-2">
         <p className="text-sm max-w-md">&ldquo;{data.quoteText}&#8221;</p>
         <p className="text-sm">{` - ${data.philosopher}`}</p>
       </div>

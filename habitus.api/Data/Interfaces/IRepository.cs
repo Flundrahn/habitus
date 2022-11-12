@@ -11,7 +11,7 @@ public interface IRepositoryBase<T>
     IQueryable<T> FindByCondition(
         Expression<Func<T, bool>> expression,
         bool trackChanges);
-    Task<int> Create(T entity);
+    Task<int> Create(T entity, string userId);
     Task<bool> Update(T entity);
     Task<bool> Delete(int id, bool trackChanges);
 }
@@ -19,9 +19,9 @@ public interface IRepositoryBase<T>
 public interface IHabitRepository
 {
     Task<HabitResponse> Find(int id);
-    Task<IEnumerable<HabitResponse>> FindAllHabits();
-    Task<IEnumerable<HabitResponse>> FindAllAndFilterEntriesByDate(DateTime startDate, DateTime endDate);
-    Task<int> CreateHabit(CreateHabitRequest habitRequest);
+    Task<IEnumerable<HabitResponse>> FindAllHabits(string userId);
+    Task<IEnumerable<HabitResponse>> FindAllAndFilterEntriesByDate(DateTime startDate, DateTime endDate, string userId);
+    Task<int> CreateHabit(CreateHabitRequest habitRequest,string userId);
     Task<bool> DeleteHabit(int id);
     Task<bool> UpdateHabit(UpdateHabitRequest request);
 }

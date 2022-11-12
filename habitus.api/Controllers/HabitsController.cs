@@ -8,7 +8,7 @@ namespace habitus.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Policy = "SameUser")]
     public class HabitsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
@@ -22,9 +22,11 @@ namespace habitus.api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HabitResponse>>> Get()
         {
+            string userId = GetUserId();
+
             try
             {
-                IEnumerable<HabitResponse> habits = await _repository.Habit.FindAllHabits();
+                IEnumerable<HabitResponse> habits = await _repository.Habit.FindAllHabits(userId);
 
                 if (habits == null)
                 {
@@ -42,6 +44,8 @@ namespace habitus.api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<HabitResponse>>> Get(int id)
         {
+            string userId = GetUserId();
+
             try
             {
                 var habit = await _repository.Habit.Find(id);
@@ -66,9 +70,11 @@ namespace habitus.api.Controllers
             if (filter.EndDate is null) filter.EndDate = filter.StartDate;
             if (filter.StartDate > filter.EndDate) return BadRequest("Start date must be before end date");
 
+            string userId = GetUserId();
+
             try
             {
-                var habits = await _repository.Habit.FindAllAndFilterEntriesByDate(filter.StartDate, filter.EndDate.Value);
+                var habits = await _repository.Habit.FindAllAndFilterEntriesByDate(filter.StartDate, filter.EndDate.Value, userId);
 
                 if (habits == null)
                 {
@@ -87,9 +93,11 @@ namespace habitus.api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(CreateHabitRequest request)
         {
+            string userId = GetUserId();
+
             try
             {
-                int id = await _repository.Habit.CreateHabit(request);
+                int id = await _repository.Habit.CreateHabit(request, userId);
 
                 switch (id)
                 {
@@ -156,6 +164,13 @@ namespace habitus.api.Controllers
             }
 
             return NoContent();
+        }
+
+        private string GetUserId()
+        {
+            string? userId = HttpContext.User.Claims.First(c => c.Type == "userId")?.Value;
+            if (userId is null) throw new Exception("UserId is null");
+            return userId;
         }
     }
 }

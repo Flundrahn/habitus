@@ -41,14 +41,12 @@ public class FirebaseAuthHandler : AuthenticationHandler<AuthenticationSchemeOpt
         try
         {
             FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token);
-            
+
             return AuthenticateResult.Success(new AuthenticationTicket(
-            // TODO Check if I can skip list
-            new ClaimsPrincipal(new List<ClaimsIdentity>()
-            {
-                new (ToClaims(decodedToken), "Firebase")
-            })
-        , JwtBearerDefaults.AuthenticationScheme));
+                // TODO Verify that I can skip list
+                new ClaimsPrincipal(new ClaimsIdentity(ToClaims(decodedToken), "Firebase")),
+                JwtBearerDefaults.AuthenticationScheme)
+            );
         }
         catch (Exception)
         {

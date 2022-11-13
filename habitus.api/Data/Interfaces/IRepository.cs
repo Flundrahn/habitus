@@ -19,8 +19,8 @@ public interface IRepositoryBase<T>
 public interface IHabitRepository
 {
     Task<HabitResponse> Find(int id);
-    Task<IEnumerable<HabitResponse>> FindAllHabits();
-    Task<IEnumerable<HabitResponse>> FindAllAndFilterEntriesByDate(DateTime startDate, DateTime endDate);
+    Task<IEnumerable<HabitResponse>> FindAllHabits(string userId);
+    Task<IEnumerable<HabitResponse>> FindAllAndFilterEntriesByDate(DateTime startDate, DateTime endDate, string userId);
     Task<int> CreateHabit(CreateHabitRequest habitRequest);
     Task<bool> DeleteHabit(int id);
     Task<bool> UpdateHabit(UpdateHabitRequest request);
@@ -29,7 +29,7 @@ public interface IHabitRepository
 public interface IEntryRepository
 {
     Task<EntryResponse> Find(int id);
-    Task<IEnumerable<EntryResponse>> FindAllEntries();
+    Task<IEnumerable<EntryResponse>> FindAllEntries(string userId);
     Task<int> CreateEntry(CreateEntryRequest request);
     Task<bool> DeleteEntry(int id);
 }

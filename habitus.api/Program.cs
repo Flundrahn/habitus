@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
 using FirebaseAdmin;
 using habitus.api.Auth;
+using Microsoft.AspNetCore.Authorization;
+using habitus.api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionStringName = "DbContextLocal";
@@ -17,43 +19,30 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton(FirebaseApp.Create());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// QUESTION Could I use a singleton here? When should I use scoped / singleton / 
-// SCOPED: The service is created once per request. "This is a good option when want to
-// maintain state within request".
-// TRANSIENT: The service is created each time it is called. This allows multithreading since there can be multiple
-// instances in one request. Will use more memory and resources, can have negative impact on performance.
-// " Utilize for lightweight, stateless services. "
-// SINGLETON: The service is created once and shared across all requests.
-// Note memory leaks in such a service will build up over time. Is memory efficient since only one instance which
-// is reused everywhere.
-
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddScheme<AuthenticationSchemeOptions, FirebaseAuthHandler>(
         JwtBearerDefaults.AuthenticationScheme, options => { }
     );
-// TODO Remove jwtbearer if unnecessary. NOTE It would be a lot nicer if this worked as intended.
-// .AddJwtBearer(options =>
-// {
-//     string firebaseProjectId = builder.Configuration.GetValue<string>("FirebaseAppId")
-//         ?? throw new InvalidOperationException("Environment variable FirebaseAppId not found.");
 
-//     options.SaveToken = true;
-//     options.IncludeErrorDetails = true;
+// TODO Test this, spend one day one testing an auth API
+// builder.Services.AddSingleton<
+//     AuthorizationHandler<SameUserAuthorizationRequirement, IHabitusResource>,
+//     HabitusAuthorizationHandler>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SameUser", policy =>
+        policy.Requirements.Add(new SameUserAuthorizationRequirement())
+    );
+});
 
-//     options.Authority = $"https://securetoken.google.com/{firebaseProjectId}/";
-//     options.TokenValidationParameters = new TokenValidationParameters
-//     {
-//         ValidateIssuer = true,
-//         ValidIssuer = $"https://securetoken.google.com/{firebaseProjectId}/",
-//         ValidateAudience = true,
-//         ValidAudience = firebaseProjectId,
-//         ValidateLifetime = true,
-
-//     };
-// });
+builder.Services.AddSingleton<IAuthorizationHandler, HabitusAuthorizationHandler>();
 
 var app = builder.Build();
 
@@ -81,9 +70,7 @@ if (app.Environment.IsDevelopment())
 
 // TODO Configure this for security
 app.UseCors(options => options
-    // .WithOrigins("http://localhost:3000/")
     .SetIsOriginAllowed(origin => true)
-    // .AllowCredentials()
     .AllowAnyHeader()
     .AllowAnyMethod());
 app.UseHttpsRedirection();

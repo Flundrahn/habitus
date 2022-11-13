@@ -8,12 +8,14 @@ internal static class SeedData
     internal static Habit[] Habits()
     {
         var id = 1;
+        var userId = "1";
 
         return new Habit[]
         {
             new Habit
             {
                 Id = id++,
+                UserId = userId,
                 Title = "Read",
                 Goal = 3,
                 Color = "#32a852",
@@ -22,6 +24,7 @@ internal static class SeedData
             new Habit
             {
                 Id = id++,
+                UserId = userId,
                 Title = "Exercise",
                 Goal = 5,
                 Color = "#2b26b5",
@@ -30,6 +33,7 @@ internal static class SeedData
             new Habit
             {
                 Id = id++,
+                UserId = userId,
                 Title = "Meditate",
                 Goal = 2,
                 Color = "#701933",
@@ -41,15 +45,16 @@ internal static class SeedData
     internal static Entry[] Entries()
     {
         var id = 1;
+        var userId = "1";
 
         return new Entry[] {
-            new Entry { Id = id++, HabitId = 1, Date = new DateTime(2022, 10, 11) },
-            new Entry { Id = id++, HabitId = 1, Date = new DateTime(2022, 10, 12) },
-            new Entry { Id = id++, HabitId = 1, Date = new DateTime(2022, 10, 13) },
-            new Entry { Id = id++, HabitId = 2, Date = new DateTime(2022, 10, 11) },
-            new Entry { Id = id++, HabitId = 2, Date = new DateTime(2022, 10, 12) },
-            new Entry { Id = id++, HabitId = 2, Date = new DateTime(2022, 10, 14) },
-            new Entry { Id = id++, HabitId = 2, Date = new DateTime(2022, 10, 15) },
+            new Entry { Id = id++, UserId = userId, HabitId = 1, Date = new DateTime(2022, 10, 11) },
+            new Entry { Id = id++, UserId = userId, HabitId = 1, Date = new DateTime(2022, 10, 12) },
+            new Entry { Id = id++, UserId = userId, HabitId = 1, Date = new DateTime(2022, 10, 13) },
+            new Entry { Id = id++, UserId = userId, HabitId = 2, Date = new DateTime(2022, 10, 11) },
+            new Entry { Id = id++, UserId = userId, HabitId = 2, Date = new DateTime(2022, 10, 12) },
+            new Entry { Id = id++, UserId = userId, HabitId = 2, Date = new DateTime(2022, 10, 14) },
+            new Entry { Id = id++, UserId = userId, HabitId = 2, Date = new DateTime(2022, 10, 15) },
         };
     }
 

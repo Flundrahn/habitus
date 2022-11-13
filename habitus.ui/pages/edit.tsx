@@ -5,6 +5,7 @@ import useHabitusApi from '../utilities/useHabitusApi';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthContext } from '../components/AuthContext';
 import { useRouter } from 'next/router';
+import { IUser } from '../utilities/interfaces';
 
 function Labels({ labels }: { labels: string[] }) {
   return (
@@ -29,7 +30,6 @@ export default function EditPage() {
   }
 
   const idToken = (isInitialized && isInitialized.user) ? isInitialized.user.idToken : '';
-
   const { data, putHabit, deleteHabit, error } = useHabitusApi(idToken);
 
   if (error) return <div>Failed to load</div>;
@@ -55,6 +55,7 @@ export default function EditPage() {
               key={habit.id}
               apiAction={putHabit}
               button={addButton}
+              user={(isInitialized && isInitialized.user) ? isInitialized.user : {} as IUser}
             />
             <button
               onClick={() => deleteHabit(habit)}

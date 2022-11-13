@@ -5,7 +5,7 @@
 // public class HabitsRepositoryTests
 // {
 //     [Fact]
-//     public void FindAllAndFilterEntriesByDate_should_return_filtered_result()
+//     public void FindAllHabits_should_return_all_habits()
 //     {
 //         // Arrange 
 //         var repository = new HabitRepository();

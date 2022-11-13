@@ -1,7 +1,22 @@
 import axios from 'axios';
+import React from 'react';
 import useSWR from 'swr';
 import API_BASE_URL from '../utilities/constants';
 import { IQuote } from '../utilities/interfaces';
+
+function NewlinedParagraph({ children }: { children: string }) {
+  return children.includes('\n') ? (
+    <>
+      {React.Children.toArray(
+        children
+          .split('\n')
+          .map(subString => <p className="text-sm max-w-md">{subString}</p>)
+      )}
+    </>
+  ) : (
+    <p className="text-sm max-w-md">{children}</p>
+  );
+}
 
 export default function Quote() {
   const quoteFetcher = (url: string) =>
@@ -16,9 +31,11 @@ export default function Quote() {
   } else if (!data) {
     return <div>Loading...</div>;
   } else {
+    const quote = `“${data.quoteText}”`;
+
     return (
-      <div className="m-2">
-        <p className="text-sm max-w-md">&ldquo;{data.quoteText}&#8221;</p>
+      <div className="flex flex-col items-center m-2">
+        <NewlinedParagraph>{quote}</NewlinedParagraph>
         <p className="text-sm">{` - ${data.philosopher}`}</p>
       </div>
     );

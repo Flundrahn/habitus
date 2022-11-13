@@ -12,26 +12,31 @@ namespace habitus.api.Controllers
     public class HabitsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
+        private readonly IAuthorizationService _authorization;
 
-        public HabitsController(IRepositoryManager repository)
+        public HabitsController(IRepositoryManager repository, IAuthorizationService authorizationService)
         {
             _repository = repository;
+            _authorization = authorizationService;
+
         }
 
         // GET: api/Habits
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HabitResponse>>> Get()
         {
+            string userId = GetUserId();
             try
             {
-                IEnumerable<HabitResponse> habits = await _repository.Habit.FindAllHabits();
+                IEnumerable<HabitResponse> habits = await _repository.Habit.FindAllHabits(userId);
 
-                if (habits == null)
-                {
-                    return NotFound();
-                }
+                if (habits == null) return NotFound();
 
-                return Ok(habits);
+                var authorizationResult = await _authorization.AuthorizeAsync(User, habits.First(), "SameUser");
+
+                if (authorizationResult.Succeeded) return Ok(habits);
+                else if (User.Identity!.IsAuthenticated) return new ForbidResult();
+                else return new ChallengeResult();
             }
             catch (Exception ex)
             {
@@ -46,12 +51,13 @@ namespace habitus.api.Controllers
             {
                 var habit = await _repository.Habit.Find(id);
 
-                if (habit == null)
-                {
-                    return NotFound();
-                }
+                if (habit == null) return NotFound();
 
-                return Ok(habit);
+                var authorizationResult = await _authorization.AuthorizeAsync(User, habit, "SameUser");
+
+                if (authorizationResult.Succeeded) return Ok(habit);
+                else if (User.Identity!.IsAuthenticated) return new ForbidResult();
+                else return new ChallengeResult();
             }
             catch (Exception ex)
             {
@@ -66,14 +72,18 @@ namespace habitus.api.Controllers
             if (filter.EndDate is null) filter.EndDate = filter.StartDate;
             if (filter.StartDate > filter.EndDate) return BadRequest("Start date must be before end date");
 
+            string userId = GetUserId();
+
             try
             {
-                var habits = await _repository.Habit.FindAllAndFilterEntriesByDate(filter.StartDate, filter.EndDate.Value);
+                var habits = await _repository.Habit.FindAllAndFilterEntriesByDate(filter.StartDate, filter.EndDate.Value, userId);
 
-                if (habits == null)
-                {
-                    return NotFound();
-                }
+                if (habits == null) return NotFound();
+
+                var authorizationResult = await _authorization.AuthorizeAsync(User, habits.First(), "SameUser");
+
+                if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
+                else if (!authorizationResult.Succeeded) return new ChallengeResult();
 
                 return Ok(habits);
             }
@@ -89,6 +99,11 @@ namespace habitus.api.Controllers
         {
             try
             {
+                var authorizationResult = await _authorization.AuthorizeAsync(User, request, "SameUser");
+
+                if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
+                else if (!authorizationResult.Succeeded) return new ChallengeResult();
+
                 int id = await _repository.Habit.CreateHabit(request);
 
                 switch (id)
@@ -112,19 +127,23 @@ namespace habitus.api.Controllers
         {
             try
             {
+                var habit = await _repository.Habit.Find(id);
+
+                if (habit == null) return NotFound();
+
+                var authorizationResult = await _authorization.AuthorizeAsync(User, habit, "SameUser");
+
+                if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
+                else if (!authorizationResult.Succeeded) return new ChallengeResult();
+
                 bool response = await _repository.Habit.DeleteHabit(id);
-
-                if (!response)
-                {
-                    return NotFound();
-                }
-
-                return NoContent();
             }
             catch (Exception ex)
             {
                 return Problem(ex.Message);
             }
+
+            return NoContent();
         }
 
         // PUT: api/Habits/5
@@ -135,12 +154,18 @@ namespace habitus.api.Controllers
 
             try
             {
+                var habit = await _repository.Habit.Find(id);
+
+                if (habit == null) return NotFound();
+
+                var authorizationResult = await _authorization.AuthorizeAsync(User, habit, "SameUser");
+
+                if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
+                else if (!authorizationResult.Succeeded) return new ChallengeResult();
+
                 bool response = await _repository.Habit.UpdateHabit(request);
 
-                if (!response)
-                {
-                    return NotFound();
-                }
+                if (!response) return NotFound();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -149,13 +174,19 @@ namespace habitus.api.Controllers
                     return NotFound();
                 }
             }
-            // NOTE I have not investigated if this ais a proper way to chain exception catching
             catch (Exception ex)
             {
                 return Problem(ex.Message);
             }
 
             return NoContent();
+        }
+
+        private string GetUserId()
+        {
+            string? userId = HttpContext.User.Claims.First(c => c.Type == "userId")?.Value;
+            if (userId is null) throw new Exception("UserId is null");
+            return userId;
         }
     }
 }

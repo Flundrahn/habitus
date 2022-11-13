@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using habitus.api.Data;
 
@@ -10,9 +11,10 @@ using habitus.api.Data;
 namespace habitus.api.Migrations
 {
     [DbContext(typeof(HabitusDbContext))]
-    partial class HabitusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221112145647_AddUserId")]
+    partial class AddUserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -29,9 +31,8 @@ namespace habitus.api.Migrations
                     b.Property<int>("HabitId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -45,49 +46,49 @@ namespace habitus.api.Migrations
                             Id = 1,
                             Date = new DateTime(2022, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HabitId = 1,
-                            UserId = "1"
+                            UserId = 1
                         },
                         new
                         {
                             Id = 2,
                             Date = new DateTime(2022, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HabitId = 1,
-                            UserId = "1"
+                            UserId = 1
                         },
                         new
                         {
                             Id = 3,
                             Date = new DateTime(2022, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HabitId = 1,
-                            UserId = "1"
+                            UserId = 1
                         },
                         new
                         {
                             Id = 4,
                             Date = new DateTime(2022, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HabitId = 2,
-                            UserId = "1"
+                            UserId = 1
                         },
                         new
                         {
                             Id = 5,
                             Date = new DateTime(2022, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HabitId = 2,
-                            UserId = "1"
+                            UserId = 1
                         },
                         new
                         {
                             Id = 6,
                             Date = new DateTime(2022, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HabitId = 2,
-                            UserId = "1"
+                            UserId = 1
                         },
                         new
                         {
                             Id = 7,
                             Date = new DateTime(2022, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HabitId = 2,
-                            UserId = "1"
+                            UserId = 1
                         });
                 });
 
@@ -111,9 +112,8 @@ namespace habitus.api.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -127,7 +127,7 @@ namespace habitus.api.Migrations
                             Description = "Read a book",
                             Goal = 3,
                             Title = "Read",
-                            UserId = "1"
+                            UserId = 1
                         },
                         new
                         {
@@ -136,7 +136,7 @@ namespace habitus.api.Migrations
                             Description = "For atleast 15 minutes",
                             Goal = 5,
                             Title = "Exercise",
-                            UserId = "1"
+                            UserId = 1
                         },
                         new
                         {
@@ -145,7 +145,7 @@ namespace habitus.api.Migrations
                             Description = "For atleast 10 minutes",
                             Goal = 2,
                             Title = "Meditate",
-                            UserId = "1"
+                            UserId = 1
                         });
                 });
 

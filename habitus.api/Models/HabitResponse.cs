@@ -1,8 +1,9 @@
 namespace habitus.api.Models;
 
-public class HabitResponse
+public class HabitResponse : IHabitusResource
 {
     public int Id { get; init; }
+    public string UserId { get; init; } = null!;
     public string Title { get; init; } = null!;
     public int Goal { get; init; }
     public int Score { get; init; }

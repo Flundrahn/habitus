@@ -2,31 +2,32 @@
 
 ## MVP
 
-1. Rewrite backend to fetch data for correct user
-2. Fix optimistic update of entries, same as useCounter in chuck-quotes
-3. Mobile first UX, managing habits need be mobile
-4. Style depending on achieved goal or not,
-5. Add authorization, user & admin
-6. Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible
-7. Fix bug toast message popping up on first render
+1. Fix https for next
+1. Mobile first UX, managing habits need be mobile
+1. Style depending on achieved goal or not,
+1. Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible
+1. Fix bug toast message popping up on first render
 
 ## Done
 
-1. Add logout button and turn off auto-login
-2. Update frontend api requests to use user data,
-3. Add authentication back end
-4. Add authentication front end
+1. Add authorization
+2. Rewrite backend to fetch data for correct user
+3. Fix optimistic update of entries, same as useCounter in chuck-quotes
+4. Add logout button and turn off auto-login
+5. Update frontend api requests to use user data,
+6. Add authentication back end
+7. Add authentication front end
    - Add auth context
    - Add firebase ui & login page
-5. Add toast message on update habit
-6. Show graph
-7. Stoic quotes GET random
-8. Show current score for each habit
-9. Update Habit
-10. Delete Habit button
-11. Edit Component v1
-12. Convert to formik and yup.
-13. Week, each day with done and unfinished habits
+8. Add toast message on update habit
+9. Show graph
+10. Stoic quotes GET random
+11. Show current score for each habit
+12. Update Habit
+13. Delete Habit button
+14. Edit Component v1
+15. Convert to formik and yup.
+16. Week, each day with done and unfinished habits
 
 - View of weekly result
 

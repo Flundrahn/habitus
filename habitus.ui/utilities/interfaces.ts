@@ -5,6 +5,7 @@ export interface ILink {
 
 export interface IEntry {
   id: number;
+  userId?: string;
   habitId: number;
   date: Date;
   isCompleted: boolean;
@@ -12,6 +13,7 @@ export interface IEntry {
 
 export interface IHabit {
   id: number;
+  userId?: string;
   title: string;
   goal: number;
   score?: number;
@@ -31,8 +33,8 @@ export interface IQuote {
 }
 
 export interface IUser {
+  id: string;
   displayName: string;
   email: string;
-  uid: string;
   idToken: string;
 }

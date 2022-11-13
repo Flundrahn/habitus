@@ -7,28 +7,34 @@ namespace habitus.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "SameUser")]
+    [Authorize]
     public class EntriesController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
+        private readonly IAuthorizationService _authorization;
 
-        public EntriesController(IRepositoryManager repository)
+        public EntriesController(IRepositoryManager repository, IAuthorizationService authorizationService)
         {
             _repository = repository;
+            _authorization = authorizationService;
         }
 
         // GET: api/Entries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EntryResponse>>> Get()
         {
+            string userId = GetUserId();
             try
             {
-                IEnumerable<EntryResponse> entries = await _repository.Entry.FindAllEntries();
+                IEnumerable<EntryResponse> entries = await _repository.Entry.FindAllEntries(userId);
 
-                if (entries == null)
-                {
-                    return NotFound();
-                }
+                if (entries == null) return NotFound();
+
+                var authorizationResult = await _authorization.AuthorizeAsync(User, entries.First(), "SameUser");
+
+                if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
+                else if (!authorizationResult.Succeeded) return new ChallengeResult();
+
 
                 return Ok(entries);
             }
@@ -46,10 +52,12 @@ namespace habitus.api.Controllers
             {
                 var entry = await _repository.Entry.Find(id);
 
-                if (entry == null)
-                {
-                    return NotFound();
-                }
+                if (entry == null) return NotFound();
+
+                var authorizationResult = await _authorization.AuthorizeAsync(User, entry, "SameUser");
+
+                if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
+                else if (!authorizationResult.Succeeded) return new ChallengeResult();
 
                 return Ok(entry);
             }
@@ -65,6 +73,11 @@ namespace habitus.api.Controllers
         {
             try
             {
+                var authorizationResult = await _authorization.AuthorizeAsync(User, request, "SameUser");
+
+                if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
+                else if (!authorizationResult.Succeeded) return new ChallengeResult();
+
                 int id = await _repository.Entry.CreateEntry(request);
 
                 switch (id)
@@ -93,19 +106,30 @@ namespace habitus.api.Controllers
         {
             try
             {
+                var entry = await _repository.Entry.Find(id);
+
+                var authorizationResult = await _authorization.AuthorizeAsync(User, entry, "SameUser");
+
+                if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
+                else if (!authorizationResult.Succeeded) return new ChallengeResult();
+
                 bool response = await _repository.Entry.DeleteEntry(id);
 
-                if (!response)
-                {
-                    return NotFound();
-                }
-
-                return NoContent();
+                if (!response) return NotFound();
             }
             catch (Exception ex)
             {
                 return Problem(ex.Message);
             }
+
+            return NoContent();
+        }
+
+        private string GetUserId()
+        {
+            string? userId = HttpContext.User.Claims.First(c => c.Type == "userId")?.Value;
+            if (userId is null) throw new Exception("UserId is null");
+            return userId;
         }
     }
 }

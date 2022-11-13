@@ -33,7 +33,7 @@ export default function WeekChart({
   }
 
   return (
-    <ResponsiveContainer width="90%" height={300}>
+    <ResponsiveContainer width="90%" height={300} className="m-4">
       <BarChart
         data={chartData}
         layout="vertical"

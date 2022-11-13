@@ -35,11 +35,10 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
             : _context.Set<T>().Where(expression).AsNoTracking();
     }
 
-    public async Task<int> Create(T entity, string userId)
+    public async Task<int> Create(T entity)
     {
         if (!TableExists()) return -1;
 
-        entity.UserId = userId;
         await _context.Set<T>().AddAsync(entity);
         await _context.SaveChangesAsync();
 

@@ -5,6 +5,8 @@ namespace habitus.api.Models;
 public class UpdateHabitRequest
 {
     [Required]
+    public string UserId { get; init; } = null!;
+    [Required]
     public int Id { get; init; }
     [Required]
     public string Title { get; init; } = null!;

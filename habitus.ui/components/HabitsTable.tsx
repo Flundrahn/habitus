@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { IEntry, IHabit, IUser } from '../utilities/interfaces';
 import useHabitusApi from '../utilities/useHabitusApi';
 import HabitForm from './HabitForm';
+import { useAuthContext } from './AuthContext';
 
 function Header({ labels }: { labels: string[] }) {
   return (
@@ -36,12 +37,18 @@ function EntryCell({
 }) {
   // console.log("Rendering EntryCell");
 
+  const { isInitialized } = useAuthContext();
   function handleClick() {
     if (entry.isCompleted) {
       deleteEntry(entry);
     } else {
-      const updatedEntry = { ...entry, isCompleted: true };
-      postEntry(updatedEntry);
+      const newEntry: IEntry = {
+        ...entry,
+        isCompleted: true,
+        userId:
+          isInitialized && isInitialized.user ? isInitialized.user.id : '',
+      };
+      postEntry(newEntry);
     }
   }
 
@@ -68,7 +75,6 @@ function Row({
   deleteEntry: (entry: IEntry) => Promise<void>;
 }) {
   // console.log("Rendering Row");
-
   return (
     <tr className="table-row hover:bg-blue-200">
       <DataCell data={habit.title} />
@@ -97,7 +103,7 @@ export default function HabitsTable({
   startDate: Date;
   endDate?: Date;
 }) {
-  const { data, error, postEntry, deleteEntry, postHabit } = useHabitusApi(
+  const { data: habits, error, postEntry, deleteEntry, postHabit } = useHabitusApi(
     user.idToken,
     startDate,
     endDate
@@ -107,7 +113,7 @@ export default function HabitsTable({
   // console.log("HabitsTable re-rendered");
 
   if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!habits) return <div>Loading...</div>;
 
   const addButton = (
     <div className="h-6 w-6 ml-2 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full">
@@ -115,16 +121,18 @@ export default function HabitsTable({
     </div>
   );
 
-  if (data.length == 0) {
+  if (habits.length == 0) {
     return (
       <>
         <p className="m-2">Looks empty here, try creating a new habit!</p>
         {showForm ? (
           <HabitForm
+            user={user}
             title="Add a new habit"
             apiAction={postHabit}
             button={addButton}
             setShowForm={setShowForm}
+            entriesLength={0}
           />
         ) : (
           <button onClick={() => setShowForm(true)}>{addButton}</button>
@@ -132,7 +140,7 @@ export default function HabitsTable({
       </>
     );
   }
-  const dateLabels: string[] = data[0].entries.map(e =>
+  const dateLabels: string[] = habits[0].entries.map(e =>
     format(new Date(e.date), 'EEE do')
   );
 
@@ -143,7 +151,7 @@ export default function HabitsTable({
           labels={['Habit', ...dateLabels, 'Score', 'Goal', 'Description']}
         />
         <tbody>
-          {data.map((habit: IHabit) => (
+          {habits.map((habit: IHabit) => (
             <Row
               habit={habit}
               key={habit.id}
@@ -155,6 +163,7 @@ export default function HabitsTable({
       </table>
       {showForm ? (
         <HabitForm
+          user={user}
           title="Add a new habit"
           apiAction={postHabit}
           button={addButton}

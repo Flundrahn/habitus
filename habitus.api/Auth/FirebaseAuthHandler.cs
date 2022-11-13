@@ -43,21 +43,25 @@ public class FirebaseAuthHandler : AuthenticationHandler<AuthenticationSchemeOpt
             FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token);
 
             return AuthenticateResult.Success(new AuthenticationTicket(
-                // TODO Verify that I can skip list
-                new ClaimsPrincipal(new ClaimsIdentity(ToClaims(decodedToken), "Firebase")),
-                JwtBearerDefaults.AuthenticationScheme)
+                new ClaimsPrincipal(
+                    new ClaimsIdentity[]
+                    {
+                        new (ToClaims(decodedToken), nameof(FirebaseAuthHandler))
+                    }
+                ), JwtBearerDefaults.AuthenticationScheme)
             );
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return AuthenticateResult.Fail("Invalid Token");
+            return AuthenticateResult.Fail(ex.Message);
         }
     }
 
     private IEnumerable<Claim>? ToClaims(FirebaseToken decodedToken)
     {
-        var claims = new List<Claim>();
-        claims.Add(new Claim("userId", decodedToken.Uid));
-        return claims;
+        return new Claim[]
+        {
+            new("userId", decodedToken.Uid)
+        };
     }
 }

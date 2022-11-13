@@ -18,9 +18,9 @@ namespace habitus.api.Data
             return _mapper.Map<EntryResponse>(entry);
         }
 
-        public async Task<IEnumerable<EntryResponse>> FindAllEntries()
+        public async Task<IEnumerable<EntryResponse>> FindAllEntries(string userId)
         {
-            var entries = await FindAll(false).ToArrayAsync();
+            var entries = await FindByCondition(e => e.UserId == userId, false).ToArrayAsync();
 
             return _mapper.Map<IEnumerable<EntryResponse>>(entries);
         }

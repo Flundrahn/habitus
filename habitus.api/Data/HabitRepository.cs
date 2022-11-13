@@ -29,7 +29,8 @@ public class HabitRepository : RepositoryBase<Habit>, IHabitRepository
     public async Task<IEnumerable<HabitResponse>> FindAllAndFilterEntriesByDate(
         DateTime startDate,
         DateTime endDate,
-        string userId)
+        string userId
+    )
     {
         // NOTE Should I do anything about the null warning here?
         var filteredHabits = FindByCondition(h => h.UserId == userId, false)
@@ -45,9 +46,9 @@ public class HabitRepository : RepositoryBase<Habit>, IHabitRepository
         return await filteredHabits;
     }
 
-    public async Task<int> CreateHabit(CreateHabitRequest request, string userId)
+    public async Task<int> CreateHabit(CreateHabitRequest request)
     {
-        int id = await Create(_mapper.Map<Habit>(request), userId);
+        int id = await Create(_mapper.Map<Habit>(request));
 
         return id;
     }

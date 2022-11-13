@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace habitus.api.Data;
 
-public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IHasId
+public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IHabitusResource
 {
     protected HabitusDbContext _context;
     protected IMapper _mapper;

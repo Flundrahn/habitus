@@ -19,17 +19,21 @@ public class HabitRepository : RepositoryBase<Habit>, IHabitRepository
         return _mapper.Map<HabitResponse>(habit);
     }
 
-    public async Task<IEnumerable<HabitResponse>> FindAllHabits()
+    public async Task<IEnumerable<HabitResponse>> FindAllHabits(string userId)
     {
-        var habits = await FindAll(false).ToArrayAsync();
+        var habits = await FindByCondition(h => h.UserId == userId, false).ToArrayAsync();
 
         return _mapper.Map<IEnumerable<HabitResponse>>(habits);
     }
 
-    public async Task<IEnumerable<HabitResponse>> FindAllAndFilterEntriesByDate(DateTime startDate, DateTime endDate)
+    public async Task<IEnumerable<HabitResponse>> FindAllAndFilterEntriesByDate(
+        DateTime startDate,
+        DateTime endDate,
+        string userId
+    )
     {
         // NOTE Should I do anything about the null warning here?
-        var filteredHabits = FindAll(false)
+        var filteredHabits = FindByCondition(h => h.UserId == userId, false)
             .Include(h => h.Entries
                 .Where(entry =>
                     entry.Date >= startDate

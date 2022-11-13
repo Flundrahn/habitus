@@ -11,7 +11,7 @@ public class HabitsControllerIntegrationTests
     private readonly HttpClient _client;
 
     public HabitsControllerIntegrationTests()
-    {
+    {   
         _client = new WebApiApplication().CreateClient();
     }
 

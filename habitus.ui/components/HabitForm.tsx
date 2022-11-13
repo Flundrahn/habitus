@@ -2,8 +2,7 @@ import React from 'react';
 import { Formik, useField, FieldHookConfig, Form } from 'formik';
 import * as Yup from 'yup';
 import getRandomColor from '../utilities/getRandomColor';
-import { IEntry, IHabit } from '../utilities/interfaces';
-import { toast } from 'react-toastify';
+import { IEntry, IHabit, IUser } from '../utilities/interfaces';
 
 interface IHabitFormValues {
   title: string;
@@ -37,22 +36,23 @@ function Input(props: FieldHookConfig<IHabitFormValues>) {
   );
 }
 
-interface IHabitFormProps {
-  habit?: IHabit;
-  title?: string;
-  apiAction: (habit: IHabit) => Promise<void>;
-  button: JSX.Element;
-  setShowForm?: React.Dispatch<React.SetStateAction<boolean>>;
-  // labels: boolean;
-}
-
 export default function HabitForm({
   habit,
   title,
   apiAction,
   button,
   setShowForm,
-}: IHabitFormProps) {
+  user,
+  entriesLength,
+}: {
+  habit?: IHabit;
+  title?: string;
+  apiAction: (habit: IHabit) => Promise<void>;
+  button: JSX.Element;
+  setShowForm?: React.Dispatch<React.SetStateAction<boolean>>;
+  user: IUser;
+  entriesLength?: number;
+}) {
   const initialValues: IHabitFormValues = {
     title: habit?.title || '',
     goal: habit?.goal,
@@ -65,7 +65,6 @@ export default function HabitForm({
       .max(32, 'Must be 32 characters or less')
       .required('Required'),
     goal: Yup.number().min(1, 'Must be 1 or higher').required('Required'),
-    // TODO verify color field function
     color: Yup.string().required('Required'),
     description: Yup.string().max(64, 'Must be 64 characters or less'),
   });
@@ -75,9 +74,10 @@ export default function HabitForm({
       ...values,
       goal: values.goal || 0,
       id: habit?.id || 0,
-      entries: habit?.entries || ([] as IEntry[]),
+      entries:
+        habit?.entries || (new Array(entriesLength).fill({}) as IEntry[]),
+      userId: user.id,
     });
-    toast.success('Habit saved!');
     if (setShowForm) setShowForm(false);
   }
 

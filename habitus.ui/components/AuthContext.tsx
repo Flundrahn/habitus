@@ -39,9 +39,9 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (userInfo !== null) {
         setUser({
+          id: userInfo.uid,
           displayName: userInfo.displayName || '',
           email: userInfo.email || '',
-          uid: userInfo.uid,
           idToken: await userInfo.getIdToken(),
         });
       } else {
@@ -50,7 +50,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     });
     setAuth(authInstance);
 
-    return unsubscribe();
+    return () => unsubscribe();
   }, []);
 
   const value: IAuthContext = useMemo(() => {

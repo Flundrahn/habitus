@@ -2,32 +2,33 @@
 
 ## MVP
 
-1. Fix https for next
 1. Mobile first UX, managing habits need be mobile
-1. Style depending on achieved goal or not,
-1. Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible
-1. Fix bug toast message popping up on first render
+2. Style depending on achieved goal or not,
+3. Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible
 
 ## Done
 
-1. Add authorization
-2. Rewrite backend to fetch data for correct user
-3. Fix optimistic update of entries, same as useCounter in chuck-quotes
-4. Add logout button and turn off auto-login
-5. Update frontend api requests to use user data,
-6. Add authentication back end
-7. Add authentication front end
+1. create datacontext so I can access the habits state anywhere, and make optimistic change of current entry (NOTE useHabitusAPI serves this function) 
+2. refactor useHabitusApi to dry, possibly similar to chuck-quotes
+3. Fix bug toast message popping up on first render
+4. Add authorization
+5. Rewrite backend to fetch data for correct user
+6. Fix optimistic update of entries, same as useCounter in chuck-quotes
+7. Add logout button and turn off auto-login
+8. Update frontend api requests to use user data,
+9. Add authentication back end
+10. Add authentication front end
    - Add auth context
    - Add firebase ui & login page
-8. Add toast message on update habit
-9. Show graph
-10. Stoic quotes GET random
-11. Show current score for each habit
-12. Update Habit
-13. Delete Habit button
-14. Edit Component v1
-15. Convert to formik and yup.
-16. Week, each day with done and unfinished habits
+11. Add toast message on update habit
+12. Show graph
+13. Stoic quotes GET random
+14. Show current score for each habit
+15. Update Habit
+16. Delete Habit button
+17. Edit Component v1
+18. Convert to formik and yup.
+19. Week, each day with done and unfinished habits
 
 - View of weekly result
 
@@ -54,20 +55,17 @@
 29. Take at least one tailwind css tutorial
 30. Finish 'Web API 6 Best Practices' course
 31. Take at least one next.js tutorial
+32. make API async, leave sync for now and follow guide
 
 # Want to do
 
-- refactor useHabitusApi to dry, possibly similar to chuck-quotes
 - Add user managemenent, ability to delete or edit account from frontend through backend (as practice).
 - Type of habit that can take number input, like number of alcoholic drinks per day, meaning would also need to set if goal is above or below.
 - Type of habits with clock, such as time to get in bed, is it possible unifying this with the number input? No, should be distinct
 - Graph for clock habits
 - Add button to close form / close on submit, what about the edit page?
-- create datacontext so I can access the habits state anywhere, and make optimistic change of current entry
 - all time view
-- authentication
 - endpoint to post & delete quotes
-- make API async, leave sync for now and follow guide
 - go through access modifiers and set to lowest possible
 - IDEA Redesign repository, put all CRUD methods in class corresponding to current RepositoryManager.
   - That way can use methods from both habitrepo and entryrepo in one place
@@ -80,7 +78,6 @@
 
 - Disable the submit button while the user has attempted to submit (hint: formik.isSubmitting)
 - Add a reset button with formik.handleReset or <button type="reset">.
-- Pre-populate initialValues based on URL query string or props passed to <SignupForm>.
 - Change the input border color to red when a field has an error and isn’t focused
 - Add a shake animation to each field when it displays an error and has been visited
 - Persist form state to the browser’s sessionStorage so that form progress is kept in between page refreshes
@@ -97,4 +94,4 @@ Setup command that starts both frontend and backend
 
 # Front end ideas
 
-2. Navigate through weeks
+1. Navigate through weeks

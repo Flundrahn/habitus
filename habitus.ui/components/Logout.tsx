@@ -1,4 +1,4 @@
-import { useAuthContext } from "./AuthContext";
+import { useAuthContext } from './AuthContext';
 
 export default function Logout() {
   const { isInitialized } = useAuthContext();
@@ -6,14 +6,6 @@ export default function Logout() {
   if (!isInitialized || !isInitialized.user) {
     return null;
   } else {
-
-
-  
-  return ( 
-    <button>
-      Logout
-    </button>
-   );
-}
-
+    return <button>Logout</button>;
+  }
 }

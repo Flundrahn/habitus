@@ -1,11 +1,8 @@
 import { EmailAuthProvider } from 'firebase/auth';
 
 export const uiConfig = {
-  signInFlow: 'popup',
-  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
   signInSuccessUrl: '/',
-  credentialHelper: 'none',
-  tosUrl: '/terms-of-service', // NOTE May remove this later
+  tosUrl: '/terms-of-service',
   privacyPolicyUrl: '/privacy-policy',
   signInOptions: [
     {

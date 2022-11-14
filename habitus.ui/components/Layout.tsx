@@ -2,10 +2,11 @@ import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useAuthContext } from './AuthContext';
-import ReactLoading from 'react-loading';
 import { ILink, IUser } from '../utilities/interfaces';
 import Quote from './Quote';
 import { Auth, signOut } from 'firebase/auth';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LinkButton({ href, label }: ILink) {
   return (
@@ -35,7 +36,7 @@ function HeaderContent({ auth, user }: { auth: Auth; user: IUser }) {
         ))}
       </div>
       <div className="flex gap-1 items-center justify-end w-52 text-sm">
-        <span className='text-gray-700'>{user.displayName}</span>
+        <span className="text-gray-700">{user.displayName}</span>
         <button
           onClick={logout}
           className="p-1 bg-gray-400 hover:bg-blue-500 text-white rounded-sm"
@@ -89,6 +90,14 @@ export default function Layout({
       <footer>
         <hr className="m-8" />
         <p className="text-center">Habitus Inc.</p>
+        <ToastContainer
+          autoClose={3000}
+          position="bottom-center"
+          hideProgressBar
+          draggable
+          pauseOnHover
+          className="text-center"
+        />
       </footer>
     </div>
   );

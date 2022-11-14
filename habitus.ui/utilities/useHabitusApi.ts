@@ -17,15 +17,18 @@ const poster = async (
   entity: IEntry | IHabit,
   idToken: string
 ) => {
-  const response = await axios.post<IPostResponse>(
-    `${API_BASE_URL}/${uri}`,
-    entity,
-    {
-      headers: { Authorization: `Bearer ${idToken}` },
-    }
-  );
-
-  checkResponse(response);
+  try {
+    const response = await axios.post<IPostResponse>(
+      `${API_BASE_URL}/${uri}`,
+      entity,
+      {
+        headers: { Authorization: `Bearer ${idToken}` },
+      }
+    );
+    checkResponse(response);
+  } catch {
+    toast.error('Something went wrong');
+  }
 };
 
 const putter = async (
@@ -33,23 +36,29 @@ const putter = async (
   entity: IEntry | IHabit,
   idToken: string
 ) => {
-  const response = await axios.put<IPostResponse>(
-    `${API_BASE_URL}/${uri}/${entity.id}`,
-    entity,
-    {
-      headers: { Authorization: `Bearer ${idToken}` },
-    }
-  );
-
-  checkResponse(response);
+  try {
+    const response = await axios.put<IPostResponse>(
+      `${API_BASE_URL}/${uri}/${entity.id}`,
+      entity,
+      {
+        headers: { Authorization: `Bearer ${idToken}` },
+      }
+    );
+    checkResponse(response);
+  } catch (error) {
+    toast.error('Something went wrong');
+  }
 };
 
 const deleter = async (uri: string, id: number, idToken: string) => {
-  const response = await axios.delete(`${API_BASE_URL}/${uri}/${id}`, {
-    headers: { Authorization: `Bearer ${idToken}` },
-  });
-
-  checkResponse(response);
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/${uri}/${id}`, {
+      headers: { Authorization: `Bearer ${idToken}` },
+    });
+    checkResponse(response);
+  } catch {
+    toast.error('Something went wrong');
+  }
 };
 
 function checkResponse(response: AxiosResponse) {
@@ -88,25 +97,20 @@ export default function useHabitusApi(
     return async (entity: T) => {
       const optimisticData = optimisticDataProducer(entity);
 
-      try {
-        mutate(
-          async () => {
-            await apiAction(entity);
-            return optimisticData;
-          },
-          {
-            optimisticData: optimisticData,
-            rollbackOnError: true,
-            populateCache: true,
-            revalidate: true,
-          }
-        );
-        if (successmessage) {
-          toast.success(successmessage);
+      mutate(
+        async () => {
+          await apiAction(entity);
+          return optimisticData;
+        },
+        {
+          optimisticData: optimisticData,
+          rollbackOnError: true,
+          populateCache: true,
+          revalidate: true,
         }
-      } catch (error) {
-        toast.error('Something went wrong');
-        console.error(error);
+      );
+      if (successmessage && !error) {
+        toast.success(successmessage);
       }
     };
   }
@@ -117,7 +121,7 @@ export default function useHabitusApi(
       produce(data, (draft: IHabit[]) => {
         const habitIndex = draft.findIndex(h => h.id === entry.habitId);
         const entryIndex = draft[habitIndex].entries.findIndex(
-          e => e.id === entry.id
+          e => e.date === entry.date
         );
 
         if (entryIndex !== -1 && habitIndex !== -1) {

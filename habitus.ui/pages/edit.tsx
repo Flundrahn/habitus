@@ -1,8 +1,6 @@
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
 import HabitForm from '../components/HabitForm';
 import useHabitusApi from '../utilities/useHabitusApi';
-import 'react-toastify/dist/ReactToastify.css';
 import { useAuthContext } from '../components/AuthContext';
 import { useRouter } from 'next/router';
 import { IUser } from '../utilities/interfaces';
@@ -29,13 +27,14 @@ export default function EditPage() {
     router.push('/');
   }
 
-  const idToken = (isInitialized && isInitialized.user) ? isInitialized.user.idToken : '';
+  const idToken =
+    isInitialized && isInitialized.user ? isInitialized.user.idToken : '';
   const { data, putHabit, deleteHabit, error } = useHabitusApi(idToken);
 
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
 
-  const addButton = (
+  const saveButton = (
     <div className="h-6 w-6 ml-2 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full">
       <i className="fa-solid fa-floppy-disk" />
     </div>
@@ -54,8 +53,12 @@ export default function EditPage() {
               habit={habit}
               key={habit.id}
               apiAction={putHabit}
-              button={addButton}
-              user={(isInitialized && isInitialized.user) ? isInitialized.user : {} as IUser}
+              button={saveButton}
+              user={
+                isInitialized && isInitialized.user
+                  ? isInitialized.user
+                  : ({} as IUser)
+              }
             />
             <button
               onClick={() => deleteHabit(habit)}
@@ -66,14 +69,6 @@ export default function EditPage() {
           </div>
         ))}
       </div>
-      <ToastContainer
-        autoClose={3000}
-        position="bottom-center"
-        hideProgressBar
-        draggable
-        pauseOnHover
-        className="text-center"
-      />
     </>
   );
 }

@@ -1,6 +1,8 @@
+using habitus.api.Auth;
+
 namespace habitus.api.Models;
 
-public class EntryResponse : IHabitusResource
+public class EntryResponse : IHasId, IHasUserId
 {
     public int Id { get; init; }
     public string UserId { get; init; } = null!;

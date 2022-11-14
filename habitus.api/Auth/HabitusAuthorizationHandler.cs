@@ -7,13 +7,13 @@ public class SameUserAuthorizationRequirement : IAuthorizationRequirement
 {
 }
 
-public class HabitusAuthorizationHandler : AuthorizationHandler<SameUserAuthorizationRequirement, IHabitusResource>
+public class HabitusAuthorizationHandler : AuthorizationHandler<SameUserAuthorizationRequirement, IHasUserId>
 {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, SameUserAuthorizationRequirement requirement, IHabitusResource resource)
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, SameUserAuthorizationRequirement requirement, IHasUserId resource)
     {
         string? userId = context.User.Claims.First(c => c.Type == "userId")?.Value;
 
-        if (context.User.HasClaim(c => c.Type == "userId") && userId == resource.UserId)
+        if (userId == resource.UserId)
         {
             context.Succeed(requirement);
         }

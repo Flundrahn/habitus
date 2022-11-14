@@ -1,8 +1,9 @@
+using habitus.api.Auth;
 using Microsoft.Build.Framework;
 
 namespace habitus.api.Models;
 
-public class CreateEntryRequest
+public class CreateEntryRequest : IHasUserId
 {
     [Required]
     public string UserId { get; init; } = null!;

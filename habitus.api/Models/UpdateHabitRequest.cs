@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using habitus.api.Auth;
 
 namespace habitus.api.Models;
 
-public class UpdateHabitRequest
+public class UpdateHabitRequest : IHasId, IHasUserId
 {
     [Required]
     public string UserId { get; init; } = null!;

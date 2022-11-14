@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Authentication;
 using FirebaseAdmin;
 using habitus.api.Auth;
 using Microsoft.AspNetCore.Authorization;
-using habitus.api.Models;
+using Google.Apis.Auth.OAuth2;
+
+var connectionStringName = "DbContextLocal";
+var googleCredentialsName = "GOOGLE_APPLICATION_CREDENTIALS";
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionStringName = "DbContextLocal";
 
 builder.Services.AddDbContext<HabitusDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString(connectionStringName)
@@ -16,7 +18,16 @@ builder.Services.AddDbContext<HabitusDbContext>(options =>
     )
 );
 builder.Services.AddControllers();
-builder.Services.AddSingleton(FirebaseApp.Create());
+
+var credentials = Environment.GetEnvironmentVariable(googleCredentialsName)
+?? throw new InvalidOperationException($"Environment variable {googleCredentialsName} not found.");
+
+builder.Services.AddSingleton(FirebaseApp.Create(
+    new AppOptions()
+    {
+        Credential = GoogleCredential.FromJson(parseEnvironmentVariable(credentials))
+    })
+);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
@@ -79,3 +90,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+string parseEnvironmentVariable(string variable)
+{
+    return variable[0] == '\"' && variable[^1] == '\"'
+        ? variable.Substring(1, variable.Length - 2)
+        : variable;
+}

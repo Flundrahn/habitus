@@ -103,16 +103,23 @@ export default function HabitsTable({
   startDate: Date;
   endDate?: Date;
 }) {
-  const { data: habits, error, postEntry, deleteEntry, postHabit } = useHabitusApi(
-    user.idToken,
-    startDate,
-    endDate
-  );
+  const {
+    data: habits,
+    mutate,
+    error,
+    postEntry,
+    deleteEntry,
+    postHabit,
+  } = useHabitusApi(user.idToken, startDate, endDate);
   const [showForm, setShowForm] = useState(false);
 
   // console.log("HabitsTable re-rendered");
 
-  if (error) return <div>Failed to load</div>;
+  if (error && error.message === 'Request failed with status code 404') {
+    mutate([] as IHabit[], {
+      revalidate: false,
+    });
+  } else if (error) return <div>Failed to load</div>;
   if (!habits) return <div>Loading...</div>;
 
   const addButton = (
@@ -124,7 +131,7 @@ export default function HabitsTable({
   if (habits.length == 0) {
     return (
       <>
-        <p className="m-2">Looks empty here, try creating a new habit!</p>
+        <p className="m-2">Looks empty here, try creating a new habit</p>
         {showForm ? (
           <HabitForm
             user={user}

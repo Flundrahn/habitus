@@ -12,11 +12,9 @@ private readonly IMapper _mapper;
         _mapper = mapper;
     }
     
-    // public async Task<QuoteResponse?> GetRandomQuote()
     public QuoteResponse? GetRandomQuote()
     {
         var quotes = SeedData.Quotes();
-        // var quotes = await SeedData.Quotes();
 
         if (quotes == null) return null;
 

@@ -5,12 +5,13 @@ import API_BASE_URL from './constants';
 import produce from 'immer';
 import { toast } from 'react-toastify';
 
-const fetcher = (url: string, idToken: string) =>
-  axios
-    .get(url, {
-      headers: { Authorization: `Bearer ${idToken}` },
-    })
-    .then(response => response.data);
+const fetcher = async (url: string, idToken: string) => {
+  const response = await axios.get(url, {
+    headers: { Authorization: `Bearer ${idToken}` },
+  });
+
+  return response.data;
+};
 
 const poster = async (
   uri: string,
@@ -180,6 +181,7 @@ export default function useHabitusApi(
 
   return {
     data,
+    mutate,
     error,
     postEntry,
     deleteEntry,

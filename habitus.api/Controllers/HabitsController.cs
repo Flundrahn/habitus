@@ -25,10 +25,9 @@ namespace habitus.api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HabitResponse>>> Get()
         {
-            string userId = GetUserId();
             try
             {
-                IEnumerable<HabitResponse> habits = await _repository.Habit.FindAllHabits(userId);
+                IEnumerable<HabitResponse> habits = await _repository.Habit.FindAllHabits(GetUserId());
 
                 if (habits == null) return NotFound();
 
@@ -72,13 +71,11 @@ namespace habitus.api.Controllers
             if (filter.EndDate is null) filter.EndDate = filter.StartDate;
             if (filter.StartDate > filter.EndDate) return BadRequest("Start date must be before end date");
 
-            string userId = GetUserId();
-
             try
             {
-                var habits = await _repository.Habit.FindAllAndFilterEntriesByDate(filter.StartDate, filter.EndDate.Value, userId);
+                var habits = await _repository.Habit.FindAllAndFilterEntriesByDate(filter.StartDate, filter.EndDate.Value, GetUserId());
 
-                if (habits == null) return NotFound();
+                if (habits == null || !habits.Any()) return NotFound();
 
                 var authorizationResult = await _authorization.AuthorizeAsync(User, habits.First(), "SameUser");
 

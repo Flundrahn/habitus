@@ -23,12 +23,11 @@ namespace habitus.api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EntryResponse>>> Get()
         {
-            string userId = GetUserId();
             try
             {
-                IEnumerable<EntryResponse> entries = await _repository.Entry.FindAllEntries(userId);
+                IEnumerable<EntryResponse> entries = await _repository.Entry.FindAllEntries(GetUserId());
 
-                if (entries == null) return NotFound();
+                if (entries == null || !entries.Any()) return NotFound();
 
                 var authorizationResult = await _authorization.AuthorizeAsync(User, entries.First(), "SameUser");
 

@@ -1,14 +1,17 @@
-# TODO
+# Doing
+
+1. Mobile first UX, managing habits need be mobile
+   [x] Choose font
+   [x] Fix header / navbar, make name + login an icon that expands?
 
 ## MVP
 
-1. Mobile first UX, managing habits need be mobile
 2. Style depending on achieved goal or not,
 3. Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible
 
 ## Done
 
-1. create datacontext so I can access the habits state anywhere, and make optimistic change of current entry (NOTE useHabitusAPI serves this function) 
+1. create datacontext so I can access the habits state anywhere, and make optimistic change of current entry (NOTE useHabitusAPI serves this function)
 2. refactor useHabitusApi to dry, possibly similar to chuck-quotes
 3. Fix bug toast message popping up on first render
 4. Add authorization
@@ -18,8 +21,10 @@
 8. Update frontend api requests to use user data,
 9. Add authentication back end
 10. Add authentication front end
-   - Add auth context
-   - Add firebase ui & login page
+
+- Add auth context
+- Add firebase ui & login page
+
 11. Add toast message on update habit
 12. Show graph
 13. Stoic quotes GET random
@@ -59,6 +64,7 @@
 
 # Want to do
 
+- dark mode
 - Add user managemenent, ability to delete or edit account from frontend through backend (as practice).
 - Type of habit that can take number input, like number of alcoholic drinks per day, meaning would also need to set if goal is above or below.
 - Type of habits with clock, such as time to get in bed, is it possible unifying this with the number input? No, should be distinct
@@ -89,6 +95,11 @@ Setup command that starts both frontend and backend
 - https://ss64.com/nt/start.html
 - https://stackoverflow.com/a/36275359
 - https://stackoverflow.com/a/35455532
+
+### For VS Code
+
+- https://code.visualstudio.com/Docs/editor/tasks (compound tasks)
+- SOLUTION create separate tasks and use dependsOn
 
 # Web API ideas
 

@@ -25,7 +25,7 @@ function Input(props: FieldHookConfig<IHabitFormValues>) {
         {...field}
         type={props.type}
         placeholder={props.placeholder}
-        className="h-8 px-2 py-1 block bg-white text-sm placeholder-slate-400 outline-none focus:border-sky-500 border border-slate-300 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 invalid:text-pink-600 invalid:placeholder-pink-600 focus:invalid:border-pink-500"
+        className="h-8 px-2 py-1 block bg-white text-sm placeholder-slate-400 outline-none focus:border-sky-500 shadow-[1px_0_0_0_#cbd5e1,0_1px_0_0_#cbd5e1,1px_1px_0_0_#cbd5e1,1px_0_0_0_#cbd5e1_inset,0_1px_0_0_#cbd5e1_inset;] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 invalid:text-pink-600 invalid:placeholder-pink-600 focus:invalid:border-pink-500 border-collapse"
       />
       {meta.touched && meta.error ? (
         <div className="text-xs text-red-700 pl-2 absolute right-1">

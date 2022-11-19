@@ -34,9 +34,9 @@ export default function Quote() {
     const quote = `“${data.quoteText}”`;
 
     return (
-      <div className="flex flex-col items-center m-2">
+      <div className="flex flex-col items-center m-2 italic">
         <NewlinedParagraph>{quote}</NewlinedParagraph>
-        <p className="text-sm">{` - ${data.philosopher}`}</p>
+        <p className="text-sm not-italic">{` - ${data.philosopher}`}</p>
       </div>
     );
   }

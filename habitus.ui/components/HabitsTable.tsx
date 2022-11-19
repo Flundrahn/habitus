@@ -23,7 +23,16 @@ function Header({ labels }: { labels: string[] }) {
 
 function DataCell({ data }: { data: string | number }) {
   // console.log("Rendering DataCell");
-  return <td className="table-cell pl-2 pr-2">{data}</td>;
+  return (
+    <td
+      data-status="green"
+      className={`table-cell pl-2 pr-2${
+        typeof data === 'number' ? ' text-center' : ''
+      }`}
+    >
+      {data}
+    </td>
+  );
 }
 
 function EntryCell({

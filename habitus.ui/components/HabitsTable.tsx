@@ -154,7 +154,7 @@ export default function HabitsTable({
   if (!habits) return <div>Loading...</div>;
 
   const addButton = (
-    <div className="h-6 w-6 ml-2 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full">
+    <div className="h-6 w-6 ml-2 bg-blue-300 shadow-sm shadow-gray-500 flex justify-center items-center rounded-full text-white hover:bg-blue-50 hover:text-blue-300">
       <i className="fa-solid fa-plus" />
     </div>
   );

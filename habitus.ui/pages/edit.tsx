@@ -35,7 +35,7 @@ export default function EditPage() {
   if (!data) return <div>Loading...</div>;
 
   const saveButton = (
-    <div className="h-6 w-6 ml-2 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full">
+    <div className="h-6 w-6 ml-2 bg-blue-300 shadow-sm shadow-gray-800 text-white hover:text-blue-300 hover:bg-blue-50 flex justify-center items-center rounded-full">
       <i className="fa-solid fa-floppy-disk" />
     </div>
   );
@@ -61,7 +61,7 @@ export default function EditPage() {
             />
             <button
               onClick={() => deleteHabit(habit)}
-              className="h-6 w-6 ml-8 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full"
+              className="h-6 w-6 ml-8 bg-blue-300 shadow-sm shadow-gray-800 text-white hover:text-blue-300 hover:bg-blue-50 flex justify-center items-center rounded-full"
             >
               <i className="fa-solid fa-trash" />
             </button>

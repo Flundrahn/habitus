@@ -17,7 +17,7 @@ function Dropdown({ auth, user }: { auth: Auth; user: IUser }) {
       {...getToggleProps()}
       className="absolute right-4 top-2 flex flex-col items-end gap-1 text-sm"
     >
-      <div className="flex justify-center items-center text-xl bg-blue-300 w-8 h-8 rounded-full">
+      <div className="flex justify-center items-center text-xl text-white bg-blue-300 shadow-sm shadow-gray-500 w-8 h-8 rounded-full hover:text-blue-300 hover:bg-blue-50">
         <i className="fa-solid fa-user" />
       </div>
       <div {...getCollapseProps()}>

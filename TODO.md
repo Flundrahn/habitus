@@ -1,12 +1,5 @@
 # Doing
 
-1. Mobile first UX, managing habits need be mobile
-   [x] Choose font
-   [x] Fix header / navbar, make name + login an icon that expands?
-   [x] Fix table,
-   [x] Fix form
-   [] Fix chart
-
 ## MVP
 
 2. Style depending on achieved goal or not,
@@ -14,16 +7,24 @@
 
 ## Done
 
-1. create datacontext so I can access the habits state anywhere, and make optimistic change of current entry (NOTE useHabitusAPI serves this function)
-2. refactor useHabitusApi to dry, possibly similar to chuck-quotes
-3. Fix bug toast message popping up on first render
-4. Add authorization
-5. Rewrite backend to fetch data for correct user
-6. Fix optimistic update of entries, same as useCounter in chuck-quotes
-7. Add logout button and turn off auto-login
-8. Update frontend api requests to use user data,
-9. Add authentication back end
-10. Add authentication front end
+1. [x] Medium size ux
+2. [x] Desktop size ux
+3. Mobile first UX, managing habits need be mobile
+   [x] Choose font
+   [x] Fix header / navbar, make name + login an icon that expands?
+   [x] Fix table,
+   [x] Fix form
+   [x] Fix chart
+4. create datacontext so I can access the habits state anywhere, and make optimistic change of current entry (NOTE useHabitusAPI serves this function)
+5. refactor useHabitusApi to dry, possibly similar to chuck-quotes
+6. Fix bug toast message popping up on first render
+7. Add authorization
+8. Rewrite backend to fetch data for correct user
+9. Fix optimistic update of entries, same as useCounter in chuck-quotes
+10. Add logout button and turn off auto-login
+11. Update frontend api requests to use user data,
+12. Add authentication back end
+13. Add authentication front end
 
 - Add auth context
 - Add firebase ui & login page

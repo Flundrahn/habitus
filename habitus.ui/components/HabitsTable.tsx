@@ -10,20 +10,6 @@ import {
   GetTogglePropsOutput,
 } from 'react-collapsed/dist/types';
 
-function LabelRow({ labels }: { labels: string[] }) {
-  return (
-    <div className="flex justify-center w-full shadow-[0_1px_0_0_#BFDBFE]">
-      {React.Children.toArray(
-        labels.map(label => (
-          <div className="first:flex-grow first:pl-2 py-1 text-xs first:text-sm text-center first:text-left w-8 font-bold">
-            {label}
-          </div>
-        ))
-      )}
-    </div>
-  );
-}
-
 function TitleCell({
   title,
   getToggleProps,
@@ -34,14 +20,21 @@ function TitleCell({
   ) => GetTogglePropsOutput;
 }) {
   return (
-    <div {...getToggleProps()} className="flex-grow px-2 py-1 text-sm truncate">
+    <div
+      {...getToggleProps()}
+      className="flex-grow px-2 text-sm lg:text-base truncate"
+    >
       {title}
     </div>
   );
 }
 
 function DataCell({ data }: { data: number }) {
-  return <div className="w-8 text-center px-2 py-1 flex-shrink-0">{data}</div>;
+  return (
+    <div className="w-8 md:w-10 lg:w-12 lg:text-base text-center flex-shrink-0">
+      {data}
+    </div>
+  );
 }
 
 function EntryCell({
@@ -53,7 +46,6 @@ function EntryCell({
   postEntry: (entry: IEntry) => Promise<void>;
   deleteEntry: (entry: IEntry) => Promise<void>;
 }) {
-
   const { isInitialized } = useAuthContext();
   function handleClick() {
     if (entry.isCompleted) {
@@ -71,7 +63,7 @@ function EntryCell({
 
   return (
     <button
-      className={`w-8 flex-shrink-0 px-2 py-1 text-center text-sm duration-300 hover:scale-110 hover:drop-shadow-md ${
+      className={`w-8 md:w-10 lg:w-12 flex-shrink-0 h-full text-center text-sm duration-200 hover:scale-[115%] hover:drop-shadow-md ${
         entry.isCompleted
           ? 'bg-green-300 text-gray-600'
           : 'bg-red-300 text-transparent'
@@ -80,6 +72,20 @@ function EntryCell({
     >
       <i className="fa-solid fa-xmark" />
     </button>
+  );
+}
+
+function LabelRow({ labels }: { labels: string[] }) {
+  return (
+    <div className="flex justify-center w-full shadow-[0_1px_0_0_#BFDBFE]">
+      {React.Children.toArray(
+        labels.map(label => (
+          <div className="first:flex-grow first:pl-2 first:text-sm lg:first:text-base py-1 text-xs md:text-sm lg:text-base text-center first:text-left w-8 md:w-10 lg:w-12 font-bold">
+            {label}
+          </div>
+        ))
+      )}
+    </div>
   );
 }
 
@@ -96,10 +102,9 @@ function DataRow({
     defaultExpanded: false,
   });
 
-
   return (
     <>
-      <div className="flex w-full hover:bg-blue-200">
+      <div className="flex justify-end items-center w-full h-8 md:h-10 hover:bg-blue-200">
         <TitleCell title={habit.title} getToggleProps={getToggleProps} />
         {React.Children.toArray(
           habit.entries.map(entry => (

@@ -99,8 +99,8 @@ export default function HabitForm({
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      <Form className="flex flex-col justify-center w-[82%] min-w-[280px]">
-        <h1 className="text-center text-sm mb-1">{title}</h1>
+      <Form className="flex flex-col justify-center w-[82%] min-w-[280px] ml-[-22px]">
+        <h1 className="text-center text-sm">{title}</h1>
         <div className="flex items-center text-sm relative">
           {/* TODO Leave this line to add funcitonality show labels */}
           {/* <Input name="title" type="text" placeholder="Title" label={labels ? 'Title' : undefined}/> */}

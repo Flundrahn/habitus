@@ -1,6 +1,5 @@
 import axios from 'axios';
-import React from 'react';
-import useSWR from 'swr';
+import React, { useEffect, useState } from 'react';
 import API_BASE_URL from '../utilities/constants';
 import { IQuote } from '../utilities/interfaces';
 
@@ -19,24 +18,32 @@ function NewlinedParagraph({ children }: { children: string }) {
 }
 
 export default function Quote() {
-  const quoteFetcher = (url: string) =>
-    axios.get(url).then(response => response.data);
-  const { data, error } = useSWR<IQuote>(
-    `${API_BASE_URL}/quotes`,
-    quoteFetcher
-  );
+  const [quote, setQuote] = useState<IQuote | undefined>();
+  const [error, setError] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getQuote = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/quotes`);
+        setQuote(response.data);
+      } catch (error) {
+        console.error(error);
+        setError(true);
+      }
+    };
+
+    getQuote();
+  }, []);
 
   if (error) {
     return <div>Failed to load</div>;
-  } else if (!data) {
+  } else if (!quote) {
     return <div>Loading...</div>;
   } else {
-    const quote = `“${data.quoteText}”`;
-
     return (
       <div className="flex flex-col items-center mx-4 mb-6 mt-[76px] italic">
-        <NewlinedParagraph>{quote}</NewlinedParagraph>
-        <p className="text-sm not-italic">{` - ${data.philosopher}`}</p>
+        <NewlinedParagraph>{`“${quote.quoteText}”`}</NewlinedParagraph>
+        <p className="text-sm not-italic">{` - ${quote.philosopher}`}</p>
       </div>
     );
   }

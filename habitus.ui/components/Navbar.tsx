@@ -21,15 +21,17 @@ function Dropdown({ auth, user }: { auth: Auth; user: IUser }) {
         <i className="fa-solid fa-user" />
       </div>
       <div {...getCollapseProps()}>
-        <div className="relative flex flex-col gap-1 bg-white items-center mt-1 p-2 shadow-md rounded-md">
-          <p className="text-gray-700">{user.displayName}</p>
-          <p className="text-gray-700 overflow-x-hidden">{user.email}</p>
-          <button
-            onClick={signout}
-            className="py-1 px-3 bg-gray-400 hover:bg-blue-500 text-white rounded-sm w-4/ font-bold"
-          >
-            sign out
-          </button>
+        <div className="p-1">
+          <div className="relative flex flex-col gap-1 bg-white items-center mt-1 p-2 rounded-md shadow-md">
+            <p className="text-gray-700">{user.displayName}</p>
+            <p className="text-gray-700 overflow-x-hidden">{user.email}</p>
+            <button
+              onClick={signout}
+              className="py-1 px-3 bg-gray-400 hover:bg-blue-500 text-white rounded-sm w-4/ font-bold"
+            >
+              sign out
+            </button>
+          </div>
         </div>
       </div>
     </div>

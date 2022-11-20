@@ -35,7 +35,7 @@ export default function Layout({ children }: { children?: ReactNode }) {
         </main>
         <footer>
           <hr className="m-4" />
-          <p className="text-center">Habitus Inc.</p>
+          <p className="text-center mb-4">Habitus Inc.</p>
           <ToastContainer
             autoClose={3000}
             position="bottom-center"

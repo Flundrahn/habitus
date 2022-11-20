@@ -20,7 +20,7 @@ export default function Layout({ children }: { children?: ReactNode }) {
         <title>Habitus</title>
       </Head>
       <div className="font-railway bg-[#f5f5f5] min-h-screen">
-        <header className="fixed top-0 flex flex-col items-center w-full z-10 bg-white shadow-md">
+        <header className="fixed top-0 flex flex-col items-center justify-center w-full z-10 bg-white shadow-md h-12">
           {isInitialized.user ? (
             <Navbar auth={isInitialized.auth} user={isInitialized.user} />
           ) : (
@@ -30,7 +30,6 @@ export default function Layout({ children }: { children?: ReactNode }) {
           )}
         </header>
         <main className="flex flex-col items-center">
-          <div className="h-12" />
           <Quote />
           {children}
         </main>

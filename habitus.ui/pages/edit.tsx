@@ -43,33 +43,29 @@ export default function EditPage() {
   const labels = ['Title', 'Weekly goal', 'Color', 'Description'];
 
   return (
-    <>
-      <p>Here you can edit your habits</p>
-      <div className='w-11/12'>
-        <Labels labels={labels} />
-        {data.map(habit => (
-          <div key={habit.id} className="flex items-center justify-center">
-            <HabitForm
-              habit={habit}
-              key={habit.id}
-              apiAction={putHabit}
-              button={saveButton}
-              user={
-                isInitialized && isInitialized.user
-                  ? isInitialized.user
-                  : ({} as IUser)
-              }
-              showLabels
-            />
-            <button
-              onClick={() => deleteHabit(habit)}
-              className="h-6 w-6 ml-8 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full"
-            >
-              <i className="fa-solid fa-trash" />
-            </button>
-          </div>
-        ))}
-      </div>
-    </>
+    <div className="w-11/12">
+      <Labels labels={labels} />
+      {data.map(habit => (
+        <div key={habit.id} className="flex items-center justify-center">
+          <HabitForm
+            habit={habit}
+            key={habit.id}
+            apiAction={putHabit}
+            button={saveButton}
+            user={
+              isInitialized && isInitialized.user
+                ? isInitialized.user
+                : ({} as IUser)
+            }
+          />
+          <button
+            onClick={() => deleteHabit(habit)}
+            className="h-6 w-6 ml-8 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full"
+          >
+            <i className="fa-solid fa-trash" />
+          </button>
+        </div>
+      ))}
+    </div>
   );
 }

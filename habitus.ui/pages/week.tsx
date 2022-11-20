@@ -27,7 +27,7 @@ export default function WeekPage() {
   }
 
   return (
-    <div className="flex flex-col items-center w-[96%]">
+    <div className="flex flex-col items-center w-[96%] text-sm">
       <HabitsTable
         user={isInitialized.user}
         startDate={startDate}

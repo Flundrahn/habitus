@@ -33,25 +33,25 @@ export default function WeekChart({
   }
 
   return (
-    <ResponsiveContainer width="90%" height={300} className="m-4">
+    <ResponsiveContainer width="90%" minHeight={200} className="m-4">
       <BarChart
         data={chartData}
         layout="vertical"
-        // margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
+        barGap={-20}
+        margin={{ top: 0, right: 0, left: 8, bottom: 0 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           type="number"
           allowDecimals={false}
           tickCount={8}
-          interval="preserveStart"
-          // scale="point"
+          interval="preserveEnd"
         />
         <YAxis dataKey="name" type="category" />
         <Tooltip />
         <Legend iconType="circle" />
-        <Bar dataKey="Score" stackId={1} fill="#86EFAC" />
-        <Bar dataKey="Goal" stackId={1} fill="#FF6347" />
+        <Bar dataKey="Goal" stackId={1} fill="#FCA5A5" barSize={20} />
+        <Bar dataKey="Score" stackId={2} fill="#86EFAC" barSize={20} />
       </BarChart>
     </ResponsiveContainer>
   );

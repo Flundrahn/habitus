@@ -33,7 +33,6 @@ function TitleCell({
     config?: GetTogglePropsInput | undefined
   ) => GetTogglePropsOutput;
 }) {
-  // console.log("Rendering titleCell");
   return (
     <div {...getToggleProps()} className="flex-grow px-2 py-1 text-sm truncate">
       {title}
@@ -42,8 +41,7 @@ function TitleCell({
 }
 
 function DataCell({ data }: { data: number }) {
-  // console.log("Rendering DataCell");
-  return <div className="w-8 text-center px-2 py-1">{data}</div>;
+  return <div className="w-8 text-center px-2 py-1 flex-shrink-0">{data}</div>;
 }
 
 function EntryCell({
@@ -55,7 +53,6 @@ function EntryCell({
   postEntry: (entry: IEntry) => Promise<void>;
   deleteEntry: (entry: IEntry) => Promise<void>;
 }) {
-  // console.log("Rendering EntryCell");
 
   const { isInitialized } = useAuthContext();
   function handleClick() {
@@ -74,7 +71,7 @@ function EntryCell({
 
   return (
     <button
-      className={`w-8 px-2 py-1 text-center text-sm duration-300 hover:scale-110 hover:drop-shadow-md ${
+      className={`w-8 flex-shrink-0 px-2 py-1 text-center text-sm duration-300 hover:scale-110 hover:drop-shadow-md ${
         entry.isCompleted
           ? 'bg-green-300 text-gray-600'
           : 'bg-red-300 text-transparent'
@@ -99,7 +96,6 @@ function DataRow({
     defaultExpanded: false,
   });
 
-  // console.log("Rendering Row");
 
   return (
     <>
@@ -119,7 +115,7 @@ function DataRow({
       </div>
       <div {...getCollapseProps()}>
         <p className="w-full text-gray-600 p-2 text-sm">
-          {habit.description || ''}
+          {`${habit.title}: ${habit.description}` || ''}
         </p>
       </div>
     </>
@@ -144,8 +140,6 @@ export default function HabitsTable({
     postHabit,
   } = useHabitusApi(user.idToken, startDate, endDate);
   const [showForm, setShowForm] = useState(false);
-
-  // console.log("HabitsTable re-rendered");
 
   if (error && error.message === 'Request failed with status code 404') {
     mutate([] as IHabit[], {
@@ -188,7 +182,6 @@ export default function HabitsTable({
       <div
         className={
           'flex flex-col w-full mb-4 bg-white rounded-md overflow-hidden shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]'
-          // 'flex flex-col w-full mb-4 bg-white rounded-md overflow-hidden border border-[#BFDBFE] shadow-sm'
         }
       >
         <LabelRow labels={['Habit', ...dateLabels, 'Score', 'Goal']} />

@@ -7,10 +7,10 @@ import { IUser } from '../utilities/interfaces';
 
 function Labels({ labels }: { labels: string[] }) {
   return (
-    <div className="flex flex-wrap w-full justify-center">
+    <div className="flex w-full justify-center">
       {React.Children.toArray(
         labels.map(l => (
-          <span className="text-xs bg-gray-200 rounded-full px-2 py-1 m-1">
+          <span className="text-xs bg-blue-100 rounded-full px-2 py-1 m-1">
             {l}
           </span>
         ))
@@ -45,10 +45,10 @@ export default function EditPage() {
   return (
     <>
       <p>Here you can edit your habits</p>
-      <div>
+      <div className='w-11/12'>
         <Labels labels={labels} />
         {data.map(habit => (
-          <div key={habit.id} className="flex items-center">
+          <div key={habit.id} className="flex items-center justify-center">
             <HabitForm
               habit={habit}
               key={habit.id}
@@ -59,10 +59,11 @@ export default function EditPage() {
                   ? isInitialized.user
                   : ({} as IUser)
               }
+              showLabels
             />
             <button
               onClick={() => deleteHabit(habit)}
-              className="h-6 w-6 ml-2 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full"
+              className="h-6 w-6 ml-8 bg-blue-300 shadow-sm shadow-gray-800 text-gray-800 flex justify-center items-center rounded-full"
             >
               <i className="fa-solid fa-trash" />
             </button>

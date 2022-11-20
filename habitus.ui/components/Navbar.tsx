@@ -39,7 +39,7 @@ function Dropdown({ auth, user }: { auth: Auth; user: IUser }) {
 function LinkButton({ href, label }: ILink) {
   return (
     <Link href={href}>
-      <a className="text-xl text-blue-500 font-railway">{`${label} `}</a>
+      <a className="text-xl text-blue-500">{`${label} `}</a>
     </Link>
   );
 }

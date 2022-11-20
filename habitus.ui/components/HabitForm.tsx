@@ -35,7 +35,7 @@ function Input({
         {...field}
         type={type}
         placeholder={placeholder}
-        className={`px-2 h-8 bg-white text-sm placeholder-slate-400 outline-none focus:border focus:border-sky-500 focus:shadow-sky-500 shadow-[1px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 invalid:text-pink-600 invalid:placeholder-pink-600 focus:invalid:border-pink-500 border-collapse first-of-type:rounded-[0.375rem_0_0_0.375rem] last-of-type:rounded-[0_0.375rem_0.375rem_0] truncate ${className}`}
+        className={`px-2 h-8 bg-white text-sm placeholder-slate-400 outline-none focus:shadow-[1px_0_0_0_#0EA5E9,0_1px_0_0_#0EA5E9,1px_1px_0_0_#0EA5E9,1px_0_0_0_#0EA5E9_inset,0_1px_0_0_#0EA5E9_inset] shadow-[1px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 invalid:text-pink-600 invalid:placeholder-pink-600 focus:invalid:border-pink-500 border-collapse first-of-type:rounded-[0.375rem_0_0_0.375rem] last-of-type:rounded-[0_0.375rem_0.375rem_0] truncate ${className}`}
       />
       <div className="relative">
         {meta.touched && meta.error ? (
@@ -99,8 +99,8 @@ export default function HabitForm({
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      <Form className="flex flex-col justify-center w-[82%]">
-        <h1 className="text-center">{title}</h1>
+      <Form className="flex flex-col justify-center w-[82%] min-w-[280px]">
+        <h1 className="text-center text-sm mb-1">{title}</h1>
         <div className="flex items-center text-sm relative">
           {/* TODO Leave this line to add funcitonality show labels */}
           {/* <Input name="title" type="text" placeholder="Title" label={labels ? 'Title' : undefined}/> */}

@@ -15,7 +15,7 @@ export default function IndexPage() {
   }
 
   return (
-    <div className="flex flex-col items-center w-5/6">
+    <div className="flex flex-col items-center w-3/6">
       <HabitsTable user={isInitialized.user} startDate={todaysDate} />
     </div>
   );

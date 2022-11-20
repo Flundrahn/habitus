@@ -110,3 +110,9 @@ Setup command that starts both frontend and backend
 # Front end ideas
 
 1. Navigate through weeks
+
+shadow
+
+```
+shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]
+```

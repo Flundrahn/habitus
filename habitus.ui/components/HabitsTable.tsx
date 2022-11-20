@@ -12,7 +12,7 @@ import {
 
 function LabelRow({ labels }: { labels: string[] }) {
   return (
-    <div className="flex justify-center w-full shadow-[1px_1px_0_0_#BFDBFE]">
+    <div className="flex justify-center w-full shadow-[0_1px_0_0_#BFDBFE]">
       {React.Children.toArray(
         labels.map(label => (
           <div className="first:flex-grow first:pl-2 py-1 text-xs first:text-sm text-center first:text-left w-8 font-bold">
@@ -74,12 +74,14 @@ function EntryCell({
 
   return (
     <button
-      className={`w-8 px-2 py-1 text-center ${
-        entry.isCompleted ? 'bg-green-300' : 'bg-red-300 text-transparent'
+      className={`w-8 px-2 py-1 text-center text-sm duration-300 hover:scale-110 hover:drop-shadow-md ${
+        entry.isCompleted
+          ? 'bg-green-300 text-gray-600'
+          : 'bg-red-300 text-transparent'
       } `}
       onClick={handleClick}
     >
-      x
+      <i className="fa-solid fa-xmark" />
     </button>
   );
 }
@@ -185,7 +187,8 @@ export default function HabitsTable({
     <>
       <div
         className={
-          'flex flex-col w-full bg-white my-4 rounded-md overflow-hidden shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]'
+          'flex flex-col w-full mb-4 bg-white rounded-md overflow-hidden shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]'
+          // 'flex flex-col w-full mb-4 bg-white rounded-md overflow-hidden border border-[#BFDBFE] shadow-sm'
         }
       >
         <LabelRow labels={['Habit', ...dateLabels, 'Score', 'Goal']} />

@@ -3,6 +3,9 @@
 1. Mobile first UX, managing habits need be mobile
    [x] Choose font
    [x] Fix header / navbar, make name + login an icon that expands?
+   [x] Fix table,
+   [x] Fix form
+   [] Fix chart
 
 ## MVP
 
@@ -64,6 +67,7 @@
 
 # Want to do
 
+- add staggered entry animation to table
 - dark mode
 - Add user managemenent, ability to delete or edit account from frontend through backend (as practice).
 - Type of habit that can take number input, like number of alcoholic drinks per day, meaning would also need to set if goal is above or below.

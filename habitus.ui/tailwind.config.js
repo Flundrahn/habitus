@@ -12,6 +12,11 @@ module.exports = {
         railway: ['Railway', 'sans-serif'],
       },
     },
+    screens: {
+      md: '481px',
+      lg: '769px',
+      xl: '1025px',
+    },
   },
   plugins: [],
 };

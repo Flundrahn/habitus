@@ -12,10 +12,12 @@ import {
 
 function LabelRow({ labels }: { labels: string[] }) {
   return (
-    <div className="flex justify-center w-full pt-2">
+    <div className="flex justify-center w-full shadow-[1px_1px_0_0_#BFDBFE]">
       {React.Children.toArray(
         labels.map(label => (
-          <div className="first:flex-grow p-2 w-12 font-bold">{label}</div>
+          <div className="first:flex-grow first:pl-2 py-1 text-xs first:text-sm text-center first:text-left w-8 font-bold">
+            {label}
+          </div>
         ))
       )}
     </div>
@@ -33,7 +35,7 @@ function TitleCell({
 }) {
   // console.log("Rendering titleCell");
   return (
-    <div {...getToggleProps()} className="flex-grow px-2 py-1">
+    <div {...getToggleProps()} className="flex-grow px-2 py-1 text-sm truncate">
       {title}
     </div>
   );
@@ -41,7 +43,7 @@ function TitleCell({
 
 function DataCell({ data }: { data: number }) {
   // console.log("Rendering DataCell");
-  return <div className="w-12 text-center px-2 py-1">{data}</div>;
+  return <div className="w-8 text-center px-2 py-1">{data}</div>;
 }
 
 function EntryCell({
@@ -72,7 +74,7 @@ function EntryCell({
 
   return (
     <button
-      className={`w-12 px-2 py-1 text-center ${
+      className={`w-8 px-2 py-1 text-center ${
         entry.isCompleted ? 'bg-green-300' : 'bg-red-300 text-transparent'
       } `}
       onClick={handleClick}
@@ -183,7 +185,7 @@ export default function HabitsTable({
     <>
       <div
         className={
-          'flex flex-col bg-white m-4 rounded-md overflow-hidden shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]'
+          'flex flex-col w-full bg-white my-4 rounded-md overflow-hidden shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]'
         }
       >
         <LabelRow labels={['Habit', ...dateLabels, 'Score', 'Goal']} />
@@ -199,7 +201,7 @@ export default function HabitsTable({
       {showForm ? (
         <HabitForm
           user={user}
-          title="Add a new habit"
+          title="Add new habit"
           apiAction={postHabit}
           button={addButton}
           setShowForm={setShowForm}

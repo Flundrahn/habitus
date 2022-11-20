@@ -14,6 +14,9 @@ export default function IndexPage() {
     return <Login auth={isInitialized.auth} />;
   }
 
-  return <HabitsTable user={isInitialized.user} startDate={todaysDate} />;
+  return (
+    <div className="flex flex-col items-center w-5/6">
+      <HabitsTable user={isInitialized.user} startDate={todaysDate} />
+    </div>
+  );
 }
-  

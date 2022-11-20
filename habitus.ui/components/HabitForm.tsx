@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, useField, FieldHookConfig, Form } from 'formik';
+import { Formik, useField, Form } from 'formik';
 import * as Yup from 'yup';
 import getRandomColor from '../utilities/getRandomColor';
 import { IEntry, IHabit, IUser } from '../utilities/interfaces';
@@ -15,24 +15,36 @@ interface IHabitFormValues {
   /* TODO Leave this line to add funcitonality show labels */
 }
 // function Input({ label, ...props }: {label?: string, props: FieldHookConfig<IHabitFormValues>}) {
-function Input(props: FieldHookConfig<IHabitFormValues>) {
-  const [field, meta] = useField(props.name);
+function Input({
+  name,
+  type,
+  placeholder,
+  className = '',
+}: {
+  name: string;
+  type: string;
+  placeholder?: string;
+  className?: string;
+}) {
+  const [field, meta] = useField(name);
   return (
-    <div className="flex flex-col text-left relative">
+    <>
       {/* TODO Leave this line to add funcitonality show labels */}
-      {/* {label && <label htmlFor={props.name}>{label}</label>} */}
+      {/* {label && <label htmlFor={name}>{label}</label>} */}
       <input
         {...field}
-        type={props.type}
-        placeholder={props.placeholder}
-        className="h-8 px-2 py-1 block bg-white text-sm placeholder-slate-400 outline-none focus:border-sky-500 shadow-[1px_0_0_0_#cbd5e1,0_1px_0_0_#cbd5e1,1px_1px_0_0_#cbd5e1,1px_0_0_0_#cbd5e1_inset,0_1px_0_0_#cbd5e1_inset] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 invalid:text-pink-600 invalid:placeholder-pink-600 focus:invalid:border-pink-500 border-collapse"
+        type={type}
+        placeholder={placeholder}
+        className={`px-2 h-8 bg-white text-sm placeholder-slate-400 outline-none focus:border focus:border-sky-500 focus:shadow-sky-500 shadow-[1px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 invalid:text-pink-600 invalid:placeholder-pink-600 focus:invalid:border-pink-500 border-collapse first-of-type:rounded-[0.375rem_0_0_0.375rem] last-of-type:rounded-[0_0.375rem_0.375rem_0] truncate ${className}`}
       />
-      {meta.touched && meta.error ? (
-        <div className="text-xs text-red-700 pl-2 absolute right-1">
-          {meta.error}
-        </div>
-      ) : null}
-    </div>
+      <div className="relative">
+        {meta.touched && meta.error ? (
+          <div className="text-[10px] text-red-700 pl-2 absolute top-[-19px] right-[2px]">
+            {meta.error}
+          </div>
+        ) : null}
+      </div>
+    </>
   );
 }
 
@@ -82,25 +94,40 @@ export default function HabitForm({
   }
 
   return (
-    <>
-      <h1>{title}</h1>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form className="w-full text-center flex flex-col items-center text-sm my-1">
-          <div className="flex items-center">
-            {/* TODO Leave this line to add funcitonality show labels */}
-            {/* <Input name="title" type="text" placeholder="Title" label={labels ? 'Title' : undefined}/> */}
-            <Input name="title" type="text" placeholder="Title" />
-            <Input name="goal" type="number" placeholder="Weekly goal" />
-            <Input name="color" type="color" />
-            <Input name="description" type="text" placeholder="Description" />
-            <button type="submit">{button}</button>
-          </div>
-        </Form>
-      </Formik>
-    </>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      <Form className="flex flex-col justify-center w-[82%]">
+        <h1 className="text-center">{title}</h1>
+        <div className="flex items-center text-sm relative">
+          {/* TODO Leave this line to add funcitonality show labels */}
+          {/* <Input name="title" type="text" placeholder="Title" label={labels ? 'Title' : undefined}/> */}
+          <Input
+            name="title"
+            type="text"
+            placeholder="Title"
+            className="w-3/12"
+          />
+          <Input
+            name="goal"
+            type="number"
+            placeholder="Goal"
+            className="w-2/12 text-center"
+          />
+          <Input name="color" type="color" className="px-[2px] w-2/12" />
+          <Input
+            name="description"
+            type="text"
+            placeholder="Description"
+            className="w-5/12"
+          />
+          <button className="absolute right-[-28px]" type="submit">
+            {button}
+          </button>
+        </div>
+      </Form>
+    </Formik>
   );
 }

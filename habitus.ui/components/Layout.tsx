@@ -6,7 +6,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './Navbar';
 
-
 export default function Layout({ children }: { children?: ReactNode }) {
   const { isInitialized } = useAuthContext();
 
@@ -29,7 +28,7 @@ export default function Layout({ children }: { children?: ReactNode }) {
           </h1>
         )}
       </header>
-      <main className="p-4 flex flex-col items-center bg-zinc-100">
+      <main className="flex flex-col items-center bg-zinc-100">
         <div className="h-12" />
         <Quote />
         {children}

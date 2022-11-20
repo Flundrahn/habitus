@@ -8,7 +8,7 @@ function Dropdown({ auth, user }: { auth: Auth; user: IUser }) {
     defaultExpanded: false,
   });
 
-  const logout = () => {
+  const signout = () => {
     signOut(auth).catch(error => console.error(error));
   };
 
@@ -21,14 +21,14 @@ function Dropdown({ auth, user }: { auth: Auth; user: IUser }) {
         <i className="fa-solid fa-user" />
       </div>
       <div {...getCollapseProps()}>
-        <div className="relative flex flex-col gap-1 bg-white items-center mt-1 p-2 shadow-md rounded-sm">
+        <div className="relative flex flex-col gap-1 bg-white items-center mt-1 p-2 shadow-md rounded-md">
           <p className="text-gray-700">{user.displayName}</p>
-          <p className="text-gray-700 overflow-x-scroll">{user.email}</p>
+          <p className="text-gray-700 overflow-x-hidden">{user.email}</p>
           <button
-            onClick={logout}
-            className="p-1 bg-gray-400 hover:bg-blue-500 text-white rounded-sm w-4/5"
+            onClick={signout}
+            className="py-1 px-3 bg-gray-400 hover:bg-blue-500 text-white rounded-sm w-4/ font-bold"
           >
-            logout
+            sign out
           </button>
         </div>
       </div>

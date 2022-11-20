@@ -4,35 +4,44 @@ import { IEntry, IHabit, IUser } from '../utilities/interfaces';
 import useHabitusApi from '../utilities/useHabitusApi';
 import HabitForm from './HabitForm';
 import { useAuthContext } from './AuthContext';
+import useCollapse from 'react-collapsed';
+import {
+  GetTogglePropsInput,
+  GetTogglePropsOutput,
+} from 'react-collapsed/dist/types';
 
-function Header({ labels }: { labels: string[] }) {
+function LabelRow({ labels }: { labels: string[] }) {
   return (
-    <thead>
-      <tr>
-        {React.Children.toArray(
-          labels.map(label => (
-            <th className="table-cell pl-2 pr-2 text-left font-bold">
-              {label}
-            </th>
-          ))
-        )}
-      </tr>
-    </thead>
+    <div className="flex justify-center w-full pt-2">
+      {React.Children.toArray(
+        labels.map(label => (
+          <div className="first:flex-grow p-2 w-12 font-bold">{label}</div>
+        ))
+      )}
+    </div>
   );
 }
 
-function DataCell({ data }: { data: string | number }) {
-  // console.log("Rendering DataCell");
+function TitleCell({
+  title,
+  getToggleProps,
+}: {
+  title: string;
+  getToggleProps: (
+    config?: GetTogglePropsInput | undefined
+  ) => GetTogglePropsOutput;
+}) {
+  // console.log("Rendering titleCell");
   return (
-    <td
-      data-status="green"
-      className={`table-cell pl-2 pr-2${
-        typeof data === 'number' ? ' text-center' : ''
-      }`}
-    >
-      {data}
-    </td>
+    <div {...getToggleProps()} className="flex-grow px-2 py-1">
+      {title}
+    </div>
   );
+}
+
+function DataCell({ data }: { data: number }) {
+  // console.log("Rendering DataCell");
+  return <div className="w-12 text-center px-2 py-1">{data}</div>;
 }
 
 function EntryCell({
@@ -62,19 +71,18 @@ function EntryCell({
   }
 
   return (
-    <td
-      className={`pl-2 pr-2 text-center ${
+    <button
+      className={`w-12 px-2 py-1 text-center ${
         entry.isCompleted ? 'bg-green-300' : 'bg-red-300 text-transparent'
       } `}
+      onClick={handleClick}
     >
-      <button className="h-full w-full" onClick={handleClick}>
-        x
-      </button>
-    </td>
+      x
+    </button>
   );
 }
 
-function Row({
+function DataRow({
   habit,
   postEntry,
   deleteEntry,
@@ -83,23 +91,34 @@ function Row({
   postEntry: (entry: IEntry) => Promise<void>;
   deleteEntry: (entry: IEntry) => Promise<void>;
 }) {
+  const { getCollapseProps, getToggleProps } = useCollapse({
+    defaultExpanded: false,
+  });
+
   // console.log("Rendering Row");
+
   return (
-    <tr className="table-row hover:bg-blue-200">
-      <DataCell data={habit.title} />
-      {React.Children.toArray(
-        habit.entries.map(entry => (
-          <EntryCell
-            entry={entry}
-            postEntry={postEntry}
-            deleteEntry={deleteEntry}
-          />
-        ))
-      )}
-      <DataCell data={habit.score || 0} />
-      <DataCell data={habit.goal} />
-      <DataCell data={habit.description || ''} />
-    </tr>
+    <>
+      <div className="flex w-full hover:bg-blue-200">
+        <TitleCell title={habit.title} getToggleProps={getToggleProps} />
+        {React.Children.toArray(
+          habit.entries.map(entry => (
+            <EntryCell
+              entry={entry}
+              postEntry={postEntry}
+              deleteEntry={deleteEntry}
+            />
+          ))
+        )}
+        <DataCell data={habit.score || 0} />
+        <DataCell data={habit.goal} />
+      </div>
+      <div {...getCollapseProps()}>
+        <p className="w-full text-gray-600 p-2 text-sm">
+          {habit.description || ''}
+        </p>
+      </div>
+    </>
   );
 }
 
@@ -157,26 +176,26 @@ export default function HabitsTable({
     );
   }
   const dateLabels: string[] = habits[0].entries.map(e =>
-    format(new Date(e.date), 'EEE do')
+    format(new Date(e.date), 'EEE d')
   );
 
   return (
     <>
-      <table className="table-auto m-4">
-        <Header
-          labels={['Habit', ...dateLabels, 'Score', 'Goal', 'Description']}
-        />
-        <tbody>
-          {habits.map((habit: IHabit) => (
-            <Row
-              habit={habit}
-              key={habit.id}
-              postEntry={postEntry}
-              deleteEntry={deleteEntry}
-            />
-          ))}
-        </tbody>
-      </table>
+      <div
+        className={
+          'flex flex-col bg-white m-4 rounded-md overflow-hidden shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]'
+        }
+      >
+        <LabelRow labels={['Habit', ...dateLabels, 'Score', 'Goal']} />
+        {habits.map((habit: IHabit) => (
+          <DataRow
+            habit={habit}
+            key={habit.id}
+            postEntry={postEntry}
+            deleteEntry={deleteEntry}
+          />
+        ))}
+      </div>
       {showForm ? (
         <HabitForm
           user={user}

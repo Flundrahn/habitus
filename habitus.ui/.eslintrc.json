@@ -5,6 +5,7 @@
     "prettier" // Add "prettier" last. This will turn off eslint rules conflicting with prettier. This is not what will format our code.
   ],
   "rules": {
+    "@next/next/no-html-link-for-pages": ["error", "./habitus.ui/pages/"],
     "prefer-template": "error",
     "react/self-closing-comp": [
       "error",
@@ -12,6 +13,8 @@
         "component": true,
         "html": true
       }
-    ]
+    ],
+    "no-useless-concat": "error",
+    "quotes": ["error", "single", { "avoidEscape": true }]
   }
 }

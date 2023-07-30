@@ -1,4 +1,5 @@
 using AutoMapper;
+using habitus.api.Dtos;
 using habitus.api.Models;
 
 namespace habitus.api.Data;

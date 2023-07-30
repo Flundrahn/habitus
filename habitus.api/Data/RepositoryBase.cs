@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using AutoMapper;
-using habitus.api.Models;
+using habitus.api.Data.Interfaces;
+using habitus.api.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace habitus.api.Data;
@@ -9,7 +10,7 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IH
 {
     protected HabitusDbContext _context;
     protected IMapper _mapper;
-    public RepositoryBase(HabitusDbContext context, IMapper mapper)
+    protected RepositoryBase(HabitusDbContext context, IMapper mapper)
     {
         _mapper = mapper;
         _context = context;

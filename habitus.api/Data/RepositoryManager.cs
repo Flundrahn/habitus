@@ -1,14 +1,15 @@
 using AutoMapper;
+using habitus.api.Data.Interfaces;
 
 namespace habitus.api.Data;
 
 public class RepositoryManager : IRepositoryManager
 {
-    private HabitusDbContext _context;
+    private readonly HabitusDbContext _context;
+    private readonly IMapper _mapper;
     private IHabitRepository? _habitRepository;
     private IEntryRepository? _entryRepository;
     private IQuoteRepository? _quoteRepository;
-    private IMapper _mapper;
 
     public RepositoryManager(HabitusDbContext context, IMapper mapper)
     {

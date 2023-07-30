@@ -1,4 +1,6 @@
 using habitus.api.Data;
+using habitus.api.Data.Interfaces;
+using habitus.api.Dtos;
 using habitus.api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -133,7 +135,7 @@ namespace habitus.api.Controllers
                 if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
                 else if (!authorizationResult.Succeeded) return new ChallengeResult();
 
-                bool response = await _repository.Habit.DeleteHabit(id);
+                _ = await _repository.Habit.DeleteHabit(id);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,8 @@
 using FirebaseAdmin;
 using habitus.api.Auth;
 using habitus.api.Data;
+using habitus.api.Data.Interfaces;
+using habitus.api.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -40,9 +42,6 @@ builder.Services
     );
 
 // TODO Test this, spend one day one testing an auth API
-// builder.Services.AddSingleton<
-//     AuthorizationHandler<SameUserAuthorizationRequirement, IHabitusResource>,
-//     HabitusAuthorizationHandler>();
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("SameUser", policy =>

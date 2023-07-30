@@ -1,5 +1,5 @@
-using habitus.api.Data;
-using habitus.api.Models;
+using habitus.api.Data.Interfaces;
+using habitus.api.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace habitus.api.Controllers;
@@ -18,11 +18,10 @@ public class QuotesController : ControllerBase
     [HttpGet]
     public ActionResult<QuoteResponse> GetRandomQuote()
     {
-        // QuoteResponse? quote = await _repository.Quote.GetRandomQuote();
         QuoteResponse? quote = _repository.Quote.GetRandomQuote();
 
-        if (quote == null) return NotFound();
-
-        return Ok(quote);
+        return quote == null
+            ? NotFound()
+            : Ok(quote);
     }
 }

@@ -1,9 +1,8 @@
 using System.Linq.Expressions;
-using habitus.api.Models;
+using habitus.api.Dtos;
 
-namespace habitus.api.Data;
+namespace habitus.api.Data.Interfaces;
 
-// TODO Reevaluate naming and structure of this file with interfaces, after understand function
 public interface IRepositoryBase<T>
 {
     IQueryable<T> FindAll(bool trackChanges);
@@ -21,7 +20,7 @@ public interface IHabitRepository
     Task<HabitResponse> Find(int id);
     Task<IEnumerable<HabitResponse>> FindAllHabits(string userId);
     Task<IEnumerable<HabitResponse>> FindAllAndFilterEntriesByDate(DateTime startDate, DateTime endDate, string userId);
-    Task<int> CreateHabit(CreateHabitRequest habitRequest);
+    Task<int> CreateHabit(CreateHabitRequest request);
     Task<bool> DeleteHabit(int id);
     Task<bool> UpdateHabit(UpdateHabitRequest request);
 }
@@ -37,5 +36,4 @@ public interface IEntryRepository
 public interface IQuoteRepository
 {
     QuoteResponse? GetRandomQuote();
-    // Task<QuoteResponse?> GetRandomQuote();
 }

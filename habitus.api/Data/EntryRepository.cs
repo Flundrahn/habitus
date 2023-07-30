@@ -1,4 +1,6 @@
 using AutoMapper;
+using habitus.api.Data.Interfaces;
+using habitus.api.Dtos;
 using habitus.api.Models;
 using Microsoft.EntityFrameworkCore;
 

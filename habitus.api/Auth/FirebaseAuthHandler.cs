@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,16 +9,12 @@ namespace habitus.api.Auth;
 
 public class FirebaseAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    private FirebaseApp _app;
-
     public FirebaseAuthHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        ISystemClock clock,
-        FirebaseApp app) : base(options, logger, encoder, clock)
+        ISystemClock clock) : base(options, logger, encoder, clock)
     {
-        _app = app;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()

@@ -1,3 +1,5 @@
+namespace habitus.api.Utilities;
+
 public class FileValidator
 {
     public bool IsValidPath(string path)

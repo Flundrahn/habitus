@@ -1,4 +1,4 @@
-using habitus.api.Auth;
+using habitus.api.Interfaces;
 
 namespace habitus.api.Models;
 

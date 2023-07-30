@@ -1,5 +1,5 @@
+using habitus.api.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using habitus.api.Models;
 
 namespace habitus.api.Auth;
 

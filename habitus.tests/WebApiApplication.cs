@@ -26,18 +26,16 @@ class WebApiApplication : WebApplicationFactory<Program>
             });
 
             var serviceProvider = services.BuildServiceProvider();
-            using (var scope = serviceProvider.CreateScope())
-            using (var dbContext = scope.ServiceProvider.GetRequiredService<HabitusDbContext>())
+            using var scope = serviceProvider.CreateScope();
+            using var dbContext = scope.ServiceProvider.GetRequiredService<HabitusDbContext>();
+            try
             {
-                try
-                {
-                    dbContext.Database.EnsureCreated();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+                dbContext.Database.EnsureCreated();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
         });
 

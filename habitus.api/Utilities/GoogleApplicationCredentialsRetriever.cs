@@ -1,5 +1,7 @@
-
 using Google.Apis.Auth.OAuth2;
+
+namespace habitus.api.Utilities;
+
 /// <summary>
 /// Retrieves the Google Application Credentials from the environment variable, which can be either a path to a JSON-file or the JSON itself.
 /// </summary>

@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using habitus.api.Data;
-using habitus.api.Models;
+using habitus.api.Dtos;
 
 namespace habitus.tests;
 
@@ -11,7 +11,7 @@ public class HabitsControllerIntegrationTests
     private readonly HttpClient _client;
 
     public HabitsControllerIntegrationTests()
-    {   
+    {
         _client = new WebApiApplication().CreateClient();
     }
 

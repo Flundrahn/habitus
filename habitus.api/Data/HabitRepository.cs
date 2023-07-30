@@ -1,7 +1,9 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using habitus.api.Models;
-using habitus.api.Extensions;
+using habitus.api.Data.Interfaces;
+using habitus.api.Dtos;
+using habitus.api.Utilities;
 
 namespace habitus.api.Data;
 

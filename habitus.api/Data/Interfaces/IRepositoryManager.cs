@@ -1,4 +1,4 @@
-namespace habitus.api.Data;
+namespace habitus.api.Data.Interfaces;
 
 public interface IRepositoryManager
 {

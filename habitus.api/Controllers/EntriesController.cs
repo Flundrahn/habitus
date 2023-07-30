@@ -1,5 +1,6 @@
 using habitus.api.Data;
-using habitus.api.Models;
+using habitus.api.Data.Interfaces;
+using habitus.api.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,10 @@
 # Doing
 
 ## TODO
+- add delete date property to entities
+- add table for quotes instead if json
+- add method to restore deleted habits
+- add method to permanently delete habits
 
 ## TODO Frontend styling
 

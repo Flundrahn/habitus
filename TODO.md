@@ -1,9 +1,68 @@
 # Doing
 
-## MVP
+## TODO
 
-2. Style depending on achieved goal or not,
-3. Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible
+## TODO Frontend styling
+
+- Move login to vertical middle
+- Move Today / Week / Edit panel down so won't jump because of quote element
+- Make UI responsive, possibly use grid for sizes of columns, description should be scrollable, hide scrollbar if possible
+- Make Today / Week / Edit panel have rows surrounded with div that has no overflow
+- Fix headers of Edit page
+
+# Want to do
+
+- Fix margin of barchart so text visible, fix so columns draw ontop of each other if possible (already fixed?)
+- Use color of habit in graph
+- add staggered entry animation to table
+- dark mode
+- Add user managemenent, ability to delete or edit account from frontend through backend (as practice).
+- Type of habit that can take number input, like number of alcoholic drinks per day, meaning would also need to set if goal is above or below.
+- Type of habits with clock, such as time to get in bed, is it possible unifying this with the number input? No, should be distinct
+- Graph for clock habits
+- Add button to close form / close on submit, what about the edit page?
+- all time view
+- endpoint to post & delete quotes
+- go through access modifiers and set to lowest possible
+- IDEA Redesign repository, put all CRUD methods in class corresponding to current RepositoryManager.
+  - That way can use methods from both habitrepo and entryrepo in one place
+  - Can give it the save method, do multiple queries only one save
+  - Let RepositoryManager handle dto mapping
+  - Naming of methods "CreateHabit" will make more sense, as is now I can't use name Create because it belongs to RepositoryBase
+  - Allthough, is there a way I can go back to calling base class methods right away? Naaah this is better, handle the logic and problems better without throwing exceptions.
+
+## Want to do Formik
+
+- Disable the submit button while the user has attempted to submit (hint: formik.isSubmitting)
+- Add a reset button with formik.handleReset or <button type="reset">.
+- Change the input border color to red when a field has an error and isn’t focused
+- Add a shake animation to each field when it displays an error and has been visited
+- Persist form state to the browser’s sessionStorage so that form progress is kept in between page refreshes
+
+## To run fullstack project
+
+Setup command that starts both frontend and backend
+
+- https://ss64.com/nt/start.html
+- https://stackoverflow.com/a/36275359
+- https://stackoverflow.com/a/35455532
+
+### For VS Code
+
+- https://code.visualstudio.com/Docs/editor/tasks (compound tasks)
+- SOLUTION create separate tasks and use dependsOn
+
+# Web API ideas
+
+# Front end ideas
+
+1. Navigate through weeks
+
+shadow
+
+```
+shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]
+```
 
 ## Done
 
@@ -65,55 +124,3 @@
 30. Finish 'Web API 6 Best Practices' course
 31. Take at least one next.js tutorial
 32. make API async, leave sync for now and follow guide
-
-# Want to do
-
-- add staggered entry animation to table
-- dark mode
-- Add user managemenent, ability to delete or edit account from frontend through backend (as practice).
-- Type of habit that can take number input, like number of alcoholic drinks per day, meaning would also need to set if goal is above or below.
-- Type of habits with clock, such as time to get in bed, is it possible unifying this with the number input? No, should be distinct
-- Graph for clock habits
-- Add button to close form / close on submit, what about the edit page?
-- all time view
-- endpoint to post & delete quotes
-- go through access modifiers and set to lowest possible
-- IDEA Redesign repository, put all CRUD methods in class corresponding to current RepositoryManager.
-  - That way can use methods from both habitrepo and entryrepo in one place
-  - Can give it the save method, do multiple queries only one save
-  - Let RepositoryManager handle dto mapping
-  - Naming of methods "CreateHabit" will make more sense, as is now I can't use name Create because it belongs to RepositoryBase
-  - Allthough, is there a way I can go back to calling base class methods right away? Naaah this is better, handle the logic and problems better without throwing exceptions.
-
-## Want to do Formik
-
-- Disable the submit button while the user has attempted to submit (hint: formik.isSubmitting)
-- Add a reset button with formik.handleReset or <button type="reset">.
-- Change the input border color to red when a field has an error and isn’t focused
-- Add a shake animation to each field when it displays an error and has been visited
-- Persist form state to the browser’s sessionStorage so that form progress is kept in between page refreshes
-
-## To run fullstack project
-
-Setup command that starts both frontend and backend
-
-- https://ss64.com/nt/start.html
-- https://stackoverflow.com/a/36275359
-- https://stackoverflow.com/a/35455532
-
-### For VS Code
-
-- https://code.visualstudio.com/Docs/editor/tasks (compound tasks)
-- SOLUTION create separate tasks and use dependsOn
-
-# Web API ideas
-
-# Front end ideas
-
-1. Navigate through weeks
-
-shadow
-
-```
-shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]
-```

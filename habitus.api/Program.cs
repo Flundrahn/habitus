@@ -1,33 +1,30 @@
-using habitus.api.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication;
 using FirebaseAdmin;
 using habitus.api.Auth;
+using habitus.api.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Google.Apis.Auth.OAuth2;
+using Microsoft.EntityFrameworkCore;
 
-var connectionStringName = "DbContextLocal";
-var googleCredentialsName = "GOOGLE_APPLICATION_CREDENTIALS";
+const string CONNECTION_STRING = "DbContextLocal";
 
 var builder = WebApplication.CreateBuilder(args);
 
+string connectionString = builder.Configuration.GetConnectionString(CONNECTION_STRING)
+    ?? throw new InvalidOperationException($"Connection string {CONNECTION_STRING} not found.");
 builder.Services.AddDbContext<HabitusDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString(connectionStringName)
-        ?? throw new InvalidOperationException($"Connection string {connectionStringName} not found.")
-    )
+    options.UseSqlite(connectionString)
 );
-builder.Services.AddControllers();
 
-var credentials = Environment.GetEnvironmentVariable(googleCredentialsName)
-?? throw new InvalidOperationException($"Environment variable {googleCredentialsName} not found.");
-
+var googleAppCredentialsRetriever = new GoogleApplicationCredentialsRetriever();
 builder.Services.AddSingleton(FirebaseApp.Create(
     new AppOptions()
     {
-        Credential = GoogleCredential.FromJson(parseEnvironmentVariable(credentials))
+        Credential = googleAppCredentialsRetriever.Retrieve()
     })
 );
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
@@ -90,10 +87,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-string parseEnvironmentVariable(string variable)
-{
-    return variable[0] == '\"' && variable[^1] == '\"'
-        ? variable.Substring(1, variable.Length - 2)
-        : variable;
-}

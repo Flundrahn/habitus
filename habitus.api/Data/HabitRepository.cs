@@ -32,9 +32,8 @@ public class HabitRepository : RepositoryBase<Habit>, IHabitRepository
         string userId
     )
     {
-        // NOTE Should I do anything about the null warning here?
         var filteredHabits = FindByCondition(h => h.UserId == userId, false)
-            .Include(h => h.Entries
+            .Include(h => h.GetEntries()
                 .Where(entry =>
                     entry.Date >= startDate
                     &&

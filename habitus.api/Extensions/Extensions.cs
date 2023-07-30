@@ -4,9 +4,8 @@ namespace habitus.api.Extensions;
 
 static class ExtensionsClass
 {
-    public static HabitResponse? PopulateUncompletedEntries(this HabitResponse response, DateTime startDate, DateTime endDate)
+    public static HabitResponse PopulateUncompletedEntries(this HabitResponse response, DateTime startDate, DateTime endDate)
     {
-        // NOTE Should I do anything about the null warning here?
         var datesToAdd = GetDatesBetween(startDate, endDate)
             .Except(response.Entries.Select(e => e.Date));
 
@@ -26,7 +25,7 @@ static class ExtensionsClass
         return response;
     }
 
-    static List<DateTime> GetDatesBetween(DateTime startDate, DateTime endDate)
+    private static List<DateTime> GetDatesBetween(DateTime startDate, DateTime endDate)
     {
         var dates = new List<DateTime>();
         for (var date = startDate; date <= endDate; date = date.AddDays(1))

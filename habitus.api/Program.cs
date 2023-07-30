@@ -58,20 +58,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    using (var scope = app.Services.CreateScope())
-    using (var dbContext = scope.ServiceProvider.GetRequiredService<HabitusDbContext>())
+    using var scope = app.Services.CreateScope();
+    using var dbContext = scope.ServiceProvider.GetRequiredService<HabitusDbContext>();
+    try
     {
-        try
-        {
-            // NOTE Using EnsureCreated is not recommended for relational db if one plans to use EF Migrations
-            dbContext.Database.EnsureCreated();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("An error occurred while creating the DB.");
-            Console.WriteLine(ex.Message);
-            throw;
-        }
+        // NOTE Using EnsureCreated is not recommended for relational db if one plans to use EF Migrations
+        dbContext.Database.EnsureCreated();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("An error occurred while creating the DB.");
+        Console.WriteLine(ex.Message);
+        throw;
     }
 }
 

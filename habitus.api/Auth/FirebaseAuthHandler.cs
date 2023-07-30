@@ -31,7 +31,7 @@ public class FirebaseAuthHandler : AuthenticationHandler<AuthenticationSchemeOpt
             return AuthenticateResult.Fail("Invalid Authorization Header");
         }
 
-        string token = bearerToken.Substring("Bearer ".Length).Trim();
+        string token = bearerToken["Bearer ".Length..].Trim();
 
         try
         {

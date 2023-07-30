@@ -35,7 +35,6 @@ namespace habitus.api.Controllers
                 if (!authorizationResult.Succeeded && User.Identity!.IsAuthenticated) return new ForbidResult();
                 else if (!authorizationResult.Succeeded) return new ChallengeResult();
 
-
                 return Ok(entries);
             }
             catch (Exception ex)
@@ -80,19 +79,14 @@ namespace habitus.api.Controllers
 
                 int id = await _repository.Entry.CreateEntry(request);
 
-                switch (id)
+                return id switch
                 {
-                    case 0:
-                        return Problem("Failed to create entry");
-                    case -1:
-                        return Problem($"Table {nameof(HabitusDbContext.Entries)} is null.");
-                    case -2:
-                        return BadRequest($"Entry already exists for habit {request.HabitId} on {request.Date.Date}.");
-                    case -3:
-                        return BadRequest($"Habit {request.HabitId} does not exist.");
-                    default:
-                        return CreatedAtAction(nameof(Get), new { id = id });
-                }
+                    0 => Problem("Failed to create entry"),
+                    -1 => Problem($"Table {nameof(HabitusDbContext.Entries)} is null."),
+                    -2 => BadRequest($"Entry already exists for habit {request.HabitId} on {request.Date.Date}."),
+                    -3 => BadRequest($"Habit {request.HabitId} does not exist."),
+                    _ => CreatedAtAction(nameof(Get), new { id }),
+                };
             }
             catch (Exception ex)
             {

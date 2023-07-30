@@ -27,7 +27,7 @@ public class GoogleApplicationCredentialsRetriever
     private string TrimDoubleQuotes(string variable)
     {
         return variable[0] == '\"' && variable[^1] == '\"'
-            ? variable.Substring(1, variable.Length - 2)
+            ? variable[1..^1]
             : variable;
     }
 }

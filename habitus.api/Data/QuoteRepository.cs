@@ -17,9 +17,8 @@ public class QuoteRepository : IQuoteRepository
     {
         var quotes = SeedData.Quotes();
 
-        if (quotes == null) return null;
-
-        return _mapper.Map<QuoteResponse>(quotes[new Random().Next(0, quotes.Length)]);
+        return quotes is null
+            ? null 
+            : _mapper.Map<QuoteResponse>(quotes[new Random().Next(0, quotes.Length)]);
     }
-
 }

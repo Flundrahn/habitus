@@ -35,9 +35,18 @@ namespace habitus.api.Controllers
 
                 var authorizationResult = await _authorization.AuthorizeAsync(User, habits.First(), "SameUser");
 
-                if (authorizationResult.Succeeded) return Ok(habits);
-                else if (User.Identity!.IsAuthenticated) return new ForbidResult();
-                else return new ChallengeResult();
+                if (authorizationResult.Succeeded)
+                {
+                    return Ok(habits);
+                }
+                else if (User.Identity!.IsAuthenticated)
+                {
+                    return new ForbidResult();
+                }
+                else
+                {
+                    return new ChallengeResult();
+                }
             }
             catch (Exception ex)
             {
@@ -56,9 +65,18 @@ namespace habitus.api.Controllers
 
                 var authorizationResult = await _authorization.AuthorizeAsync(User, habit, "SameUser");
 
-                if (authorizationResult.Succeeded) return Ok(habit);
-                else if (User.Identity!.IsAuthenticated) return new ForbidResult();
-                else return new ChallengeResult();
+                if (authorizationResult.Succeeded)
+                {
+                    return Ok(habit);
+                }
+                else if (User.Identity!.IsAuthenticated)
+                {
+                    return new ForbidResult();
+                }
+                else
+                {
+                    return new ChallengeResult();
+                }
             }
             catch (Exception ex)
             {
@@ -105,15 +123,12 @@ namespace habitus.api.Controllers
 
                 int id = await _repository.Habit.CreateHabit(request);
 
-                switch (id)
+                return id switch
                 {
-                    case 0:
-                        return Problem("Failed to create habit");
-                    case -1:
-                        return Problem($"Table {nameof(HabitusDbContext.Habits)} is null.");
-                    default:
-                        return CreatedAtAction(nameof(Get), new { id = id });
-                }
+                    0 => Problem("Failed to create habit"),
+                    -1 => Problem($"Table {nameof(HabitusDbContext.Habits)} is null."),
+                    _ => CreatedAtAction(nameof(Get), new { id }),
+                };
             }
             catch (Exception ex)
             {

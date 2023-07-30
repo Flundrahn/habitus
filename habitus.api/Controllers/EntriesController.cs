@@ -8,7 +8,7 @@ namespace habitus.api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class EntriesController : ControllerBase
+    public class EntriesController : HabitusControllerBase
     {
         private readonly IRepositoryManager _repository;
         private readonly IAuthorizationService _authorization;
@@ -122,13 +122,6 @@ namespace habitus.api.Controllers
             }
 
             return NoContent();
-        }
-
-        private string GetUserId()
-        {
-            string? userId = HttpContext.User.Claims.First(c => c.Type == "userId")?.Value;
-            if (userId is null) throw new Exception("UserId is null");
-            return userId;
         }
     }
 }

@@ -40,7 +40,8 @@ public class HabitRepository : RepositoryBase<Habit>, IHabitRepository
                     entry.Date >= startDate
                     &&
                     entry.Date <= endDate))
-            .Select<Habit, HabitResponse>(h => _mapper.Map<HabitResponse>(h).PopulateUncompletedEntries(startDate, endDate))
+            .Select(h => _mapper.Map<HabitResponse>(h)
+                .PopulateUncompletedEntries(startDate, endDate))
             .ToArrayAsync();
 
         return await filteredHabits;

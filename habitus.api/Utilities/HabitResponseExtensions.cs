@@ -2,7 +2,7 @@ using habitus.api.Dtos;
 
 namespace habitus.api.Utilities;
 
-static class ExtensionsClass
+static class HabitResponseExtensions
 {
     public static HabitResponse PopulateUncompletedEntries(this HabitResponse response, DateTime startDate, DateTime endDate)
     {
@@ -18,6 +18,12 @@ static class ExtensionsClass
                 IsCompleted = false
             });
         }
+
+        return response;
+    }
+
+    public static HabitResponse OrderEntries(this HabitResponse response)
+    {
         response.Entries = response.Entries
             .OrderBy(e => e.Date)
             .ToArray();

@@ -22,7 +22,7 @@ function TitleCell({
   return (
     <div
       {...getToggleProps()}
-      className="flex-grow px-2 text-sm lg:text-base truncate"
+      className="flex-grow px-2 text-sm md:text-base truncate"
     >
       {title}
     </div>
@@ -31,7 +31,7 @@ function TitleCell({
 
 function DataCell({ data }: { data: number }) {
   return (
-    <div className="w-8 md:w-10 lg:w-12 lg:text-base text-center flex-shrink-0">
+    <div className="w-8 sm:w-10 md:w-12 md:text-base text-center flex-shrink-0">
       {data}
     </div>
   );
@@ -63,7 +63,7 @@ function EntryCell({
 
   return (
     <button
-      className={`w-8 md:w-10 lg:w-12 flex-shrink-0 h-full text-center text-sm duration-200 hover:scale-[115%] hover:drop-shadow-md ${
+      className={`w-8 sm:w-10 md:w-12 flex-shrink-0 h-full text-center text-sm duration-200 hover:scale-[115%] hover:drop-shadow-md ${
         entry.isCompleted
           ? 'bg-green-300 text-gray-600'
           : 'bg-red-300 text-transparent'
@@ -80,7 +80,7 @@ function LabelRow({ labels }: { labels: string[] }) {
     <div className="flex justify-center w-full shadow-[0_1px_0_0_#BFDBFE]">
       {React.Children.toArray(
         labels.map(label => (
-          <div className="first:flex-grow first:pl-2 first:text-sm lg:first:text-base py-1 text-xs md:text-sm lg:text-base text-center first:text-left w-8 md:w-10 lg:w-12 font-bold">
+          <div className="first:flex-grow first:pl-2 first:text-sm md:first:text-base py-1 text-xs sm:text-sm md:text-base text-center first:text-left w-8 sm:w-10 md:w-12 font-bold">
             {label}
           </div>
         ))

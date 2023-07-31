@@ -34,7 +34,7 @@ export default function WeekChart({
 
   return (
     <>
-      <h2 className="mt-4 md:text-sm lg:text-base font-bold">
+      <h2 className="mt-4 sm:text-sm md:text-base font-bold">
         Weekly Progress
       </h2>
       <ResponsiveContainer

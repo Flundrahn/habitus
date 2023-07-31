@@ -4,20 +4,24 @@ import HabitsTable from '../components/HabitsTable';
 import Login from '../components/Login';
 import WeekChart from '../components/WeekChart';
 
-function getStartOfWeek(date = new Date()): Date {
-  const dateToReturn = new Date(date);
-  const dayOfWeek = date.getDay();
-  const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-  dateToReturn.setDate(date.getDate() - daysToSubtract);
+function getCurrentWeekBounds(): { startOfWeek: Date; endOfWeek: Date } {
+  const today: Date = new Date();
+  const currentDayOfWeek: number = today.getDay();
+  const startOfWeek: Date = new Date(today);
+  const endOfWeek: Date = new Date(today);
 
-  return dateToReturn;
+  startOfWeek.setDate(today.getDate() - currentDayOfWeek + 1);
+  endOfWeek.setDate(today.getDate() + (7 - currentDayOfWeek));
+
+  return {
+    startOfWeek,
+    endOfWeek,
+  };
 }
 
 export default function WeekPage() {
   const { isInitialized } = useAuthContext();
-  const startDate = getStartOfWeek();
-  const endDate = new Date();
-  endDate.setDate(startDate.getDate() + 6);
+  const { startOfWeek, endOfWeek } = getCurrentWeekBounds();
 
   if (!isInitialized) {
     return <div>Loading...</div>;
@@ -27,17 +31,18 @@ export default function WeekPage() {
   }
 
   return (
-    <div className="flex flex-col items-center w-[96%] h-full md:w-[600px] text-sm md:text-base">
+    <>
       <HabitsTable
         user={isInitialized.user}
-        startDate={startDate}
-        endDate={endDate}
+        startDate={startOfWeek}
+        endDate={endOfWeek}
+        wrapperClassName="w-[96%] md:w-[700px] text-sm md:text-base"
       />
       <WeekChart
         user={isInitialized.user}
-        startDate={startDate}
-        endDate={endDate}
+        startDate={startOfWeek}
+        endDate={endOfWeek}
       />
-    </div>
+    </>
   );
 }

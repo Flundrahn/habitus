@@ -131,10 +131,12 @@ export default function HabitsTable({
   user,
   startDate,
   endDate = startDate,
+  wrapperClassName,
 }: {
   user: IUser;
   startDate: Date;
   endDate?: Date;
+  wrapperClassName?: string;
 }) {
   const {
     data: habits,
@@ -145,6 +147,8 @@ export default function HabitsTable({
     postHabit,
   } = useHabitusApi(user.idToken, startDate, endDate);
   const [showForm, setShowForm] = useState(false);
+
+  console.log(`This is the wrapper class name${wrapperClassName}`);
 
   if (error && error.message === 'Request failed with status code 404') {
     mutate([] as IHabit[], {
@@ -185,9 +189,7 @@ export default function HabitsTable({
   return (
     <>
       <div
-        className={
-          'flex flex-col w-full mb-4 bg-white rounded-md overflow-hidden shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset]'
-        }
+        className={`flex flex-col items-center mb-4 bg-white rounded-md overflow-hidden shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFDBFE_inset,0_1px_0_0_#BFDBFE_inset] ${wrapperClassName}`}
       >
         <LabelRow labels={['Habit', ...dateLabels, 'Score', 'Goal']} />
         {habits.map((habit: IHabit) => (

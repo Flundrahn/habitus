@@ -35,13 +35,12 @@ public class HabitRepository : RepositoryBase<Habit>, IHabitRepository
     )
     {
         var filteredHabits = FindByCondition(h => h.UserId == userId, false)
-            .Include(h => h.GetEntries()
+            .Include(h => h.Entries
                 .Where(entry =>
                     entry.Date >= startDate
                     &&
                     entry.Date <= endDate))
-            .Select<Habit, HabitResponse>(h => _mapper.Map<HabitResponse>(h)
-                .PopulateUncompletedEntries(startDate, endDate))
+            .Select<Habit, HabitResponse>(h => _mapper.Map<HabitResponse>(h).PopulateUncompletedEntries(startDate, endDate))
             .ToArrayAsync();
 
         return await filteredHabits;

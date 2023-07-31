@@ -12,7 +12,7 @@ public class Mapper : Profile
         CreateMap<UpdateHabitRequest, Habit>();
         CreateMap<CreateEntryRequest, Entry>();
         CreateMap<Habit, HabitResponse>()
-            .ForMember(d => d.Score, entry => entry.MapFrom(s => s.GetEntries().Count));
+            .ForMember(d => d.Score, entry => entry.MapFrom(s => s.Entries.Count));
         CreateMap<Entry, EntryResponse>()
             .ForMember(d => d.IsCompleted, o => o.MapFrom(s => true));
         CreateMap<Quote, QuoteResponse>();

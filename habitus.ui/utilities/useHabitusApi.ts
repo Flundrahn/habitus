@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import axios, { AxiosResponse } from 'axios';
 import { IEntry, IHabit, IPostResponse } from './interfaces';
-import API_BASE_URL from './constants';
+import { API_BASE_URL } from './constants';
 import produce from 'immer';
 import { toast } from 'react-toastify';
 

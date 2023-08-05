@@ -1,6 +1,7 @@
 # Doing
 
 ## TODO
+
 - add delete date property to entities
 - add table for quotes instead if json
 - add method to restore deleted habits
@@ -92,39 +93,45 @@ shadow-[0.5px_0_0_0_#BFDBFE,0_1px_0_0_#BFDBFE,1px_1px_0_0_#BFDBFE,1px_0_0_0_#BFD
 - Add auth context
 - Add firebase ui & login page
 
-11. Add toast message on update habit
-12. Show graph
-13. Stoic quotes GET random
-14. Show current score for each habit
-15. Update Habit
-16. Delete Habit button
-17. Edit Component v1
-18. Convert to formik and yup.
-19. Week, each day with done and unfinished habits
+1.  Add toast message on update habit
+2.  Show graph
+3.  Stoic quotes GET random
+4.  Show current score for each habit
+5.  Update Habit
+6.  Delete Habit button
+7.  Edit Component v1
+8.  Convert to formik and yup.
+9.  Week, each day with done and unfinished habits
 
 - View of weekly result
 
-14. Create new Habit button
-15. Week Component v1
-16. Finish the table component
-17. Convert repos to all implement their own methods, which also converts to and from DTO
-18. Create entries that contains adds empty entries for non-existing days and boolean
-19. Convert responses to use DTO
-20. Create endpoints
+1.  Create new Habit button
+2.  Week Component v1
+3.  Finish the table component
+4.  Convert repos to all implement their own methods, which also converts to and from DTO
+5.  Create entries that contains adds empty entries for non-existing days and boolean
+6.  Convert responses to use DTO
+7.  Create endpoints
 
 - [x] Habit: GetAll / GetOne / Delete / Create / Update
 - [x] Entry: Delete / Create
 - [x] Habit: Get all include filtered entries, by date
 
-21. Db, sqlite should be fine
-22. Design backend with this functionality in mind.
-23. Todays Component v1
-24. List habits --> each one has list of entries ids
-25. View result in column graph
-26. Create entry by crossing over day
-27. Take at least one typescript tutorial
-28. make a sketch of front end with functionality
-29. Take at least one tailwind css tutorial
-30. Finish 'Web API 6 Best Practices' course
-31. Take at least one next.js tutorial
-32. make API async, leave sync for now and follow guide
+1.  Db, sqlite should be fine
+2.  Design backend with this functionality in mind.
+3.  Todays Component v1
+4.  List habits --> each one has list of entries ids
+5.  View result in column graph
+6.  Create entry by crossing over day
+7.  Take at least one typescript tutorial
+8.  make a sketch of front end with functionality
+9.  Take at least one tailwind css tutorial
+10. Finish 'Web API 6 Best Practices' course
+11. Take at least one next.js tutorial
+12. make API async, leave sync for now and follow guide
+
+- Fix sizing of HabitsTable
+  - date labels should have day of week on top and number on bottom
+  - if small screen date should be only initial of day
+  - if larger screen day can be three letters
+  - if larger screen date number can have suffix (st, nd, rd, th)

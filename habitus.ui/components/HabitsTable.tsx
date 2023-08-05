@@ -9,6 +9,7 @@ import {
   GetTogglePropsInput,
   GetTogglePropsOutput,
 } from 'react-collapsed/dist/types';
+import { SMALL_VIEWPORT_WIDTH } from '../utilities/constants';
 
 function TitleCell({
   title,
@@ -80,7 +81,7 @@ function LabelRow({ labels }: { labels: string[] }) {
     <div className="flex justify-center w-full shadow-[0_1px_0_0_#BFDBFE]">
       {React.Children.toArray(
         labels.map(label => (
-          <div className="first:flex-grow first:pl-2 first:text-sm md:first:text-base py-1 text-xs sm:text-sm md:text-base text-center first:text-left w-8 sm:w-10 md:w-12 font-bold">
+          <div className="first:flex-grow first:pl-2 first:text-sm md:first:text-base py-1 text-xs sm:text-sm md:text-base text-center first:text-left w-8 sm:w-10 md:w-12 font-bold whitespace-pre-line">
             {label}
           </div>
         ))
@@ -120,7 +121,7 @@ function DataRow({
       </div>
       <div {...getCollapseProps()}>
         <p className="w-full text-gray-600 p-2 text-sm">
-          {`${habit.title}: ${habit.description}` || ''}
+          {`${habit.title}: ${habit.description}`}
         </p>
       </div>
     </>
@@ -182,9 +183,7 @@ export default function HabitsTable({
       </>
     );
   }
-  const dateLabels: string[] = habits[0].entries.map(e =>
-    format(new Date(e.date), 'EEE d')
-  );
+  const dateLabels: string[] = getDateLabels(habits);
 
   return (
     <>
@@ -214,4 +213,18 @@ export default function HabitsTable({
       )}
     </>
   );
+}
+
+function getDateLabels(habits: IHabit[]): string[] {
+  return window.innerWidth > SMALL_VIEWPORT_WIDTH
+    ? habits[0].entries.map(e => getDateLabel(new Date(e.date), 'EEE', 'do'))
+    : habits[0].entries.map(e => getDateLabel(new Date(e.date), 'EEEEE', 'd'));
+}
+
+function getDateLabel(
+  date: Date,
+  weekdayFormat: string,
+  dayOfMonthFormat: string
+): string {
+  return `${format(date, weekdayFormat)}\n${format(date, dayOfMonthFormat)}`;
 }

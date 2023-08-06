@@ -2,6 +2,7 @@
 
 ## TODO
 
+- fix HabitForm sizing, can't read fields on small screens
 - add delete date property to entities
 - add table for quotes instead if json
 - add method to restore deleted habits

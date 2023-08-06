@@ -19,7 +19,7 @@ export default function Layout({ children }: { children?: ReactNode }) {
       <Head>
         <title>Habitus</title>
       </Head>
-      <div className="font-railway bg-[#f5f5f5] min-h-screen">
+      <div className="font-railway bg-[#f5f5f5] min-h-screen flex flex-col justify-around">
         <header className="fixed top-0 flex flex-col items-center justify-center w-full z-10 bg-white shadow-md h-12">
           {isInitialized.user ? (
             <Navbar auth={isInitialized.auth} user={isInitialized.user} />

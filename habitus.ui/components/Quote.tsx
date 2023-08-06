@@ -41,7 +41,7 @@ export default function Quote() {
     return <div>Loading...</div>;
   } else {
     return (
-      <div className="flex flex-col items-center mx-4 mb-6 mt-[76px] italic">
+      <div className="flex flex-col items-center min-h-[60px] mx-4 my-6 mt-14 italic">
         <NewlinedParagraph>{`“${quote.quoteText}”`}</NewlinedParagraph>
         <p className="text-sm not-italic">{` - ${quote.philosopher}`}</p>
       </div>
